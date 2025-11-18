@@ -1,21 +1,22 @@
 <template>
-  <div
+  <main
       class="min-h-screen bg-gradient-to-b from-orange-50/40 via-white to-gray-50 dark:from-gray-900 dark:via-gray-950 dark:to-black"
   >
     <!-- HERO -->
-    <div class="flex items-center">
-      <div class="relative w-full max-w-6xl mx-auto px-6 py-16">
-        <!-- Background blob -->
-        <div
-            class="pointer-events-none absolute -top-20 -right-32 h-64 w-64 rounded-full bg-orange-200/40 blur-3xl opacity-70 dark:bg-orange-500/20 dark:opacity-60"
-        ></div>
+    <section class="relative flex items-center overflow-hidden">
+      <!-- Soft background accent -->
+      <div
+          class="pointer-events-none absolute -top-24 -right-40 h-72 w-72 rounded-full bg-orange-200/50 blur-3xl opacity-70 dark:bg-orange-500/20 dark:opacity-60"
+          aria-hidden="true"
+      ></div>
 
-        <div class="relative grid gap-12 md:grid-cols-2 items-center">
+      <div class="relative w-full max-w-5xl mx-auto px-6 py-16 md:py-20">
+        <div class="grid gap-12 md:grid-cols-2 items-center">
           <!-- LEFT: TEXT -->
           <div class="space-y-6 fade-in-up">
             <!-- Eyebrow -->
             <div
-                class="inline-flex items-center gap-2 bg-orange-50 border border-orange-100 px-3 py-1.5 rounded-full dark:bg-orange-500/10 dark:border-orange-500/30"
+                class="inline-flex items-center gap-2 bg-orange-50 border border-orange-100 px-3 py-1.5 rounded-full shadow-sm/10 dark:bg-orange-500/10 dark:border-orange-500/30"
             >
               <span class="h-2 w-2 rounded-full bg-orange-500 animate-pulse"></span>
               <span class="text-orange-700 text-xs font-medium dark:text-orange-300">
@@ -33,54 +34,55 @@
 
             <!-- Description -->
             <p class="text-gray-600 dark:text-gray-300 text-sm md:text-base max-w-md">
-              Amigo Lease is a roommate-matching app that starts with a playful
-              lifestyle quiz. We turn your habits, boundaries, and budget into a
-              compatibility score, then connect you with people and places that feel
-              like an easy fit — whether you’re hosting or looking for a room.
+              Amigo Lease starts with a playful lifestyle quiz. We turn your routines,
+              boundaries and budget into a compatibility score, then connect you with
+              people and places that feel like an easy fit — whether you’re hosting or
+              looking for a room.
             </p>
 
             <!-- Feature pills -->
             <div class="flex flex-wrap gap-2 pt-1 text-xs">
               <span
-                  class="px-3 py-1 rounded-full border text-gray-700 border-gray-200 dark:text-gray-100 dark:border-gray-700"
+                  class="px-3 py-1 rounded-full border text-gray-700 border-gray-200 bg-white/70 backdrop-blur dark:text-gray-100 dark:border-gray-700 dark:bg-gray-900/60"
               >
                 Quiz-powered compatibility score
               </span>
               <span
-                  class="px-3 py-1 rounded-full border text-gray-700 border-gray-200 dark:text-gray-100 dark:border-gray-700"
+                  class="px-3 py-1 rounded-full border text-gray-700 border-gray-200 bg-white/70 backdrop-blur dark:text-gray-100 dark:border-gray-700 dark:bg-gray-900/60"
               >
                 Hosts & seekers in one place
               </span>
               <span
-                  class="px-3 py-1 rounded-full border text-gray-700 border-gray-200 dark:text-gray-100 dark:border-gray-700"
+                  class="px-3 py-1 rounded-full border text-gray-700 border-gray-200 bg-white/70 backdrop-blur dark:text-gray-100 dark:border-gray-700 dark:bg-gray-900/60"
               >
                 Habits, boundaries & budget aligned
               </span>
               <span
-                  class="px-3 py-1 rounded-full border text-gray-700 border-gray-200 dark:text-gray-100 dark:border-gray-700"
+                  class="px-3 py-1 rounded-full border text-gray-700 border-gray-200 bg-white/70 backdrop-blur dark:text-gray-100 dark:border-gray-700 dark:bg-gray-900/60"
               >
                 Dealbreakers agreed upfront
               </span>
             </div>
 
-            <!-- Buttons -->
+            <!-- Primary actions -->
             <div class="flex flex-col sm:flex-row gap-3 pt-4">
               <button
+                  type="button"
                   @click="goToOnboarding"
-                  class="w-full sm:w-auto px-4 py-2 rounded-lg bg-black text-white text-sm font-medium hover:bg-gray-900 transition dark:bg-white dark:text-black dark:hover:bg-gray-100"
+                  class="w-full sm:w-auto px-4 py-2.5 rounded-lg bg-black text-white text-sm font-medium hover:bg-gray-900 transition-colors shadow-sm dark:bg-white dark:text-black dark:hover:bg-gray-100"
               >
                 Take the roommate quiz
               </button>
 
               <button
+                  type="button"
                   @click="goToOnboarding"
-                  class="w-full sm:w-auto px-4 py-2 rounded-lg border text-sm font-medium text-gray-700 hover:bg-gray-100 transition border-gray-300 dark:text-gray-100 dark:border-gray-700 dark:hover:bg-gray-800"
+                  class="w-full sm:w-auto px-4 py-2.5 rounded-lg border text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors border-gray-300 bg-white/70 backdrop-blur dark:text-gray-100 dark:border-gray-700 dark:bg-gray-900/60 dark:hover:bg-gray-800"
               >
                 List my spare room
               </button>
             </div>
 
-            <!-- Hint -->
             <p class="text-xs text-gray-400 dark:text-gray-500">
               ~5 minutes · No long forms · Change your answers anytime
             </p>
@@ -89,7 +91,7 @@
           <!-- RIGHT: VISUAL AREA -->
           <div class="flex justify-center fade-in-up-delayed">
             <div class="w-full max-w-xs space-y-4">
-              <!-- Mobile-first illustration -->
+              <!-- Mobile-friendly “phone” illustration -->
               <div
                   class="md:hidden bg-white/80 dark:bg-gray-900/80 border border-gray-200/80 dark:border-gray-700 rounded-2xl shadow-sm p-4"
               >
@@ -104,11 +106,12 @@
                   </span>
                 </div>
 
-                <!-- Simple phone-ish SVG -->
                 <div class="flex justify-center">
                   <svg
                       viewBox="0 0 120 180"
                       class="h-40 w-auto text-gray-900 dark:text-gray-50"
+                      role="img"
+                      aria-label="Example of your match snapshot"
                   >
                     <!-- phone body -->
                     <rect
@@ -121,7 +124,6 @@
                         class="fill-white stroke-gray-200 dark:fill-gray-900 dark:stroke-gray-700"
                         stroke-width="2"
                     />
-
                     <!-- top notch -->
                     <rect
                         x="44"
@@ -131,7 +133,6 @@
                         rx="2"
                         class="fill-gray-200 dark:fill-gray-700"
                     />
-
                     <!-- header bar -->
                     <rect
                         x="26"
@@ -149,7 +150,6 @@
                         rx="3"
                         class="fill-orange-500/90 dark:fill-orange-400"
                     />
-
                     <!-- match pill -->
                     <rect
                         x="34"
@@ -167,7 +167,6 @@
                         rx="3"
                         class="fill-gray-300 dark:fill-gray-600"
                     />
-
                     <!-- score circle -->
                     <circle
                         cx="46"
@@ -183,7 +182,6 @@
                     >
                       82%
                     </text>
-
                     <!-- bars -->
                     <rect
                         x="70"
@@ -209,7 +207,6 @@
                         rx="2"
                         class="fill-gray-200 dark:fill-gray-700"
                     />
-
                     <!-- chips -->
                     <rect
                         x="30"
@@ -239,16 +236,16 @@
                 </div>
 
                 <p class="mt-3 text-xs text-gray-600 dark:text-gray-300">
-                  Your quiz answers become an easy-to-skim profile and compatibility
-                  score so potential roommates can understand your living style at a glance.
+                  Your quiz answers become an easy-to-skim profile and compatibility score,
+                  so potential roommates can understand your living style at a glance.
                 </p>
               </div>
 
-              <!-- Desktop sample cards (hide on small screens) -->
+              <!-- Desktop sample cards -->
               <div class="hidden md:block space-y-4">
                 <!-- Sample Match Card -->
                 <div
-                    class="bg-white/90 dark:bg-gray-900/90 border border-gray-200/80 dark:border-gray-700 rounded-2xl shadow-sm p-5 space-y-3"
+                    class="bg-white/90 dark:bg-gray-900/90 border border-gray-200/80 dark:border-gray-700 rounded-2xl shadow-sm p-5 space-y-3 hover:shadow-md transition-shadow"
                 >
                   <p class="text-xs text-gray-500 dark:text-gray-400">Sample match</p>
 
@@ -280,7 +277,7 @@
 
                 <!-- How it works -->
                 <div
-                    class="bg-white/90 dark:bg-gray-900/90 border border-gray-200/80 dark:border-gray-700 rounded-2xl shadow-sm p-5 space-y-3"
+                    class="bg-white/90 dark:bg-gray-900/90 border border-gray-200/80 dark:border-gray-700 rounded-2xl shadow-sm p-5 space-y-3 hover:shadow-md transition-shadow"
                 >
                   <p class="font-medium text-sm text-gray-900 dark:text-gray-50">
                     How it works
@@ -298,181 +295,190 @@
               </div>
             </div>
           </div>
-          <!-- END RIGHT -->
-        </div>
-      </div>
-    </div>
-
-    <!-- NEW SECTION: Sample matches & personality types -->
-    <section class="pb-12 md:pb-16 border-t border-gray-100 dark:border-gray-800">
-      <div class="max-w-5xl mx-auto px-6 pt-8 md:pt-10">
-        <div class="flex items-center justify-between mb-4">
-          <h2 class="text-base md:text-lg font-semibold text-gray-900 dark:text-gray-50">
-            See your matches and living style at a glance.
-          </h2>
-          <p class="hidden md:block text-[11px] text-gray-500 dark:text-gray-400">
-            These are examples. Your results are based on your quiz.
-          </p>
-        </div>
-
-        <div class="grid gap-6 md:grid-cols-[1.1fr,0.9fr]">
-          <!-- Sample match cards -->
-          <div class="space-y-3">
-            <p class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">
-              Sample matches
-            </p>
-
-            <div class="space-y-3">
-              <!-- Match 1 -->
-              <div
-                  class="bg-white/90 dark:bg-gray-900/90 border border-gray-200/80 dark:border-gray-800 rounded-2xl p-4 flex flex-col gap-3"
-              >
-                <div class="flex items-center justify-between">
-                  <div>
-                    <p class="text-sm font-medium text-gray-900 dark:text-gray-50">
-                      You & Nana
-                    </p>
-                    <p class="text-[11px] text-gray-500 dark:text-gray-400">
-                      Osu · 2 bed · ₵3,000 each
-                    </p>
-                  </div>
-                  <div class="text-right">
-                    <p class="text-[11px] text-gray-500 dark:text-gray-400">
-                      Match score
-                    </p>
-                    <p class="text-lg font-semibold text-orange-600 dark:text-orange-400">
-                      89%
-                    </p>
-                  </div>
-                </div>
-
-                <div class="flex flex-wrap gap-1.5 text-[11px]">
-                  <span
-                      class="px-2 py-0.5 rounded-full bg-green-50 text-green-700 border border-green-100 dark:bg-green-500/10 dark:text-green-300 dark:border-green-500/30"
-                  >
-                    Both early risers
-                  </span>
-                  <span
-                      class="px-2 py-0.5 rounded-full bg-gray-100 text-gray-700 border border-gray-200 dark:bg-gray-800 dark:text-gray-100 dark:border-gray-700"
-                  >
-                    Quiet on weeknights
-                  </span>
-                  <span
-                      class="px-2 py-0.5 rounded-full bg-gray-100 text-gray-700 border border-gray-200 dark:bg-gray-800 dark:text-gray-100 dark:border-gray-700"
-                  >
-                    Shared cleaning schedule
-                  </span>
-                </div>
-
-                <p class="text-[11px] text-gray-600 dark:text-gray-300">
-                  You both prefer a calm home, like things tidy, and host friends once or
-                  twice a month — not every weekend.
-                </p>
-              </div>
-
-              <!-- Match 2 -->
-              <div
-                  class="bg-white/90 dark:bg-gray-900/90 border border-gray-200/80 dark:border-gray-800 rounded-2xl p-4 flex flex-col gap-3"
-              >
-                <div class="flex items-center justify-between">
-                  <div>
-                    <p class="text-sm font-medium text-gray-900 dark:text-gray-50">
-                      You & Ama
-                    </p>
-                    <p class="text-[11px] text-gray-500 dark:text-gray-400">
-                      Haatso · 3 bed · ₵2,200 each
-                    </p>
-                  </div>
-                  <div class="text-right">
-                    <p class="text-[11px] text-gray-500 dark:text-gray-400">
-                      Match score
-                    </p>
-                    <p class="text-lg font-semibold text-orange-600 dark:text-orange-400">
-                      76%
-                    </p>
-                  </div>
-                </div>
-
-                <ul class="text-[11px] text-gray-600 dark:text-gray-300 space-y-1">
-                  <li>✅ Both okay with guests on weekends</li>
-                  <li>✅ Similar “medium” cleanliness expectations</li>
-                  <li>⚠️ You sleep earlier — they’re more of a night owl</li>
-                </ul>
-              </div>
-            </div>
-
-            <p class="text-[11px] text-gray-500 dark:text-gray-400">
-              Your real matches will show why you’re compatible and highlight any areas
-              to chat about before moving in.
-            </p>
-          </div>
-
-          <!-- Personality / preference type cards -->
-          <div class="space-y-3">
-            <p class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">
-              Personality & living style types
-            </p>
-
-            <div class="grid gap-3 sm:grid-cols-2 md:grid-cols-1">
-              <!-- Type 1 -->
-              <div
-                  class="bg-white/90 dark:bg-gray-900/90 border border-gray-200/80 dark:border-gray-800 rounded-2xl p-4 space-y-1.5"
-              >
-                <p class="text-[11px] font-semibold text-orange-600 dark:text-orange-300 uppercase">
-                  Type example
-                </p>
-                <p class="text-sm font-medium text-gray-900 dark:text-gray-50">
-                  The Quiet Weeknight Person
-                </p>
-                <p class="text-[11px] text-gray-600 dark:text-gray-300">
-                  Loves a peaceful space after work, prefers headphones for calls,
-                  and mostly hosts friends out, not at home.
-                </p>
-              </div>
-
-              <!-- Type 2 -->
-              <div
-                  class="bg-white/90 dark:bg-gray-900/90 border border-gray-200/80 dark:border-gray-800 rounded-2xl p-4 space-y-1.5"
-              >
-                <p class="text-[11px] font-semibold text-orange-600 dark:text-orange-300 uppercase">
-                  Type example
-                </p>
-                <p class="text-sm font-medium text-gray-900 dark:text-gray-50">
-                  The Social Host
-                </p>
-                <p class="text-[11px] text-gray-600 dark:text-gray-300">
-                  Enjoys having people over on weekends, likes shared dinners and game
-                  nights, and is upfront about their hosting habits.
-                </p>
-              </div>
-
-              <!-- Type 3 -->
-              <div
-                  class="bg-white/90 dark:bg-gray-900/90 border border-gray-200/80 dark:border-gray-800 rounded-2xl p-4 space-y-1.5"
-              >
-                <p class="text-[11px] font-semibold text-orange-600 dark:text-orange-300 uppercase">
-                  Type example
-                </p>
-                <p class="text-sm font-medium text-gray-900 dark:text-gray-50">
-                  The Organized Sharer
-                </p>
-                <p class="text-[11px] text-gray-600 dark:text-gray-300">
-                  Loves labelled shelves, shared cleaning rotas, and clear rules around
-                  bills and who buys what.
-                </p>
-              </div>
-            </div>
-
-            <p class="text-[11px] text-gray-500 dark:text-gray-400">
-              During onboarding, we’ll place you into a mix of types based on your quiz
-              answers — then use that to find roommates whose style won’t stress you out.
-            </p>
-          </div>
         </div>
       </div>
     </section>
 
-    <!-- SECTION: Built for how you actually live -->
+    <!-- SECTION: Sample matches with themed background -->
+    <section
+        class="py-12 md:py-16 bg-orange-50/80 dark:bg-orange-950/30 border-y border-orange-100 dark:border-orange-900"
+    >
+      <div class="max-w-5xl mx-auto px-6 space-y-6">
+        <!-- Header -->
+        <div class="space-y-1 fade-in-up">
+          <p
+              class="inline-flex items-center gap-1 text-[11px] font-medium tracking-wide text-orange-700 uppercase dark:text-orange-300"
+          >
+            <span class="h-1.5 w-1.5 rounded-full bg-orange-500"></span>
+            Preview
+          </p>
+          <h2 class="text-xl md:text-2xl font-semibold text-gray-900 dark:text-gray-50">
+            See your matches and living style at a glance.
+          </h2>
+          <p class="text-xs text-gray-600 dark:text-gray-400">
+            These examples show how your matches and homes will appear once you complete the quiz.
+          </p>
+        </div>
+
+        <!-- Cards -->
+        <div
+            class="mt-4 -mx-2 flex gap-4 overflow-x-auto pb-4 md:mx-0 md:grid md:grid-cols-3 md:gap-4 md:overflow-visible cards-reveal"
+        >
+          <!-- CARD 1 -->
+          <article
+              class="min-w-[260px] max-w-xs md:max-w-none bg-white dark:bg-gray-900 border border-orange-100 dark:border-orange-900 rounded-2xl p-5 shadow-[0_6px_20px_-6px_rgba(0,0,0,0.25)] flex flex-col gap-3
+                   transition-transform transition-shadow duration-200 ease-out hover:-translate-y-1 hover:shadow-[0_18px_40px_-10px_rgba(0,0,0,0.35)]"
+          >
+            <div class="flex items-start justify-between">
+              <div>
+                <h3 class="text-sm font-semibold text-gray-900 dark:text-gray-50">
+                  You & Nana
+                </h3>
+                <p class="text-[11px] text-gray-500 dark:text-gray-400">
+                  Osu · 2 bed · ₵3,000 each
+                </p>
+              </div>
+              <div class="text-right">
+                <p class="text-[10px] text-gray-400">Match</p>
+                <p class="text-xl font-bold text-orange-600 dark:text-orange-400">
+                  89%
+                </p>
+              </div>
+            </div>
+
+            <div class="flex flex-wrap gap-1.5 text-[11px] leading-tight">
+              <span
+                  class="px-2 py-0.5 rounded-full bg-green-50 text-green-700 border border-green-100 dark:bg-green-500/10 dark:text-green-300"
+              >
+                Early risers
+              </span>
+              <span
+                  class="px-2 py-0.5 rounded-full bg-gray-100 text-gray-700 border border-gray-200 dark:bg-gray-800 dark:border-gray-700"
+              >
+                Quiet weeknights
+              </span>
+              <span
+                  class="px-2 py-0.5 rounded-full bg-gray-100 text-gray-700 border border-gray-200 dark:bg-gray-800 dark:border-gray-700"
+              >
+                Shared cleaning
+              </span>
+            </div>
+
+            <p class="text-[11px] text-gray-600 dark:text-gray-300">
+              Ideal for someone who prefers calm evenings, clear routines, and light hosting.
+            </p>
+          </article>
+
+          <!-- CARD 2 -->
+          <article
+              class="min-w-[260px] max-w-xs md:max-w-none bg-white dark:bg-gray-900 border border-orange-100 dark:border-orange-900 rounded-2xl p-5 shadow-[0_6px_20px_-6px_rgba(0,0,0,0.25)] flex flex-col gap-3
+                   transition-transform transition-shadow duration-200 ease-out hover:-translate-y-1 hover:shadow-[0_18px_40px_-10px_rgba(0,0,0,0.35)]"
+          >
+            <div class="flex items-start justify-between">
+              <div>
+                <h3 class="text-sm font-semibold text-gray-900 dark:text-gray-50">
+                  Ensuite room in shared home
+                </h3>
+                <p class="text-[11px] text-gray-500 dark:text-gray-400">
+                  East Legon · 3 bed · ₵2,400/mo
+                </p>
+              </div>
+              <div class="text-right">
+                <p class="text-[10px] text-gray-400">Fit score</p>
+                <p class="text-xl font-bold text-emerald-600 dark:text-emerald-400">
+                  84%
+                </p>
+              </div>
+            </div>
+
+            <div class="flex flex-wrap gap-1.5 text-[11px]">
+              <span
+                  class="px-2 py-0.5 rounded-full bg-green-50 text-green-700 border border-green-100 dark:bg-green-500/10 dark:text-green-300"
+              >
+                Pet-friendly 🐾
+              </span>
+              <span
+                  class="px-2 py-0.5 rounded-full bg-gray-100 text-gray-700 border border-gray-200 dark:bg-gray-800"
+              >
+                No smoking 🚭
+              </span>
+              <span
+                  class="px-2 py-0.5 rounded-full bg-gray-100 text-gray-700 border border-gray-200 dark:bg-gray-800"
+              >
+                Cleaning rota
+              </span>
+            </div>
+
+            <p class="text-[11px] text-gray-600 dark:text-gray-300">
+              A bright ensuite with a host whose habits and dealbreakers line up with yours.
+            </p>
+          </article>
+
+          <!-- CARD 3 -->
+          <article
+              class="min-w-[260px] max-w-xs md:max-w-none bg-white dark:bg-gray-900 border border-orange-100 dark:border-orange-900 rounded-2xl p-5 shadow-[0_6px_20px_-6px_rgba(0,0,0,0.25)] flex flex-col gap-3
+                   transition-transform transition-shadow duration-200 ease-out hover:-translate-y-1 hover:shadow-[0_18px_40px_-10px_rgba(0,0,0,0.35)]"
+          >
+            <div class="flex items-start justify-between">
+              <div>
+                <h3 class="text-sm font-semibold text-gray-900 dark:text-gray-50">
+                  You & Kojo
+                </h3>
+                <p class="text-[11px] text-gray-500 dark:text-gray-400">
+                  Haatso · 3 bed · ₵2,100 each
+                </p>
+              </div>
+              <div class="text-right">
+                <p class="text-[10px] text-gray-400">Match</p>
+                <p class="text-xl font-bold text-orange-600 dark:text-orange-400">
+                  78%
+                </p>
+              </div>
+            </div>
+
+            <div class="flex flex-wrap gap-1.5 text-[11px]">
+              <span
+                  class="px-2 py-0.5 rounded-full bg-gray-100 text-gray-700 border border-gray-200 dark:bg-gray-800"
+              >
+                Weekend guests
+              </span>
+              <span
+                  class="px-2 py-0.5 rounded-full bg-gray-100 text-gray-700 border border-gray-200 dark:bg-gray-800"
+              >
+                Medium noise
+              </span>
+              <span
+                  class="px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 border border-amber-100 dark:bg-amber-500/10 dark:text-amber-300"
+              >
+                1 small flag
+              </span>
+            </div>
+
+            <p class="text-[11px] text-gray-600 dark:text-gray-300">
+              Great alignment on social energy & budget — just chat about sleep schedules.
+            </p>
+          </article>
+        </div>
+
+        <!-- CTA Row -->
+        <div
+            class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2 fade-in-up-delayed"
+        >
+          <p class="text-[11px] text-gray-600 dark:text-gray-400">
+            When you’re signed in, this section turns into real people and real homes based on your quiz.
+          </p>
+          <NuxtLink
+              to="/matches"
+              class="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-gray-900 text-white text-xs font-medium hover:bg-black transition dark:bg-white dark:text-black dark:hover:bg-gray-100 shadow-sm"
+          >
+            View my matches
+            <span>→</span>
+          </NuxtLink>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION: Built for how you live -->
     <section class="py-12 md:py-16">
       <div class="max-w-5xl mx-auto px-6 space-y-6">
         <h2 class="text-xl md:text-2xl font-semibold text-gray-900 dark:text-gray-50">
@@ -484,106 +490,241 @@
         </p>
 
         <div class="grid gap-4 md:grid-cols-3">
-          <div
+          <article
               class="bg-white/80 dark:bg-gray-900/80 border border-gray-200/70 dark:border-gray-800 rounded-2xl p-4 flex flex-col gap-2"
           >
             <p class="text-xs font-semibold text-orange-600 dark:text-orange-300 uppercase">
               Quiz-powered matching
             </p>
-            <p class="text-sm font-medium text-gray-900 dark:text-gray-50">
+            <h3 class="text-sm font-medium text-gray-900 dark:text-gray-50">
               Compatibility score that actually means something
-            </p>
+            </h3>
             <p class="text-xs text-gray-600 dark:text-gray-300">
               We ask about routines, social energy, guests, noise, cleanliness and more,
               then turn it into a simple score and “why this works” breakdown.
             </p>
-          </div>
+          </article>
 
-          <div
+          <article
               class="bg-white/80 dark:bg-gray-900/80 border border-gray-200/70 dark:border-gray-800 rounded-2xl p-4 flex flex-col gap-2"
           >
             <p class="text-xs font-semibold text-orange-600 dark:text-orange-300 uppercase">
               Hosts & seekers
             </p>
-            <p class="text-sm font-medium text-gray-900 dark:text-gray-50">
+            <h3 class="text-sm font-medium text-gray-900 dark:text-gray-50">
               One flow for rooms & roommates
-            </p>
+            </h3>
             <p class="text-xs text-gray-600 dark:text-gray-300">
               Whether you have a spare room or need one, we match you on both the person
               and the place — not just a long list of random ads.
             </p>
-          </div>
+          </article>
 
-          <div
+          <article
               class="bg-white/80 dark:bg-gray-900/80 border border-gray-200/70 dark:border-gray-800 rounded-2xl p-4 flex flex-col gap-2"
           >
             <p class="text-xs font-semibold text-orange-600 dark:text-orange-300 uppercase">
               Dealbreakers upfront
             </p>
-            <p class="text-sm font-medium text-gray-900 dark:text-gray-50">
+            <h3 class="text-sm font-medium text-gray-900 dark:text-gray-50">
               No more awkward “I wish I’d known”
-            </p>
+            </h3>
             <p class="text-xs text-gray-600 dark:text-gray-300">
               Set clear non-negotiables around smoking, pets, visitors and bills so you
               only see matches that respect your boundaries.
             </p>
-          </div>
+          </article>
         </div>
       </div>
     </section>
 
-    <!-- SECTION: Why Amigo Lease vs random listings -->
-    <section class="pb-16">
-      <div class="max-w-5xl mx-auto px-6 space-y-6">
-        <h2 class="text-xl md:text-2xl font-semibold text-gray-900 dark:text-gray-50">
-          Why not just use random listings or WhatsApp groups?
-        </h2>
+    <!-- SECTION: Quiz Summary & Personality Types -->
+    <section
+        class="relative pb-16 pt-16 bg-rose-50/80 dark:bg-rose-950/30 border-y border-rose-100 dark:border-rose-900 overflow-hidden"
+    >
+      <!-- Soft animated background blobs -->
+      <div
+          class="pointer-events-none absolute -top-24 -left-32 h-64 w-64 rounded-full bg-orange-200/60 blur-3xl opacity-70 dark:bg-orange-500/30 animate-blob"
+      ></div>
+      <div
+          class="pointer-events-none absolute -bottom-32 -right-24 h-72 w-72 rounded-full bg-rose-200/70 blur-3xl opacity-60 dark:bg-rose-500/25 animate-blob-slow"
+      ></div>
 
-        <div
-            class="grid gap-4 md:grid-cols-2 text-xs bg-white/80 dark:bg-gray-900/80 border border-gray-200/70 dark:border-gray-800 rounded-2xl overflow-hidden"
-        >
-          <div class="p-4 border-b md:border-b-0 md:border-r border-gray-200 dark:border-gray-800">
-            <p class="text-[11px] font-semibold text-gray-500 dark:text-gray-400 uppercase mb-2">
-              Typical listings & groups
-            </p>
-            <ul class="space-y-1 text-gray-600 dark:text-gray-300">
-              <li>• Long chats just to learn basic habits</li>
-              <li>• No signal if you’ll clash on lifestyle</li>
-              <li>• Scattered info across random screenshots</li>
-              <li>• Easy to waste time viewing the wrong places</li>
-            </ul>
-          </div>
-
-          <div class="p-4 bg-orange-50/50 dark:bg-orange-500/5">
-            <p class="text-[11px] font-semibold text-orange-700 dark:text-orange-300 uppercase mb-2">
-              Amigo Lease
-            </p>
-            <ul class="space-y-1 text-gray-800 dark:text-gray-100">
-              <li>• Clear compatibility score before you chat</li>
-              <li>• Lifestyle, budget & boundaries aligned upfront</li>
-              <li>• One profile for both you and your space</li>
-              <li>• Focus your energy on a few strong matches</li>
-            </ul>
-          </div>
+      <div class="relative max-w-5xl mx-auto px-6 space-y-10">
+        <!-- Header -->
+        <div class="space-y-2 fade-in-up">
+          <p
+              class="inline-flex items-center gap-1 text-[11px] font-medium tracking-wide uppercase text-rose-700 dark:text-rose-300"
+          >
+            <span class="h-1.5 w-1.5 rounded-full bg-rose-500"></span>
+            Quiz Summary Sample
+          </p>
+          <h2 class="text-xl md:text-2xl font-semibold text-gray-900 dark:text-gray-50">
+            What your vibe summary looks like after the quiz.
+          </h2>
+          <p class="text-sm text-gray-600 dark:text-gray-400 max-w-lg">
+            This is an example of what someone sees when they match with you — a clear snapshot of your lifestyle,
+            boundaries, and household preferences.
+          </p>
         </div>
 
-        <div class="flex flex-col sm:flex-row gap-3 pt-2">
+        <!-- 3-Column Layout -->
+        <div class="grid gap-6 md:grid-cols-3">
+          <!-- QUIZ SUMMARY CARD -->
+          <article
+              class="bg-white/95 dark:bg-gray-900/95 border border-rose-100/80 dark:border-rose-900 rounded-2xl p-5 shadow-sm flex flex-col gap-4 card-lift fade-in-up"
+              style="animation-delay: 0.05s"
+          >
+            <p class="text-xs font-semibold text-rose-600 dark:text-rose-300 uppercase">
+              Your Summary
+            </p>
+
+            <div class="flex items-center justify-between">
+              <h3 class="text-sm font-medium text-gray-900 dark:text-gray-50">
+                Lifestyle Compatibility Snapshot
+              </h3>
+              <span
+                  class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] bg-rose-50 text-rose-700 border border-rose-100 dark:bg-rose-500/10 dark:text-rose-200 dark:border-rose-500/40"
+              >
+                <span class="h-1.5 w-1.5 rounded-full bg-emerald-400"></span>
+                82% match
+              </span>
+            </div>
+
+            <p class="text-[11px] text-gray-600 dark:text-gray-300">
+              Based on sample answers, this is the kind of quick overview your matches will see — a clean, friendly
+              breakdown of your living style.
+            </p>
+
+            <div class="flex flex-wrap gap-1.5 text-[11px]">
+              <span
+                  class="px-2 py-0.5 rounded-full bg-green-50 text-green-700 border border-green-100 dark:bg-green-500/10 dark:text-green-300 dark:border-green-500/30"
+              >
+                Tidy & considerate
+              </span>
+              <span
+                  class="px-2 py-0.5 rounded-full bg-gray-100 text-gray-700 border border-gray-200 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100"
+              >
+                Quiet weeknights
+              </span>
+              <span
+                  class="px-2 py-0.5 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-100 dark:bg-indigo-500/10 dark:text-indigo-300"
+              >
+                Low-drama household
+              </span>
+            </div>
+          </article>
+
+          <!-- PERSONALITY TYPE CARD -->
+          <article
+              class="bg-white/95 dark:bg-gray-900/95 border border-rose-100/80 dark:border-rose-900 rounded-2xl p-5 shadow-sm flex flex-col gap-3 card-lift fade-in-up"
+              style="animation-delay: 0.15s"
+          >
+            <p class="text-xs font-semibold text-rose-600 dark:text-rose-300 uppercase">
+              Personality Type
+            </p>
+
+            <h3 class="text-sm font-medium text-gray-900 dark:text-gray-50">
+              “The Calm Weeknight Roommate”
+            </h3>
+
+            <p class="text-[11px] text-gray-600 dark:text-gray-300">
+              You prefer peaceful evenings, shared respect for quiet hours, and maintaining a clean, comfy living space
+              without stress.
+            </p>
+
+            <ul class="space-y-1 text-[11px] text-gray-600 dark:text-gray-300">
+              <li>• Loves structure & predictable routines</li>
+              <li>• Hosts rarely, but warmly</li>
+              <li>• Works well with tidy, mindful roommates</li>
+            </ul>
+          </article>
+
+          <!-- CATEGORY BREAKDOWN CARD -->
+          <article
+              class="bg-white/95 dark:bg-gray-900/95 border border-rose-100/80 dark:border-rose-900 rounded-2xl p-5 shadow-sm flex flex-col gap-4 card-lift fade-in-up"
+              style="animation-delay: 0.25s"
+          >
+            <p class="text-xs font-semibold text-rose-600 dark:text-rose-300 uppercase">
+              Category Breakdown
+            </p>
+
+            <div class="space-y-3 text-[11px]">
+              <!-- Cleanliness -->
+              <div class="space-y-1">
+                <div class="flex justify-between">
+                  <span class="text-gray-600 dark:text-gray-300">Cleanliness</span>
+                  <span class="font-semibold text-rose-600 dark:text-rose-300">High</span>
+                </div>
+                <div class="w-full h-1.5 rounded-full bg-gray-200/80 dark:bg-gray-800 overflow-hidden">
+                  <div
+                      class="h-full w-4/5 rounded-full bg-gradient-to-r from-rose-500 to-orange-400 bar-fill"
+                  ></div>
+                </div>
+              </div>
+
+              <!-- Noise -->
+              <div class="space-y-1">
+                <div class="flex justify-between">
+                  <span class="text-gray-600 dark:text-gray-300">Noise Tolerance</span>
+                  <span class="font-semibold text-rose-600 dark:text-rose-300">Low</span>
+                </div>
+                <div class="w-full h-1.5 rounded-full bg-gray-200/80 dark:bg-gray-800 overflow-hidden">
+                  <div
+                      class="h-full w-2/5 rounded-full bg-gradient-to-r from-rose-500 to-orange-400 bar-fill"
+                  ></div>
+                </div>
+              </div>
+
+              <!-- Social -->
+              <div class="space-y-1">
+                <div class="flex justify-between">
+                  <span class="text-gray-600 dark:text-gray-300">Social Energy</span>
+                  <span class="font-semibold text-rose-600 dark:text-rose-300">Medium</span>
+                </div>
+                <div class="w-full h-1.5 rounded-full bg-gray-200/80 dark:bg-gray-800 overflow-hidden">
+                  <div
+                      class="h-full w-1/2 rounded-full bg-gradient-to-r from-rose-500 to-orange-400 bar-fill"
+                  ></div>
+                </div>
+              </div>
+
+              <!-- Sleep -->
+              <div class="space-y-1">
+                <div class="flex justify-between">
+                  <span class="text-gray-600 dark:text-gray-300">Sleep Schedule</span>
+                  <span class="font-semibold text-rose-600 dark:text-rose-300">Early</span>
+                </div>
+                <div class="w-full h-1.5 rounded-full bg-gray-200/80 dark:bg-gray-800 overflow-hidden">
+                  <div
+                      class="h-full w-3/4 rounded-full bg-gradient-to-r from-rose-500 to-orange-400 bar-fill"
+                  ></div>
+                </div>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <!-- CTA BUTTONS -->
+        <div class="flex flex-col sm:flex-row gap-3 pt-2 fade-in-up-delayed">
           <button
+              type="button"
               @click="goToOnboarding"
-              class="w-full sm:w-auto px-4 py-2 rounded-lg bg-black text-white text-sm font-medium hover:bg-gray-900 transition dark:bg-white dark:text-black dark:hover:bg-gray-100"
+              class="w-full sm:w-auto px-4 py-2 rounded-lg bg-black text-white text-sm font-medium hover:bg-gray-900 transition-colors dark:bg-white dark:text-black dark:hover:bg-gray-100"
           >
             Start my compatibility quiz
           </button>
           <button
+              type="button"
               @click="goToOnboarding"
-              class="w-full sm:w-auto px-4 py-2 rounded-lg border text-sm font-medium text-gray-700 hover:bg-gray-100 transition border-gray-300 dark:text-gray-100 dark:border-gray-700 dark:hover:bg-gray-800"
+              class="w-full sm:w-auto px-4 py-2 rounded-lg border text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors border-gray-300 dark:text-gray-100 dark:border-gray-700 dark:hover:bg-gray-800"
           >
             I’m ready to list my room
           </button>
         </div>
       </div>
     </section>
-  </div>
+  </main>
 </template>
 
 <script setup lang="ts">
@@ -597,6 +738,7 @@ const goToOnboarding = () => {
 </script>
 
 <style scoped>
+/* Base fade-in animation */
 @keyframes fade-in-up {
   from {
     opacity: 0;
@@ -608,15 +750,99 @@ const goToOnboarding = () => {
   }
 }
 
-.fade-in-up {
+/* Elements that fade in */
+.fade-in-up,
+.fade-in-up-delayed {
   opacity: 0;
   animation: fade-in-up 0.7s ease-out forwards;
+}
+
+/* Staggered timings */
+.fade-in-up {
   animation-delay: 0.05s;
 }
 
 .fade-in-up-delayed {
+  animation-delay: 0.2s;
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .fade-in-up,
+  .fade-in-up-delayed,
+  .cards-reveal > article {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .bar-fill {
+    animation: none !important;
+    transform: scaleX(1) !important;
+  }
+}
+
+/* Horizontal cards reveal */
+.cards-reveal > article {
   opacity: 0;
-  animation: fade-in-up 0.7s ease-out forwards;
-  animation-delay: 0.15s;
+  transform: translateY(10px);
+  animation: fade-in-up 0.6s ease-out forwards;
+}
+
+.cards-reveal > article:nth-child(2) {
+  animation-delay: 0.08s;
+}
+
+.cards-reveal > article:nth-child(3) {
+  animation-delay: 0.16s;
+}
+
+/* Blob animations */
+@keyframes blob {
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-6px) scale(1.05);
+  }
+}
+
+.animate-blob {
+  animation: blob 14s ease-in-out infinite;
+}
+
+.animate-blob-slow {
+  animation: blob 20s ease-in-out infinite;
+}
+
+/* Card hover */
+.card-lift {
+  transition:
+      transform 0.18s ease-out,
+      box-shadow 0.18s ease-out,
+      background-color 0.18s ease-out,
+      border-color 0.18s ease-out;
+}
+
+.card-lift:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 18px 35px rgba(15, 23, 42, 0.12);
+}
+
+/* Animated bar fill */
+@keyframes bar-fill-in {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.bar-fill {
+  transform-origin: left center;
+  transform: scaleX(0);
+  animation: bar-fill-in 0.6s ease-out forwards;
 }
 </style>

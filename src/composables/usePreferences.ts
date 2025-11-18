@@ -1,7 +1,7 @@
 // src/composables/usePreferences.ts
-import {ref, reactive} from 'vue'
-import {useNuxtApp} from '#app'
-import type {HomeVibe, RoommatePreferences} from '~/types/amigo'
+import { ref, reactive } from 'vue'
+import { useNuxtApp } from '#app'
+import type { HomeVibe, RoommatePreferences } from '~/types/amigo'
 
 export interface PreferencesFormState {
     preferred_age_min: number | null
@@ -27,7 +27,7 @@ export interface PreferencesFormState {
 }
 
 export const usePreferences = () => {
-    const {$supabase} = useNuxtApp()
+    const { $supabase } = useNuxtApp()
 
     const preferences = ref<RoommatePreferences | null>(null)
     const loading = ref(false)
@@ -63,7 +63,7 @@ export const usePreferences = () => {
         error.value = null
 
         const {
-            data: {user},
+            data: { user },
             error: authError
         } = await $supabase.auth.getUser()
 
@@ -73,7 +73,7 @@ export const usePreferences = () => {
             return
         }
 
-        const {data, error: prefError} = await $supabase
+        const { data, error: prefError } = await $supabase
             .schema('amigo')
             .from('roommate_preferences')
             .select('*')
@@ -109,6 +109,8 @@ export const usePreferences = () => {
             form.min_cleanliness_level = pref.min_cleanliness_level
             form.max_noise_tolerance = pref.max_noise_tolerance
 
+            // we read it into the form so UI still works,
+            // but we won't write it back until enum is final
             form.preferred_home_vibe = pref.preferred_home_vibe
 
             form.prefers_works_from_home = pref.prefers_works_from_home
@@ -118,12 +120,28 @@ export const usePreferences = () => {
         loading.value = false
     }
 
+    // helpers to keep types tidy
+    const numOrNull = (val: unknown): number | null => {
+        if (typeof val === 'number' && Number.isFinite(val)) return val
+        return null
+    }
+
+    const boolOrNull = (val: unknown): boolean | null => {
+        if (typeof val === 'boolean') return val
+        return null
+    }
+
+    const boolOrDefault = (val: unknown, fallback: boolean): boolean => {
+        if (typeof val === 'boolean') return val
+        return fallback
+    }
+
     const savePreferences = async () => {
         loading.value = true
         error.value = null
 
         const {
-            data: {user},
+            data: { user },
             error: authError
         } = await $supabase.auth.getUser()
 
@@ -135,32 +153,35 @@ export const usePreferences = () => {
 
         const payload: Partial<RoommatePreferences> = {
             profile_id: user.id,
-            preferred_age_min: form.preferred_age_min,
-            preferred_age_max: form.preferred_age_max,
 
-            allow_male: form.allow_male,
-            allow_female: form.allow_female,
-            allow_other: form.allow_other,
+            preferred_age_min: numOrNull(form.preferred_age_min),
+            preferred_age_max: numOrNull(form.preferred_age_max),
 
-            must_allow_pets: form.must_allow_pets,
-            must_be_pet_friendly: form.must_be_pet_friendly,
+            allow_male: boolOrDefault(form.allow_male, true),
+            allow_female: boolOrDefault(form.allow_female, true),
+            allow_other: boolOrDefault(form.allow_other, true),
 
-            allow_smokers: form.allow_smokers,
-            require_non_smoker: form.require_non_smoker,
+            must_allow_pets: boolOrNull(form.must_allow_pets),
+            must_be_pet_friendly: boolOrNull(form.must_be_pet_friendly),
 
-            min_cleanliness_level: form.min_cleanliness_level,
-            max_noise_tolerance: form.max_noise_tolerance,
+            allow_smokers: boolOrDefault(form.allow_smokers, true),
+            require_non_smoker: boolOrDefault(form.require_non_smoker, false),
 
-            preferred_home_vibe: form.preferred_home_vibe ?? null,
+            min_cleanliness_level: numOrNull(form.min_cleanliness_level),
+            max_noise_tolerance: numOrNull(form.max_noise_tolerance),
 
-            prefers_works_from_home: form.prefers_works_from_home,
-            avoids_works_from_home: form.avoids_works_from_home
+            // 🔒 IMPORTANT:
+            // do NOT send `preferred_home_vibe` enum value until it's aligned with DB.
+            // preferred_home_vibe: null,
+
+            prefers_works_from_home: boolOrNull(form.prefers_works_from_home),
+            avoids_works_from_home: boolOrNull(form.avoids_works_from_home)
         }
 
-        const {data, error: upsertError} = await $supabase
+        const { data, error: upsertError } = await $supabase
             .schema('amigo')
             .from('roommate_preferences')
-            .upsert(payload as any, {onConflict: 'profile_id'})
+            .upsert(payload as any, { onConflict: 'profile_id' })
             .select('*')
             .maybeSingle()
 

@@ -1,7 +1,7 @@
 // src/composables/useQuiz.ts
-import {ref} from 'vue'
-import {useNuxtApp} from '#app'
-import type {HomeVibe, RoommateTraits, SleepSchedule, QuizQuestion} from '~/types/amigo'
+import { ref } from 'vue'
+import { useNuxtApp } from '#app'
+import type { HomeVibe, RoommateTraits, SleepSchedule, QuizQuestion } from '~/types/amigo'
 
 export interface QuizAnswers {
     cleanliness?: number
@@ -11,14 +11,14 @@ export interface QuizAnswers {
     pets?: boolean
     smoking?: boolean
     sleep?: SleepSchedule
-    vibe?: HomeVibe
+    vibe?: HomeVibe | string
     wfh?: number
 
     [key: string]: unknown
 }
 
 export const useQuiz = () => {
-    const {$supabase} = useNuxtApp()
+    const { $supabase } = useNuxtApp()
 
     const questions = ref<QuizQuestion[]>([])
     const answers = ref<QuizAnswers>({})
@@ -29,12 +29,9 @@ export const useQuiz = () => {
         loading.value = true
         error.value = null
 
-        const {data, error: rpcError} = await $supabase
+        const { data, error: rpcError } = await $supabase
             .schema('amigo')
-            .rpc(
-                'get_quiz_questions',
-                {num_questions: numQuestions}
-            )
+            .rpc('get_quiz_questions', { num_questions: numQuestions })
 
         if (rpcError) {
             error.value = rpcError.message
@@ -42,7 +39,7 @@ export const useQuiz = () => {
             return
         }
 
-        // Normalise options json -> string[]
+        // normalise options json -> string[]
         questions.value = (data || []).map((q: any) => ({
             id: q.id,
             answer_key: q.answer_key,
@@ -57,6 +54,7 @@ export const useQuiz = () => {
             weight: q.weight ?? 1,
             category: q.category ?? null
         }))
+
         loading.value = false
     }
 
@@ -65,7 +63,7 @@ export const useQuiz = () => {
         error.value = null
 
         const {
-            data: {user},
+            data: { user },
             error: authError
         } = await $supabase.auth.getUser()
 
@@ -75,7 +73,7 @@ export const useQuiz = () => {
             return
         }
 
-        const {data, error: traitsError} = await $supabase
+        const { data, error: traitsError } = await $supabase
             .schema('amigo')
             .from('roommate_traits')
             .select('*')
@@ -83,6 +81,7 @@ export const useQuiz = () => {
             .maybeSingle()
 
         if (traitsError) {
+            // it's okay if there's no row yet
             if ((traitsError as any).code !== 'PGRST116') {
                 error.value = traitsError.message
             }
@@ -96,7 +95,8 @@ export const useQuiz = () => {
                 pets: traits.pet_friendly ?? undefined,
                 smoking: traits.smoking_ok ?? undefined,
                 sleep: traits.sleep_schedule ?? undefined,
-                vibe: traits.home_vibe ?? undefined,
+                // ⚠️ don't trust DB home_vibe until enum is final – keep it in raw_answers
+                // vibe: traits.home_vibe ?? undefined,
                 wfh: traits.works_from_home ?? undefined,
                 ...(traits.raw_answers ?? {})
             }
@@ -109,20 +109,55 @@ export const useQuiz = () => {
         answers.value[answerKey] = value
     }
 
+    // ---- helpers to keep types safe for Postgres ----
+    const numOrDefault = (val: unknown, fallback: number): number => {
+        if (typeof val === 'number' && Number.isFinite(val)) return val
+        return fallback
+    }
+
+    const boolOrDefault = (val: unknown, fallback: boolean): boolean => {
+        if (typeof val === 'boolean') return val
+        return fallback
+    }
+
+    const strOrDefault = <T extends string>(val: unknown, fallback: T): T => {
+        if (typeof val === 'string' && val.length > 0) {
+            return val as T
+        }
+        return fallback
+    }
+
     const buildTraitsPayload = (profileId: string): Partial<RoommateTraits> => {
-        return {
+        const payload: Partial<RoommateTraits> = {
             profile_id: profileId,
-            cleanliness_level: (answers.value.cleanliness as number) ?? 5,
-            noise_tolerance: (answers.value.noise as number) ?? 5,
-            social_level: (answers.value.social as number) ?? 5,
-            guest_comfort: (answers.value.guests as number) ?? 5,
-            pet_friendly: (answers.value.pets as boolean) ?? false,
-            smoking_ok: (answers.value.smoking as boolean) ?? false,
-            sleep_schedule: (answers.value.sleep as SleepSchedule) ?? 'regular',
-            home_vibe: (answers.value.vibe as HomeVibe) ?? 'flexible',
-            works_from_home: (answers.value.wfh as number) ?? 5,
+
+            // numeric columns
+            cleanliness_level: numOrDefault(answers.value.cleanliness, 5),
+            noise_tolerance: numOrDefault(answers.value.noise, 5),
+            social_level: numOrDefault(answers.value.social, 5),
+            guest_comfort: numOrDefault(answers.value.guests, 5),
+            works_from_home: numOrDefault(answers.value.wfh, 5),
+
+            // boolean columns
+            pet_friendly: boolOrDefault(answers.value.pets, false),
+            smoking_ok: boolOrDefault(answers.value.smoking, false),
+
+            // enum / text columns
+            sleep_schedule: strOrDefault<SleepSchedule>(
+                answers.value.sleep,
+                'regular'
+            ),
+
+            // JSONB – we keep *all* quiz answers here, including vibe
             raw_answers: answers.value
         }
+
+        // 🔒 IMPORTANT:
+        // We DO NOT set `home_vibe` here to avoid enum mismatch errors.
+        // Once your Postgres enum is final, you can add a safe mapping like:
+        // payload.home_vibe = normalizeHomeVibe(answers.value.vibe)
+
+        return payload
     }
 
     const saveTraits = async () => {
@@ -130,7 +165,7 @@ export const useQuiz = () => {
         error.value = null
 
         const {
-            data: {user},
+            data: { user },
             error: authError
         } = await $supabase.auth.getUser()
 
@@ -142,10 +177,10 @@ export const useQuiz = () => {
 
         const payload = buildTraitsPayload(user.id)
 
-        const {data, error: upsertError} = await $supabase
+        const { data, error: upsertError } = await $supabase
             .schema('amigo')
             .from('roommate_traits')
-            .upsert(payload, {onConflict: 'profile_id'})
+            .upsert(payload as any, { onConflict: 'profile_id' })
             .select('*')
             .maybeSingle()
 

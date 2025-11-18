@@ -1,37 +1,41 @@
 <!-- src/pages/auth.vue -->
 <template>
-  <div class="min-h-screen bg-gray-50 flex items-center justify-center px-4 py-8">
+  <div class="min-h-screen bg-gradient-to-b from-orange-50 via-rose-50 to-white flex items-center justify-center px-4 py-10">
     <div class="w-full max-w-md space-y-6">
-      <!-- Title -->
-      <div class="text-center space-y-1">
-        <h1 class="text-2xl font-semibold">
-          Welcome to Amigo Lease
+      <!-- Logo / title -->
+      <div class="text-center space-y-2">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/80 border border-orange-100 text-[11px] text-gray-600 shadow-sm">
+          <span class="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+          <span>Welcome to Amigo Lease</span>
+        </div>
+        <h1 class="text-2xl md:text-3xl font-semibold text-gray-900">
+          Sign in to your vibe
         </h1>
         <p class="text-sm text-gray-500">
-          Sign in or create an account to save your quiz, matches, and chats.
+          Save your quiz, matches, and chats so you can pick up where you left off.
         </p>
       </div>
 
       <!-- Card -->
-      <div class="bg-white border border-gray-200 rounded-2xl shadow-sm p-5 space-y-4">
+      <div class="bg-white/95 border border-orange-100 rounded-3xl shadow-[0_18px_40px_rgba(0,0,0,0.06)] p-5 md:p-7 space-y-5">
         <!-- Tabs -->
-        <div class="flex rounded-lg bg-gray-100 p-1 text-xs">
+        <div class="flex rounded-full bg-gray-100 p-1 text-xs">
           <button
               type="button"
-              class="flex-1 px-3 py-1.5 rounded-md"
+              class="flex-1 px-3 py-1.5 rounded-full transition"
               :class="mode === 'signin'
-              ? 'bg-white text-gray-900 shadow'
-              : 'text-gray-500'"
+              ? 'bg-gray-900 text-white shadow'
+              : 'text-gray-500 hover:text-gray-800'"
               @click="mode = 'signin'"
           >
             Sign in
           </button>
           <button
               type="button"
-              class="flex-1 px-3 py-1.5 rounded-md"
+              class="flex-1 px-3 py-1.5 rounded-full transition"
               :class="mode === 'signup'
-              ? 'bg-white text-gray-900 shadow'
-              : 'text-gray-500'"
+              ? 'bg-gray-900 text-white shadow'
+              : 'text-gray-500 hover:text-gray-800'"
               @click="mode = 'signup'"
           >
             Create account
@@ -39,43 +43,48 @@
         </div>
 
         <form class="space-y-4" @submit.prevent="handleSubmit">
-          <div>
-            <label class="block text-sm font-medium mb-1">Email</label>
+          <!-- Email -->
+          <div class="space-y-1.5">
+            <label class="block text-sm font-medium text-gray-800">Email</label>
             <input
                 v-model="email"
                 type="email"
                 required
-                class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-orange-500 focus:border-orange-500"
+                class="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm bg-white focus:outline-none focus:ring-1 focus:ring-gray-900 focus:border-gray-900 placeholder:text-gray-400"
                 placeholder="you@example.com"
             />
           </div>
 
-          <div>
-            <label class="block text-sm font-medium mb-1">Password</label>
+          <!-- Password -->
+          <div class="space-y-1.5">
+            <label class="block text-sm font-medium text-gray-800">Password</label>
             <input
                 v-model="password"
                 type="password"
                 required
                 minlength="6"
-                class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-orange-500 focus:border-orange-500"
+                class="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm bg-white focus:outline-none focus:ring-1 focus:ring-gray-900 focus:border-gray-900 placeholder:text-gray-400"
                 placeholder="At least 6 characters"
             />
-            <p class="mt-1 text-[11px] text-gray-400">
+            <p class="text-[11px] text-gray-400">
               For now we’re keeping it simple with email + password.
             </p>
           </div>
 
-          <p v-if="errorMessage" class="text-xs text-red-500">
-            {{ errorMessage }}
-          </p>
+          <!-- Messages -->
+          <div class="min-h-[1.25rem] space-y-1">
+            <p v-if="errorMessage" class="text-xs text-red-500">
+              {{ errorMessage }}
+            </p>
+            <p v-if="infoMessage" class="text-xs text-emerald-600">
+              {{ infoMessage }}
+            </p>
+          </div>
 
-          <p v-if="infoMessage" class="text-xs text-emerald-600">
-            {{ infoMessage }}
-          </p>
-
+          <!-- Submit -->
           <button
               type="submit"
-              class="w-full text-sm px-4 py-2 rounded-lg bg-orange-500 text-white hover:bg-orange-600 disabled:opacity-60"
+              class="w-full inline-flex items-center justify-center text-sm px-4 py-2.5 rounded-xl bg-gray-900 text-white hover:bg-black disabled:opacity-60 shadow-sm"
               :disabled="loading"
           >
             {{ loading ? (mode === 'signin' ? 'Signing in…' : 'Creating account…') : submitLabel }}
@@ -88,19 +97,19 @@
       </div>
 
       <div class="text-center text-[11px] text-gray-400">
-        Having trouble? You can always reset your password from the sign-in form later.
+        Having trouble? You’ll be able to reset your password from the sign-in form later.
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import {ref, computed} from 'vue'
-import {useRouter, useRoute, useNuxtApp} from '#imports'
+import { ref, computed } from 'vue'
+import { useRouter, useRoute, useNuxtApp } from '#imports'
 
 const router = useRouter()
 const route = useRoute()
-const {$supabase} = useNuxtApp()
+const { $supabase } = useNuxtApp()
 
 type Mode = 'signin' | 'signup'
 
@@ -128,14 +137,13 @@ const handleSubmit = async () => {
 
   try {
     if (mode.value === 'signup') {
-      const {data, error} = await $supabase.auth.signUp({
+      const { data, error } = await $supabase.auth.signUp({
         email: email.value,
         password: password.value
       })
 
       if (error) throw error
 
-      // If email confirmation is enabled, Supabase may require verification
       if (data?.user) {
         infoMessage.value = 'Account created. Redirecting…'
         await router.push('/onboarding/role')
@@ -143,7 +151,7 @@ const handleSubmit = async () => {
         infoMessage.value = 'Check your email to confirm your account.'
       }
     } else {
-      const {data, error} = await $supabase.auth.signInWithPassword({
+      const { data, error } = await $supabase.auth.signInWithPassword({
         email: email.value,
         password: password.value
       })

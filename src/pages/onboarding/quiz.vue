@@ -472,7 +472,7 @@ const handleSubmit = async () => {
   submitting.value = false
 
   if (!error.value) {
-    router.push('/onboarding/summary')
+    router.push('/onboarding/preferences')
   }
 }
 </script>

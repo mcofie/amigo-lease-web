@@ -1,331 +1,359 @@
-<!-- src/pages/onboarding/preferences.vue -->
 <template>
-  <div class="min-h-screen flex flex-col items-center justify-center px-4 py-8">
-    <div class="w-full max-w-xl space-y-6">
-      <div class="space-y-2 text-center">
-        <h1 class="text-2xl font-semibold">
-          What are you looking for in a roommate?
-        </h1>
-        <p class="text-sm text-gray-500">
-          Set your dealbreakers and preferences. We’ll respect the non-negotiables.
-        </p>
-      </div>
-
-      <form class="space-y-5" @submit.prevent="handleSubmit">
-        <!-- Age range -->
-        <div class="border rounded-xl p-4 space-y-3">
-          <p class="text-sm font-medium">Preferred age range</p>
-          <div class="grid grid-cols-2 gap-3">
-            <div>
-              <label class="block text-xs text-gray-500 mb-1">Min age</label>
-              <input
-                  v-model.number="form.preferred_age_min"
-                  type="number"
-                  min="18"
-                  class="w-full border rounded-lg px-3 py-2 text-sm"
-              />
-            </div>
-            <div>
-              <label class="block text-xs text-gray-500 mb-1">Max age</label>
-              <input
-                  v-model.number="form.preferred_age_max"
-                  type="number"
-                  min="18"
-                  class="w-full border rounded-lg px-3 py-2 text-sm"
-              />
-            </div>
+  <div
+      class="min-h-screen w-full bg-gradient-to-b from-orange-100 via-rose-50 to-white flex items-center justify-center px-4 py-10">
+    <div class="w-full max-w-3xl">
+      <div
+          class="bg-white/90 border border-orange-100 shadow-[0_18px_40px_rgba(0,0,0,0.06)] rounded-3xl p-6 md:p-8 space-y-6">
+        <!-- Step header -->
+        <div class="flex items-center justify-between text-[11px] text-gray-500">
+          <div
+              class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-50 text-orange-700 border border-orange-100">
+            <span>🎛️</span>
+            <span class="font-medium tracking-wide uppercase">Step 3 · Preferences</span>
           </div>
-          <p class="text-xs text-gray-500">
-            You can leave this blank if you’re flexible.
+          <span>3 of 4</span>
+        </div>
+
+        <!-- Title -->
+        <div class="space-y-1">
+          <h1 class="text-xl md:text-2xl font-semibold text-gray-900">
+            Tell us your dealbreakers
+          </h1>
+          <p class="text-sm text-gray-500">
+            These settings help us avoid obvious mismatches and highlight people who fit your vibe better.
           </p>
         </div>
 
-        <!-- Gender preference -->
-        <div class="border rounded-xl p-4 space-y-3">
-          <p class="text-sm font-medium">
-            Who are you comfortable sharing a home with?
-          </p>
-          <div class="flex flex-wrap gap-2 text-xs">
-            <button
-                type="button"
-                class="px-3 py-2 border rounded-full transition"
-                :class="form.allow_male ? 'bg-black text-white border-black' : 'bg-white text-gray-700 hover:bg-gray-50'"
-                @click="form.allow_male = !form.allow_male"
-            >
-              Men
-            </button>
-            <button
-                type="button"
-                class="px-3 py-2 border rounded-full transition"
-                :class="form.allow_female ? 'bg-black text-white border-black' : 'bg-white text-gray-700 hover:bg-gray-50'"
-                @click="form.allow_female = !form.allow_female"
-            >
-              Women
-            </button>
-            <button
-                type="button"
-                class="px-3 py-2 border rounded-full transition"
-                :class="form.allow_other ? 'bg-black text-white border-black' : 'bg-white text-gray-700 hover:bg-gray-50'"
-                @click="form.allow_other = !form.allow_other"
-            >
-              Other / non-binary
-            </button>
-          </div>
-          <p class="text-xs text-gray-500">
-            We’ll only show you people who match what you choose here.
-          </p>
+        <!-- Loading -->
+        <div v-if="loading" class="py-10 text-center text-xs text-gray-500">
+          <div class="mx-auto mb-3 h-8 w-8 border-2 border-dashed border-gray-300 rounded-full animate-spin"/>
+          Loading your preferences…
         </div>
 
-        <!-- Pets -->
-        <div class="border rounded-xl p-4 space-y-3">
-          <p class="text-sm font-medium">
-            Pets at home
-          </p>
-          <div class="space-y-2 text-xs">
-            <p class="text-gray-500">Must your roommate be okay with pets?</p>
-            <div class="flex gap-2">
-              <button
-                  type="button"
-                  class="flex-1 border rounded-lg px-2 py-2 text-center transition"
-                  :class="form.must_be_pet_friendly === true ? 'bg-black text-white border-black' : 'bg-white text-gray-700 hover:bg-gray-50'"
-                  @click="form.must_be_pet_friendly = true"
-              >
-                Yes, they must be pet-friendly
-              </button>
-              <button
-                  type="button"
-                  class="flex-1 border rounded-lg px-2 py-2 text-center transition"
-                  :class="form.must_be_pet_friendly === false ? 'bg-black text-white border-black' : 'bg-white text-gray-700 hover:bg-gray-50'"
-                  @click="form.must_be_pet_friendly = false"
-              >
-                No strong preference
-              </button>
-            </div>
-
-            <p class="text-gray-500 mt-3">
-              Do you only want homes that allow pets?
-            </p>
-            <div class="flex gap-2">
-              <button
-                  type="button"
-                  class="flex-1 border rounded-lg px-2 py-2 text-center transition"
-                  :class="form.must_allow_pets === true ? 'bg-black text-white border-black' : 'bg-white text-gray-700 hover:bg-gray-50'"
-                  @click="form.must_allow_pets = true"
-              >
-                Yes, must allow pets
-              </button>
-              <button
-                  type="button"
-                  class="flex-1 border rounded-lg px-2 py-2 text-center transition"
-                  :class="form.must_allow_pets === false ? 'bg-black text-white border-black' : 'bg-white text-gray-700 hover:bg-gray-50'"
-                  @click="form.must_allow_pets = false"
-              >
-                No, not a must
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Smoking -->
-        <div class="border rounded-xl p-4 space-y-3">
-          <p class="text-sm font-medium">
-            Smoking at home
-          </p>
-          <div class="space-y-2 text-xs">
-            <p class="text-gray-500">
-              Would you accept a roommate who smokes?
-            </p>
-            <div class="flex gap-2">
-              <button
-                  type="button"
-                  class="flex-1 border rounded-lg px-2 py-2 text-center transition"
-                  :class="form.allow_smokers ? 'bg-black text-white border-black' : 'bg-white text-gray-700 hover:bg-gray-50'"
-                  @click="toggleAllowSmokers(true)"
-              >
-                I can live with it
-              </button>
-              <button
-                  type="button"
-                  class="flex-1 border rounded-lg px-2 py-2 text-center transition"
-                  :class="!form.allow_smokers || form.require_non_smoker ? 'bg-black text-white border-black' : 'bg-white text-gray-700 hover:bg-gray-50'"
-                  @click="toggleAllowSmokers(false)"
-              >
-                No, non-smokers only
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Cleanliness & noise thresholds -->
-        <div class="border rounded-xl p-4 space-y-3">
-          <p class="text-sm font-medium">
-            Cleanliness & noise preferences
-          </p>
-
-          <div class="space-y-3 text-xs">
-            <div>
-              <label class="block mb-1">Minimum cleanliness level</label>
-              <input
-                  v-model.number="form.min_cleanliness_level"
-                  type="range"
-                  min="1"
-                  max="10"
-                  class="w-full"
-              />
-              <p class="text-gray-500">
-                {{ cleanlinessLabel }}
-              </p>
-            </div>
-
-            <div>
-              <label class="block mb-1">Maximum noise level you’re okay with</label>
-              <input
-                  v-model.number="form.max_noise_tolerance"
-                  type="range"
-                  min="1"
-                  max="10"
-                  class="w-full"
-              />
-              <p class="text-gray-500">
-                {{ noiseLabel }}
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Preferred home vibe -->
-        <div class="border rounded-xl p-4 space-y-3">
-          <p class="text-sm font-medium">
-            Preferred home vibe
-          </p>
-          <div class="flex gap-2 text-xs">
-            <button
-                v-for="option in vibeOptions"
-                :key="option.value"
-                type="button"
-                class="flex-1 border rounded-lg px-2 py-2 text-center transition"
-                :class="form.preferred_home_vibe === option.value
-                ? 'bg-black text-white border-black'
-                : 'bg-white text-gray-700 hover:bg-gray-50'"
-                @click="form.preferred_home_vibe = option.value"
-            >
-              <div class="text-lg mb-1">{{ option.icon }}</div>
-              <div>{{ option.label }}</div>
-            </button>
-          </div>
-        </div>
-
-        <!-- Work from home preference -->
-        <div class="border rounded-xl p-4 space-y-3">
-          <p class="text-sm font-medium">
-            Work / study from home
-          </p>
-          <p class="text-xs text-gray-500">
-            Do you have a preference for how often your roommate is home during the day?
-          </p>
-          <div class="flex gap-2 text-xs">
-            <button
-                type="button"
-                class="flex-1 border rounded-lg px-2 py-2 text-center transition"
-                :class="form.prefers_works_from_home ? 'bg-black text-white border-black' : 'bg-white text-gray-700 hover:bg-gray-50'"
-                @click="toggleWfhPreference('prefer')"
-            >
-              Prefer someone who’s home a lot
-            </button>
-            <button
-                type="button"
-                class="flex-1 border rounded-lg px-2 py-2 text-center transition"
-                :class="form.avoids_works_from_home ? 'bg-black text-white border-black' : 'bg-white text-gray-700 hover:bg-gray-50'"
-                @click="toggleWfhPreference('avoid')"
-            >
-              Prefer someone out most of the day
-            </button>
-          </div>
-          <p class="text-xs text-gray-500">
-            You can leave this neutral if you don’t mind either way.
-          </p>
-        </div>
-
-        <button
-            type="submit"
-            class="w-full rounded-lg px-4 py-2 text-sm font-medium text-white bg-black hover:bg-gray-900 disabled:opacity-60"
-            :disabled="loading"
+        <!-- Form -->
+        <form
+            v-else
+            class="space-y-6"
+            @submit.prevent="handleSubmit"
         >
-          {{ loading ? 'Saving...' : 'Finish setup' }}
-        </button>
+          <!-- Who you'd live with -->
+          <section class="rounded-2xl border border-gray-200 bg-white p-4 md:p-5 space-y-4">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-sm font-semibold text-gray-900 flex items-center gap-1.5">
+                  <span>Who would you be happy living with?</span>
+                  <span>🧑‍🤝‍🧑</span>
+                </p>
+                <p class="text-xs text-gray-500">
+                  You can select more than one option.
+                </p>
+              </div>
+            </div>
 
-        <p v-if="error" class="text-xs text-red-500 text-center">
-          {{ error }}
-        </p>
-      </form>
+            <div class="grid sm:grid-cols-3 gap-3 text-xs">
+              <label
+                  class="flex items-center gap-2 rounded-xl border border-gray-200 px-3 py-2 cursor-pointer hover:bg-gray-50">
+                <input
+                    v-model="form.allow_male"
+                    type="checkbox"
+                    class="h-3.5 w-3.5"
+                />
+                <span class="font-medium text-gray-800">Men</span>
+              </label>
+
+              <label
+                  class="flex items-center gap-2 rounded-xl border border-gray-200 px-3 py-2 cursor-pointer hover:bg-gray-50">
+                <input
+                    v-model="form.allow_female"
+                    type="checkbox"
+                    class="h-3.5 w-3.5"
+                />
+                <span class="font-medium text-gray-800">Women</span>
+              </label>
+
+              <label
+                  class="flex items-center gap-2 rounded-xl border border-gray-200 px-3 py-2 cursor-pointer hover:bg-gray-50">
+                <input
+                    v-model="form.allow_other"
+                    type="checkbox"
+                    class="h-3.5 w-3.5"
+                />
+                <span class="font-medium text-gray-800">Non-binary / other</span>
+              </label>
+            </div>
+          </section>
+
+          <!-- Pets & smoking -->
+          <section class="rounded-2xl border border-gray-200 bg-white p-4 md:p-5 space-y-4">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-sm font-semibold text-gray-900 flex items-center gap-1.5">
+                  <span>Pets & smoking</span>
+                  <span>🐾🚭</span>
+                </p>
+                <p class="text-xs text-gray-500">
+                  Mark the ones that really matter to you.
+                </p>
+              </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-4 text-xs">
+              <!-- Pets -->
+              <div class="space-y-2">
+                <p class="text-[11px] font-semibold tracking-wide text-gray-500">
+                  PETS
+                </p>
+
+                <label
+                    class="flex items-start gap-2 rounded-xl border border-gray-200 px-3 py-2 cursor-pointer hover:bg-gray-50">
+                  <input
+                      v-model="form.must_allow_pets"
+                      :true-value="true"
+                      :false-value="null"
+                      type="checkbox"
+                      class="mt-0.5 h-3.5 w-3.5"
+                  />
+                  <div>
+                    <p class="font-medium text-gray-800">Place must allow pets</p>
+                    <p class="text-[11px] text-gray-500">
+                      We won’t show you homes that don’t allow pets.
+                    </p>
+                  </div>
+                </label>
+
+                <label
+                    class="flex items-start gap-2 rounded-xl border border-gray-200 px-3 py-2 cursor-pointer hover:bg-gray-50">
+                  <input
+                      v-model="form.must_be_pet_friendly"
+                      :true-value="true"
+                      :false-value="null"
+                      type="checkbox"
+                      class="mt-0.5 h-3.5 w-3.5"
+                  />
+                  <div>
+                    <p class="font-medium text-gray-800">Roommate must be pet-friendly</p>
+                    <p class="text-[11px] text-gray-500">
+                      Helpful if you already have or plan to get a pet.
+                    </p>
+                  </div>
+                </label>
+              </div>
+
+              <!-- Smoking -->
+              <div class="space-y-2">
+                <p class="text-[11px] font-semibold tracking-wide text-gray-500">
+                  SMOKING
+                </p>
+
+                <label
+                    class="flex items-start gap-2 rounded-xl border border-gray-200 px-3 py-2 cursor-pointer hover:bg-gray-50">
+                  <input
+                      v-model="form.allow_smokers"
+                      type="checkbox"
+                      class="mt-0.5 h-3.5 w-3.5"
+                  />
+                  <div>
+                    <p class="font-medium text-gray-800">I’m okay living with a smoker</p>
+                    <p class="text-[11px] text-gray-500">
+                      We’ll still try to pair you with compatible habits.
+                    </p>
+                  </div>
+                </label>
+
+                <label
+                    class="flex items-start gap-2 rounded-xl border border-gray-200 px-3 py-2 cursor-pointer hover:bg-gray-50">
+                  <input
+                      v-model="form.require_non_smoker"
+                      type="checkbox"
+                      class="mt-0.5 h-3.5 w-3.5"
+                  />
+                  <div>
+                    <p class="font-medium text-gray-800">I strongly prefer non-smokers</p>
+                    <p class="text-[11px] text-gray-500">
+                      We’ll avoid matching you with smokers when possible.
+                    </p>
+                  </div>
+                </label>
+              </div>
+            </div>
+          </section>
+
+          <!-- Home vibe & WFH -->
+          <section class="rounded-2xl border border-gray-200 bg-white p-4 md:p-5 space-y-4">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-sm font-semibold text-gray-900 flex items-center gap-1.5">
+                  <span>Home vibe & work style</span>
+                  <span>✨🏡</span>
+                </p>
+                <p class="text-xs text-gray-500">
+                  This helps us prioritise people whose routines feel natural next to yours.
+                </p>
+              </div>
+            </div>
+
+            <!-- Home vibe chips -->
+            <div class="space-y-2">
+              <p class="text-[11px] font-semibold tracking-wide text-gray-500">
+                PREFERRED HOME VIBE
+              </p>
+              <div class="flex flex-wrap gap-2 text-xs">
+                <button
+                    v-for="option in homeVibeOptions"
+                    :key="option.value"
+                    type="button"
+                    class="inline-flex items-center gap-1 px-3 py-1.5 rounded-full border text-xs"
+                    :class="form.preferred_home_vibe === option.value
+                    ? 'border-gray-900 bg-gray-900 text-white'
+                    : 'border-gray-200 text-gray-700 hover:bg-gray-50'"
+                    @click="setHomeVibe(option.value)"
+                >
+                  <span>{{ option.emoji }}</span>
+                  <span>{{ option.label }}</span>
+                </button>
+
+                <button
+                    type="button"
+                    class="inline-flex items-center gap-1 px-3 py-1.5 rounded-full border border-dashed text-xs text-gray-500 hover:bg-gray-50"
+                    @click="setHomeVibe(null)"
+                >
+                  <span>❔</span>
+                  <span>No strong preference</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- WFH preferences -->
+            <div class="grid md:grid-cols-2 gap-3 text-xs pt-2">
+              <label
+                  class="flex items-start gap-2 rounded-xl border border-gray-200 px-3 py-2 cursor-pointer hover:bg-gray-50">
+                <input
+                    v-model="form.prefers_works_from_home"
+                    :true-value="true"
+                    :false-value="null"
+                    type="checkbox"
+                    class="mt-0.5 h-3.5 w-3.5"
+                />
+                <div>
+                  <p class="font-medium text-gray-800">Prefer someone who works from home</p>
+                  <p class="text-[11px] text-gray-500">
+                    If you’re often at home too, this can help with similar routines.
+                  </p>
+                </div>
+              </label>
+
+              <label
+                  class="flex items-start gap-2 rounded-xl border border-gray-200 px-3 py-2 cursor-pointer hover:bg-gray-50">
+                <input
+                    v-model="form.avoids_works_from_home"
+                    :true-value="true"
+                    :false-value="null"
+                    type="checkbox"
+                    class="mt-0.5 h-3.5 w-3.5"
+                />
+                <div>
+                  <p class="font-medium text-gray-800">Prefer someone who’s out most of the day</p>
+                  <p class="text-[11px] text-gray-500">
+                    Helpful if you like having the place quiet to yourself.
+                  </p>
+                </div>
+              </label>
+            </div>
+          </section>
+
+          <!-- Error -->
+          <div v-if="error" class="pt-1">
+            <div class="flex items-start gap-2 rounded-xl border border-red-200 bg-red-50 px-3 py-2">
+              <span class="text-red-500 text-sm">⚠️</span>
+              <p class="text-xs text-red-700">
+                {{ error }}
+              </p>
+            </div>
+          </div>
+
+          <!-- Actions -->
+          <div class="flex flex-col sm:flex-row gap-3 pt-2">
+            <button
+                type="submit"
+                class="inline-flex items-center justify-center rounded-xl bg-gray-900 px-4 py-2.5 text-sm font-medium text-white hover:bg-black disabled:opacity-50 sm:flex-1"
+                :disabled="saving"
+            >
+              {{ saving ? 'Saving…' : 'Save & continue' }}
+            </button>
+
+            <button
+                type="button"
+                class="inline-flex items-center justify-center rounded-xl border border-gray-300 px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-100 disabled:opacity-50 sm:w-auto"
+                :disabled="saving"
+                @click="goBack"
+            >
+              Back
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted } from 'vue'
-import type { HomeVibe } from '~/types/amigo'
-import { usePreferences } from '~/composables/usePreferences'
-import { useProfile } from '~/composables/useProfile'
+definePageMeta({
+  layout: 'onboarding'
+})
+
+import {onMounted, ref, computed} from 'vue'
+import {useRouter, useNuxtApp} from '#imports'
+import {usePreferences} from '~/composables/usePreferences'
 
 const router = useRouter()
-const { form, loadPreferences, savePreferences, loading, error } = usePreferences()
-const { profile, fetchProfile } = useProfile()
+const {$supabase} = useNuxtApp()
+const {form, loading, error, loadPreferences, savePreferences} = usePreferences()
+const saving = ref(false)
 
-const vibeOptions: { value: HomeVibe; label: string; icon: string }[] = [
-  { value: 'sanctuary', label: 'Calm sanctuary', icon: '🧘' },
-  { value: 'flexible', label: 'Depends on the day', icon: '🔀' },
-  { value: 'social_hub', label: 'Social hub', icon: '🥳' }
-]
+const homeVibeOptions = [
+  {value: 'chill', label: 'Chill & calm', emoji: '😌'},
+  {value: 'lively', label: 'Lively & social', emoji: '🎉'},
+  {value: 'cozy', label: 'Cozy & warm', emoji: '🕯️'},
+  {value: 'minimal', label: 'Minimal & tidy', emoji: '📦'}
+] as const
 
-const cleanlinessLabel = computed(() => {
-  const value = form.min_cleanliness_level ?? 5
-  if (value <= 3) return 'You’re okay with a pretty relaxed space.'
-  if (value <= 7) return 'You’d like things reasonably tidy.'
-  return 'You really value a very clean home.'
-})
+type HomeVibeValue = (typeof homeVibeOptions)[number]['value'] | null
 
-const noiseLabel = computed(() => {
-  const value = form.max_noise_tolerance ?? 5
-  if (value <= 3) return 'You prefer things very quiet at home.'
-  if (value <= 7) return 'Some noise is okay, within reason.'
-  return 'You’re fine with a fairly lively home.'
-})
-
-const toggleAllowSmokers = (allow: boolean) => {
-  form.allow_smokers = allow
-  form.require_non_smoker = !allow
-}
-
-const toggleWfhPreference = (mode: 'prefer' | 'avoid') => {
-  if (mode === 'prefer') {
-    form.prefers_works_from_home = !form.prefers_works_from_home
-    if (form.prefers_works_from_home) {
-      form.avoids_works_from_home = false
-    }
-  } else {
-    form.avoids_works_from_home = !form.avoids_works_from_home
-    if (form.avoids_works_from_home) {
-      form.prefers_works_from_home = false
-    }
-  }
+const setHomeVibe = (v: HomeVibeValue) => {
+  // form.preferred_home_vibe comes from usePreferences and can be null | 'chill' | ...
+  // just assign directly
+  // @ts-expect-error narrow type
+  form.preferred_home_vibe = v
 }
 
 onMounted(async () => {
-  await Promise.all([fetchProfile(), loadPreferences()])
+  const {
+    data: {user}
+  } = await $supabase.auth.getUser()
+
+  if (!user) {
+    router.push('/auth')
+    return
+  }
+
+  await loadPreferences()
 })
 
 const handleSubmit = async () => {
+  if (saving.value) return
+  saving.value = true
+
   await savePreferences()
 
+  saving.value = false
+
   if (!error.value) {
-    // If the user has a place, send them to listing creation.
-    // Otherwise, they can go straight to matches (or whatever you want as next step).
-    if (profile.value?.has_place) {
-      router.push('/onboarding/listing')
-    } else {
-      router.push('/matches')
-    }
+    // next step after preferences – e.g. summary
+    router.push('/onboarding/summary')
   }
+}
+
+const goBack = () => {
+  router.push('/onboarding/quiz')
 }
 </script>

@@ -18,7 +18,7 @@
 
         <!-- Title -->
         <div class="text-center space-y-2">
-          <h1 class="text-2xl font-semibold">
+          <h1 class="text-2xl font-semibold text-gray-900">
             Tell us about your plans
           </h1>
           <p class="text-sm text-gray-500">
@@ -32,45 +32,54 @@
           Loading your details…
         </div>
 
-        <!-- Main card -->
-        <UCard v-else :ui="{ base: 'rounded-2xl border border-gray-200' }">
-          <template #header>
-            <div class="space-y-1">
-              <p class="text-sm font-medium text-gray-900">Where and when?</p>
-              <p class="text-xs text-gray-500">
-                You can always update this later if your plans change.
-              </p>
-            </div>
-          </template>
+        <!-- Form card -->
+        <div v-else class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 space-y-6">
+          <div class="space-y-1">
+            <p class="text-sm font-medium text-gray-900">Where and when?</p>
+            <p class="text-xs text-gray-500">
+              You can always update this later if your plans change.
+            </p>
+          </div>
 
-          <form class="space-y-5" @submit.prevent="handleSubmit">
-            <!-- Location -->
+          <form class="space-y-6" @submit.prevent="handleSubmit">
+            <!-- LOCATION -->
             <div class="space-y-3">
-              <p class="text-xs font-medium tracking-wide text-gray-500">
+              <p class="text-xs font-semibold tracking-wide text-gray-500">
                 LOCATION
               </p>
 
-              <UFormGroup label="City" name="city" required>
-                <UInput
+              <div class="space-y-1.5">
+                <label class="block text-xs font-medium text-gray-700">
+                  City <span class="text-red-500">*</span>
+                </label>
+                <input
                     v-model="form.city"
-                    placeholder="e.g. Accra"
+                    type="text"
+                    required
                     autocomplete="address-level2"
+                    class="w-full rounded-xl border border-gray-300 bg-white px-3 py-2.5 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-gray-900"
+                    placeholder="e.g. Accra"
                 />
-              </UFormGroup>
+              </div>
 
-              <UFormGroup label="Area / Neighbourhood" name="area">
-                <UInput
+              <div class="space-y-1.5">
+                <label class="block text-xs font-medium text-gray-700">
+                  Area / Neighbourhood
+                </label>
+                <input
                     v-model="form.area"
-                    placeholder="e.g. East Legon, Osu"
+                    type="text"
                     autocomplete="address-line1"
+                    class="w-full rounded-xl border border-gray-300 bg-white px-3 py-2.5 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-gray-900"
+                    placeholder="e.g. East Legon, Osu"
                 />
-              </UFormGroup>
+              </div>
             </div>
 
-            <!-- Budget -->
-            <div class="space-y-3 pt-1">
+            <!-- BUDGET -->
+            <div class="space-y-3">
               <div class="flex items-center justify-between">
-                <p class="text-xs font-medium tracking-wide text-gray-500">
+                <p class="text-xs font-semibold tracking-wide text-gray-500">
                   BUDGET (PER MONTH)
                 </p>
                 <p class="text-[11px] text-gray-400">
@@ -79,30 +88,38 @@
               </div>
 
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <UFormGroup label="Min" name="budget_min">
-                  <UInput
+                <div class="space-y-1.5">
+                  <label class="block text-xs font-medium text-gray-700">
+                    Min
+                  </label>
+                  <input
                       v-model.number="form.budget_min"
                       type="number"
                       min="0"
+                      class="w-full rounded-xl border border-gray-300 bg-white px-3 py-2.5 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-gray-900"
                       placeholder="e.g. 1500"
                   />
-                </UFormGroup>
+                </div>
 
-                <UFormGroup label="Max" name="budget_max">
-                  <UInput
+                <div class="space-y-1.5">
+                  <label class="block text-xs font-medium text-gray-700">
+                    Max
+                  </label>
+                  <input
                       v-model.number="form.budget_max"
                       type="number"
                       min="0"
+                      class="w-full rounded-xl border border-gray-300 bg-white px-3 py-2.5 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-gray-900"
                       placeholder="e.g. 2500"
                   />
-                </UFormGroup>
+                </div>
               </div>
             </div>
 
-            <!-- Timing -->
-            <div class="space-y-3 pt-1">
+            <!-- TIMING -->
+            <div class="space-y-3">
               <div class="flex items-center justify-between">
-                <p class="text-xs font-medium tracking-wide text-gray-500">
+                <p class="text-xs font-semibold tracking-wide text-gray-500">
                   TIMING
                 </p>
                 <p class="text-[11px] text-gray-400">
@@ -111,58 +128,61 @@
               </div>
 
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <UFormGroup label="Move-in from" name="move_in_from">
-                  <UInput
+                <div class="space-y-1.5">
+                  <label class="block text-xs font-medium text-gray-700">
+                    Move-in from
+                  </label>
+                  <input
                       v-model="form.move_in_from"
                       type="date"
+                      class="w-full rounded-xl border border-gray-300 bg-white px-3 py-2.5 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-gray-900"
                   />
-                </UFormGroup>
+                </div>
 
-                <UFormGroup label="Move-in to" name="move_in_to">
-                  <UInput
+                <div class="space-y-1.5">
+                  <label class="block text-xs font-medium text-gray-700">
+                    Move-in to
+                  </label>
+                  <input
                       v-model="form.move_in_to"
                       type="date"
+                      class="w-full rounded-xl border border-gray-300 bg-white px-3 py-2.5 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-gray-900"
                   />
-                </UFormGroup>
+                </div>
               </div>
             </div>
 
             <!-- Error -->
             <div v-if="error" class="pt-1">
-              <UAlert
-                  color="red"
-                  variant="soft"
-                  icon="i-heroicons-exclamation-circle"
-                  class="text-xs"
-              >
-                {{ error }}
-              </UAlert>
+              <div class="flex items-start gap-2 rounded-xl border border-red-200 bg-red-50 px-3 py-2">
+                <span class="text-red-500 text-sm">⚠️</span>
+                <p class="text-xs text-red-700">
+                  {{ error }}
+                </p>
+              </div>
             </div>
 
             <!-- Actions -->
-            <div class="flex flex-col sm:flex-row gap-3 pt-4">
-              <UButton
+            <div class="flex flex-col sm:flex-row gap-3 pt-2">
+              <button
                   type="submit"
-                  color="primary"
-                  :loading="submitting"
-                  class="sm:flex-1"
+                  class="inline-flex items-center justify-center rounded-xl bg-gray-900 px-4 py-2.5 text-sm font-medium text-white hover:bg-black disabled:opacity-50 sm:flex-1"
+                  :disabled="submitting"
               >
                 {{ submitting ? 'Saving…' : 'Continue to quiz' }}
-              </UButton>
+              </button>
 
-              <UButton
+              <button
                   type="button"
-                  variant="ghost"
-                  color="gray"
+                  class="inline-flex items-center justify-center rounded-xl border border-gray-300 px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-100 disabled:opacity-50 sm:w-auto"
                   :disabled="submitting"
-                  class="sm:w-auto"
                   @click="goBack"
               >
                 Back
-              </UButton>
+              </button>
             </div>
           </form>
-        </UCard>
+        </div>
 
       </div>
     </div>
@@ -175,8 +195,7 @@ definePageMeta({
 })
 
 import {ref, reactive, onMounted} from 'vue'
-import {useRouter} from '#imports'
-import {useNuxtApp} from '#app'
+import {useRouter, useNuxtApp} from '#imports'
 import {useProfile} from '~/composables/useProfile'
 
 const router = useRouter()

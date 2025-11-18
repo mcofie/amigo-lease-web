@@ -1,145 +1,342 @@
+<!-- src/pages/listings/new.vue -->
 <template>
-  <div class="min-h-screen bg-gray-50 flex items-center justify-center px-4 py-8">
-    <div class="w-full max-w-xl space-y-6">
-      <!-- Title -->
-      <div class="space-y-1 text-center">
-        <h1 class="text-2xl font-semibold">
+  <div
+      class="min-h-screen bg-gradient-to-b from-orange-50 via-rose-50 to-white flex items-center justify-center px-4 py-10">
+    <div class="w-full max-w-5xl space-y-6">
+      <!-- Header -->
+      <div class="space-y-2 text-center">
+        <div
+            class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/80 border border-orange-100 text-[11px] text-gray-600 shadow-sm">
+          <span class="h-1.5 w-1.5 rounded-full bg-emerald-400"/>
+          <span>Host listing</span>
+        </div>
+        <h1 class="text-2xl md:text-3xl font-semibold text-gray-900">
           List your room or place
         </h1>
-        <p class="text-sm text-gray-500">
+        <p class="text-sm text-gray-500 max-w-xl mx-auto">
           We’ll show this to people whose vibe and preferences match yours.
         </p>
       </div>
 
-      <!-- Form -->
-      <div class="bg-white border border-gray-200 rounded-2xl shadow-sm p-5 space-y-4">
-        <form class="space-y-4" @submit.prevent="handleSubmit">
-          <!-- Title -->
-          <div>
-            <label class="block text-sm font-medium mb-1">Title</label>
-            <input
-                v-model="form.title"
-                type="text"
-                class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-orange-500 focus:border-orange-500"
-                placeholder="e.g. Room in 2-bed apartment in Osu"
-                required
-            />
+      <!-- Form + Preview -->
+      <div class="bg-white/95 border border-orange-100 rounded-3xl shadow-[0_18px_40px_rgba(0,0,0,0.06)] p-5 md:p-7">
+        <div class="grid gap-6 md:grid-cols-5">
+          <!-- FORM -->
+          <div class="md:col-span-3 space-y-5">
+            <form class="space-y-5" @submit.prevent="handleSubmit">
+              <!-- Title -->
+              <div class="space-y-1.5">
+                <label class="block text-sm font-medium text-gray-800">Title</label>
+                <input
+                    v-model="form.title"
+                    type="text"
+                    required
+                    class="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm bg-white focus:outline-none focus:ring-1 focus:ring-gray-900 focus:border-gray-900 placeholder:text-gray-400"
+                    placeholder="e.g. Room in 2-bed apartment in Osu"
+                />
+                <p class="text-[11px] text-gray-400">
+                  Keep it short but descriptive so it stands out in search.
+                </p>
+              </div>
+
+              <!-- Description -->
+              <div class="space-y-1.5">
+                <label class="block text-sm font-medium text-gray-800">Description</label>
+                <textarea
+                    v-model="form.description"
+                    rows="3"
+                    class="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm bg-white focus:outline-none focus:ring-1 focus:ring-gray-900 focus:border-gray-900 resize-none placeholder:text-gray-400"
+                    placeholder="What’s it like to live here? Who are you hoping to live with?"
+                />
+                <p class="text-[11px] text-gray-400">
+                  A few sentences about the space, vibe, and what you’re looking for is perfect.
+                </p>
+              </div>
+
+              <!-- Location -->
+              <div class="space-y-2">
+                <p class="text-[11px] font-semibold tracking-[0.18em] text-gray-400 uppercase">
+                  Location
+                </p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div class="space-y-1.5">
+                    <label class="block text-sm font-medium text-gray-800">City</label>
+                    <input
+                        v-model="form.city"
+                        type="text"
+                        class="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm bg-white focus:outline-none focus:ring-1 focus:ring-gray-900 focus:border-gray-900 placeholder:text-gray-400"
+                        placeholder="e.g. Accra"
+                    />
+                  </div>
+                  <div class="space-y-1.5">
+                    <label class="block text-sm font-medium text-gray-800">Area / Neighbourhood</label>
+                    <input
+                        v-model="form.area"
+                        type="text"
+                        class="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm bg-white focus:outline-none focus:ring-1 focus:ring-gray-900 focus:border-gray-900 placeholder:text-gray-400"
+                        placeholder="e.g. Osu, East Legon"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <!-- Rent -->
+              <div class="space-y-2">
+                <p class="text-[11px] font-semibold tracking-[0.18em] text-gray-400 uppercase">
+                  Pricing
+                </p>
+                <div class="grid grid-cols-3 gap-4">
+                  <div class="col-span-2 space-y-1.5">
+                    <label class="block text-sm font-medium text-gray-800">Monthly rent</label>
+                    <input
+                        v-model.number="form.monthly_rent"
+                        type="number"
+                        min="0"
+                        class="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm bg-white focus:outline-none focus:ring-1 focus:ring-gray-900 focus:border-gray-900 placeholder:text-gray-400"
+                        placeholder="e.g. 2300"
+                    />
+                  </div>
+                  <div class="space-y-1.5">
+                    <label class="block text-sm font-medium text-gray-800">Currency</label>
+                    <select
+                        v-model="form.currency"
+                        class="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm bg-white focus:outline-none focus:ring-1 focus:ring-gray-900 focus:border-gray-900"
+                    >
+                      <option value="GHS">GHS</option>
+                      <option value="USD">USD</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Details -->
+              <div class="space-y-2">
+                <p class="text-[11px] font-semibold tracking-[0.18em] text-gray-400 uppercase">
+                  Details
+                </p>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  <div class="space-y-1.5">
+                    <label class="block text-sm font-medium text-gray-800">Bedrooms</label>
+                    <input
+                        v-model.number="form.bedrooms"
+                        type="number"
+                        min="0"
+                        class="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm bg-white focus:outline-none focus:ring-1 focus:ring-gray-900 focus:border-gray-900"
+                    />
+                  </div>
+                  <div class="space-y-1.5">
+                    <label class="block text-sm font-medium text-gray-800">Bathrooms</label>
+                    <input
+                        v-model.number="form.bathrooms"
+                        type="number"
+                        min="0"
+                        class="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm bg-white focus:outline-none focus:ring-1 focus:ring-gray-900 focus:border-gray-900"
+                    />
+                  </div>
+                  <div class="space-y-1.5">
+                    <label class="block text-sm font-medium text-gray-800">Available from</label>
+                    <input
+                        v-model="form.available_from"
+                        type="date"
+                        class="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm bg-white focus:outline-none focus:ring-1 focus:ring-gray-900 focus:border-gray-900"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <!-- Amenities -->
+              <div class="space-y-2">
+                <p class="text-[11px] font-semibold tracking-[0.18em] text-gray-400 uppercase">
+                  Amenities
+                </p>
+                <div class="flex flex-wrap gap-2">
+                  <button
+                      v-for="amenity in amenityOptions"
+                      :key="amenity.key"
+                      type="button"
+                      class="px-3 py-1.5 rounded-full text-[11px] border transition flex items-center gap-1.5"
+                      :class="selectedAmenities.includes(amenity.key)
+                      ? 'bg-gray-900 text-white border-gray-900 shadow-sm'
+                      : 'bg-gray-50 text-gray-700 border-gray-200 hover:bg-gray-100'"
+                      @click="toggleAmenity(amenity.key)"
+                  >
+                    <span>{{ amenity.emoji }}</span>
+                    <span>{{ amenity.label }}</span>
+                  </button>
+                </div>
+                <p class="text-[11px] text-gray-400">
+                  These help seekers quickly see if your place fits their basics.
+                </p>
+              </div>
+
+              <!-- Photos -->
+              <div class="space-y-2">
+                <p class="text-[11px] font-semibold tracking-[0.18em] text-gray-400 uppercase">
+                  Photos (optional)
+                </p>
+                <div class="space-y-2">
+                  <div
+                      v-for="(url, index) in photoInputs"
+                      :key="index"
+                      class="space-y-1.5"
+                  >
+                    <label class="block text-[11px] text-gray-500">
+                      Photo URL {{ index + 1 }}
+                    </label>
+                    <input
+                        v-model="photoInputs[index]"
+                        type="url"
+                        class="w-full rounded-xl border border-gray-200 px-3 py-2 text-xs bg-white focus:outline-none focus:ring-1 focus:ring-gray-900 focus:border-gray-900 placeholder:text-gray-400"
+                        placeholder="https://…"
+                    />
+                  </div>
+                </div>
+                <p class="text-[11px] text-gray-400">
+                  Image uploads coming soon — for now, you can paste hosted image links.
+                </p>
+              </div>
+
+              <!-- Error -->
+              <p v-if="error" class="text-xs text-red-500">
+                {{ error }}
+              </p>
+
+              <!-- Actions -->
+              <div class="flex items-center justify-between pt-2">
+                <button
+                    type="button"
+                    class="text-xs text-gray-500 hover:text-gray-800 inline-flex items-center gap-1"
+                    @click="goBack"
+                >
+                  ← Cancel
+                </button>
+                <button
+                    type="submit"
+                    class="inline-flex items-center justify-center text-sm px-4 py-2.5 rounded-xl bg-gray-900 text-white hover:bg-black disabled:opacity-60 shadow-sm"
+                    :disabled="submitting"
+                >
+                  {{ submitting ? 'Publishing…' : 'Publish listing' }}
+                </button>
+              </div>
+            </form>
           </div>
 
-          <!-- Description -->
-          <div>
-            <label class="block text-sm font-medium mb-1">Description</label>
-            <textarea
-                v-model="form.description"
-                rows="3"
-                class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-orange-500 focus:border-orange-500 resize-none"
-                placeholder="Tell people what it’s like to live here, who you’re hoping to live with, etc."
-            />
-          </div>
+          <!-- PREVIEW -->
+          <div class="md:col-span-2 space-y-3">
+            <div class="flex items-center justify-between text-xs text-gray-500">
+              <p class="font-medium text-gray-700 flex items-center gap-1.5">
+                <span class="text-base">👀</span> Live preview
+              </p>
+              <p class="text-[11px]">
+                How it will look to seekers
+              </p>
+            </div>
 
-          <!-- Location -->
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <div>
-              <label class="block text-sm font-medium mb-1">City</label>
-              <input
-                  v-model="form.city"
-                  type="text"
-                  class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-orange-500 focus:border-orange-500"
-                  placeholder="e.g. Accra"
-              />
-            </div>
-            <div>
-              <label class="block text-sm font-medium mb-1">Area</label>
-              <input
-                  v-model="form.area"
-                  type="text"
-                  class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-orange-500 focus:border-orange-500"
-                  placeholder="e.g. Osu, East Legon"
-              />
-            </div>
-          </div>
+            <div class="rounded-2xl border border-gray-200 bg-gray-50/80 p-3">
+              <div class="rounded-xl bg-white border border-gray-200 p-4 space-y-2 shadow-sm">
+                <!-- (Optional) photo thumb if first url present -->
+                <div
+                    v-if="firstPhotoUrl"
+                    class="mb-2 rounded-lg overflow-hidden bg-gray-100 h-32 w-full flex items-center justify-center"
+                >
+                  <img
+                      :src="firstPhotoUrl"
+                      alt="Listing photo preview"
+                      class="h-full w-full object-cover"
+                  />
+                </div>
 
-          <!-- Rent -->
-          <div class="grid grid-cols-3 gap-3">
-            <div class="col-span-2">
-              <label class="block text-sm font-medium mb-1">Monthly rent</label>
-              <input
-                  v-model.number="form.monthly_rent"
-                  type="number"
-                  min="0"
-                  class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-orange-500 focus:border-orange-500"
-                  placeholder="e.g. 2300"
-              />
-            </div>
-            <div>
-              <label class="block text-sm font-medium mb-1">Currency</label>
-              <select
-                  v-model="form.currency"
-                  class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm bg-white focus:outline-none focus:ring-1 focus:ring-orange-500 focus:border-orange-500"
-              >
-                <option value="GHS">GHS</option>
-                <option value="USD">USD</option>
-              </select>
-            </div>
-          </div>
+                <!-- Title + price row -->
+                <div class="flex items-start justify-between gap-3">
+                  <div class="space-y-1">
+                    <p class="text-sm font-semibold text-gray-900">
+                      {{ form.title || 'Room in 2-bed apartment in Osu' }}
+                    </p>
+                    <p class="text-[11px] text-gray-500">
+                      <span v-if="form.area || form.city">
+                        <span v-if="form.area">{{ form.area }}</span>
+                        <span v-if="form.area && form.city"> · </span>
+                        <span v-if="form.city">{{ form.city }}</span>
+                      </span>
+                      <span v-else>
+                        Location not set
+                      </span>
+                    </p>
+                  </div>
+                  <div class="text-right">
+                    <p class="text-sm font-semibold text-gray-900">
+                      <span v-if="form.monthly_rent != null">
+                        {{ currencySymbol }}{{ formattedRent }}
+                      </span>
+                      <span v-else class="text-gray-400">
+                        Set rent
+                      </span>
+                    </p>
+                    <p class="text-[11px] text-gray-500">
+                      / month
+                    </p>
+                  </div>
+                </div>
 
-          <!-- Beds/Baths + date -->
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            <div>
-              <label class="block text-sm font-medium mb-1">Bedrooms</label>
-              <input
-                  v-model.number="form.bedrooms"
-                  type="number"
-                  min="0"
-                  class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-orange-500 focus:border-orange-500"
-              />
-            </div>
-            <div>
-              <label class="block text-sm font-medium mb-1">Bathrooms</label>
-              <input
-                  v-model.number="form.bathrooms"
-                  type="number"
-                  min="0"
-                  class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-orange-500 focus:border-orange-500"
-              />
-            </div>
-            <div>
-              <label class="block text-sm font-medium mb-1">Available from</label>
-              <input
-                  v-model="form.available_from"
-                  type="date"
-                  class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-orange-500 focus:border-orange-500"
-              />
-            </div>
-          </div>
+                <!-- Meta pills -->
+                <div class="flex flex-wrap gap-1.5 text-[11px] text-gray-600 mt-1">
+                  <span
+                      v-if="form.bedrooms != null"
+                      class="px-2 py-0.5 rounded-full bg-gray-100"
+                  >
+                    {{ form.bedrooms }} bed{{ form.bedrooms === 1 ? '' : 's' }}
+                  </span>
+                  <span
+                      v-if="form.bathrooms != null"
+                      class="px-2 py-0.5 rounded-full bg-gray-100"
+                  >
+                    {{ form.bathrooms }} bath{{ form.bathrooms === 1 ? '' : 's' }}
+                  </span>
+                  <span
+                      v-if="form.available_from"
+                      class="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700"
+                  >
+                    Available {{ form.available_from }}
+                  </span>
+                  <span
+                      v-if="!form.bedrooms && !form.bathrooms && !form.available_from"
+                      class="px-2 py-0.5 rounded-full bg-gray-100 text-gray-500"
+                  >
+                    Add details to help people decide
+                  </span>
+                </div>
 
-          <!-- Error -->
-          <p v-if="error" class="text-xs text-red-500">
-            {{ error }}
-          </p>
+                <!-- Amenity chips -->
+                <div v-if="selectedAmenityObjects.length" class="flex flex-wrap gap-1.5 mt-2">
+                  <span
+                      v-for="amenity in selectedAmenityObjects"
+                      :key="amenity.key"
+                      class="px-2 py-0.5 rounded-full bg-orange-50 text-[11px] text-orange-700 border border-orange-100 flex items-center gap-1"
+                  >
+                    <span>{{ amenity.emoji }}</span>
+                    <span>{{ amenity.label }}</span>
+                  </span>
+                </div>
 
-          <!-- Actions -->
-          <div class="flex justify-between pt-2">
-            <button
-                type="button"
-                class="text-xs text-gray-500 hover:text-gray-800"
-                @click="goBack"
-            >
-              Cancel
-            </button>
-            <button
-                type="submit"
-                class="text-sm px-4 py-2 rounded-lg bg-orange-500 text-white hover:bg-orange-600 disabled:opacity-60"
-                :disabled="submitting"
-            >
-              {{ submitting ? 'Publishing…' : 'Publish listing' }}
-            </button>
+                <!-- Description snippet -->
+                <p class="text-[11px] text-gray-500 mt-2 line-clamp-3">
+                  {{
+                    form.description ||
+                    'A cosy shared home with friendly housemates. Add a short description so people can imagine living here.'
+                  }}
+                </p>
+              </div>
+            </div>
+
+            <p class="text-[11px] text-gray-400">
+              This is a rough preview — final layout may include your photo and personality info from your profile.
+            </p>
           </div>
-        </form>
+        </div>
       </div>
 
       <!-- Success hint -->
-      <div v-if="justCreated" class="text-xs text-green-600 text-center">
+      <div v-if="justCreated" class="text-xs text-emerald-700 text-center">
         Listing created! You’ll see it in your matches and host views.
       </div>
     </div>
@@ -147,7 +344,7 @@
 </template>
 
 <script setup lang="ts">
-import {reactive, ref, onMounted} from 'vue'
+import {reactive, ref, onMounted, computed} from 'vue'
 import {useRouter, useNuxtApp} from '#imports'
 import {useListings} from '~/composables/useListings'
 
@@ -170,18 +367,69 @@ const form = reactive({
   available_from: ''
 })
 
+// simple amenity config – keys should match what you store in DB
+const amenityOptions = [
+  {key: 'wifi', label: 'Wi-Fi', emoji: '📶'},
+  {key: 'parking', label: 'Parking', emoji: '🅿️'},
+  {key: 'ensuite', label: 'Ensuite bathroom', emoji: '🚿'},
+  {key: 'ac', label: 'Air conditioning', emoji: '❄️'},
+  {key: 'furnished', label: 'Furnished', emoji: '🛋️'},
+  {key: 'washing_machine', label: 'Washing machine', emoji: '🧺'},
+  {key: 'generator', label: 'Backup power', emoji: '⚡'},
+  {key: 'pets_allowed', label: 'Pets allowed', emoji: '🐾'}
+]
+
+const selectedAmenities = ref<string[]>([])
+const photoInputs = ref<string[]>(['', '', ''])
+
 onMounted(async () => {
-  const {data: {user}} = await $supabase.auth.getUser()
+  const {
+    data: {user}
+  } = await $supabase.auth.getUser()
   if (!user) {
     router.push('/auth')
   }
 })
+
+// preview helpers
+const currencySymbol = computed(() => {
+  if (form.currency === 'USD') return '$'
+  return '₵'
+})
+
+const formattedRent = computed(() => {
+  if (form.monthly_rent == null) return ''
+  try {
+    return form.monthly_rent.toLocaleString()
+  } catch {
+    return String(form.monthly_rent)
+  }
+})
+
+const firstPhotoUrl = computed(() => {
+  const urls = photoInputs.value.map(u => u.trim()).filter(Boolean)
+  return urls[0] || ''
+})
+
+const selectedAmenityObjects = computed(() =>
+    amenityOptions.filter(a => selectedAmenities.value.includes(a.key))
+)
+
+// UI actions
+const toggleAmenity = (key: string) => {
+  if (selectedAmenities.value.includes(key)) {
+    selectedAmenities.value = selectedAmenities.value.filter(k => k !== key)
+  } else {
+    selectedAmenities.value.push(key)
+  }
+}
 
 const handleSubmit = async () => {
   if (submitting.value) return
   submitting.value = true
   justCreated.value = false
 
+  // 1) Create main listing via composable
   const created = await createListing({
     title: form.title,
     description: form.description || null,
@@ -194,13 +442,58 @@ const handleSubmit = async () => {
     available_from: form.available_from || null
   })
 
-  submitting.value = false
-
-  if (created && !error.value) {
-    justCreated.value = true
-    // Optionally route somewhere:
-    router.push('/matches') // or '/host/listings'
+  if (!created || error.value) {
+    submitting.value = false
+    return
   }
+
+  const listingId = (created as any).id
+  if (!listingId) {
+    console.warn('Listing created but no id returned from createListing')
+    submitting.value = false
+    return
+  }
+
+  // 2) Insert amenities
+  try {
+    const amenityPayload = selectedAmenities.value.map(key => ({
+      listing_id: listingId,
+      amenity_key: key
+    }))
+
+    if (amenityPayload.length) {
+      await $supabase
+          .schema('amigo')
+          .from('listing_amenities')
+          .insert(amenityPayload)
+    }
+  } catch (e) {
+    console.error('Failed to save amenities', e)
+    // you can optionally surface a small message, but don’t block listing creation
+  }
+
+  // 3) Insert photos
+  try {
+    const urls = photoInputs.value.map(u => u.trim()).filter(Boolean)
+    if (urls.length) {
+      const photoPayload = urls.map((url, index) => ({
+        listing_id: listingId,
+        url,
+        sort_order: index
+      }))
+
+      await $supabase
+          .schema('amigo')
+          .from('listing_photos')
+          .insert(photoPayload)
+    }
+  } catch (e) {
+    console.error('Failed to save photos', e)
+  }
+
+  submitting.value = false
+  justCreated.value = true
+  router.push('/matches') // or '/listings' if you prefer
 }
 
 const goBack = () => {
