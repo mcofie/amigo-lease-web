@@ -1,5 +1,7 @@
 // src/composables/useQuiz.ts
-import type { HomeVibe, RoommateTraits, SleepSchedule } from '~/types/amigo'
+import {ref} from 'vue'
+import {useNuxtApp} from '#app'
+import type {HomeVibe, RoommateTraits, SleepSchedule} from '~/types/amigo'
 
 export interface QuizAnswers {
     cleanliness?: number
@@ -11,11 +13,12 @@ export interface QuizAnswers {
     sleep?: SleepSchedule
     vibe?: HomeVibe
     wfh?: number
+
     [key: string]: unknown
 }
 
 export const useQuiz = () => {
-    const { $supabase } = useNuxtApp()
+    const {$supabase} = useNuxtApp()
 
     const answers = ref<QuizAnswers>({})
     const loading = ref(false)
@@ -26,7 +29,7 @@ export const useQuiz = () => {
         error.value = null
 
         const {
-            data: { user },
+            data: {user},
             error: authError
         } = await $supabase.auth.getUser()
 
@@ -36,15 +39,16 @@ export const useQuiz = () => {
             return
         }
 
-        const { data, error: traitsError } = await $supabase
-            .from('amigo.roommate_traits')
+        const {data, error: traitsError} = await $supabase
+            .schema('amigo')
+            .from('roommate_traits')
             .select('*')
             .eq('profile_id', user.id)
             .maybeSingle()
 
         if (traitsError) {
             // It's okay if there's simply no row yet
-            if (traitsError.code !== 'PGRST116') {
+            if ((traitsError as any).code !== 'PGRST116') {
                 error.value = traitsError.message
             }
         } else if (data) {
@@ -91,7 +95,7 @@ export const useQuiz = () => {
         error.value = null
 
         const {
-            data: { user },
+            data: {user},
             error: authError
         } = await $supabase.auth.getUser()
 
@@ -103,9 +107,10 @@ export const useQuiz = () => {
 
         const payload = buildTraitsPayload(user.id)
 
-        const { data, error: upsertError } = await $supabase
-            .from('amigo.roommate_traits')
-            .upsert(payload, {
+        const {data, error: upsertError} = await $supabase
+            .schema('amigo')
+            .from('roommate_traits')
+            .upsert(payload as any, {
                 onConflict: 'profile_id'
             })
             .select('*')

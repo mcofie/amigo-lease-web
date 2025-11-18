@@ -1,21 +1,18 @@
-import type {Config} from 'tailwindcss'
+// tailwind.config.ts
+import type { Config } from 'tailwindcss'
+import ui from '@nuxt/ui/tailwind.config'
 
-export default <Partial<Config>>{
+export default {
+    presets: [ui],
     content: [
-        './components/**/*.{vue,js,ts}',
-        './layouts/**/*.vue',
-        './pages/**/*.vue',
-        './app.vue'
+        './src/app.{js,ts,vue}',
+        './src/components/**/*.{vue,js,ts}',
+        './src/layouts/**/*.{vue,js,ts}',
+        './src/pages/**/*.{vue,js,ts}',
+        './src/plugins/**/*.{js,ts}',
     ],
     theme: {
-        extend: {
-            colors: {
-                brand: {
-                    DEFAULT: '#111827', // near-black
-                    accent: '#4F46E5'   // indigo-600
-                }
-            }
-        }
+        extend: {}
     },
     plugins: []
-}
+} satisfies Config

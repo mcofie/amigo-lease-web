@@ -56,3 +56,31 @@ export interface RoommateTraits {
     created_at: string
     updated_at: string
 }
+
+export interface RoommatePreferences {
+    profile_id: string
+
+    preferred_age_min: number | null
+    preferred_age_max: number | null
+
+    allow_male: boolean
+    allow_female: boolean
+    allow_other: boolean
+
+    must_allow_pets: boolean | null
+    must_be_pet_friendly: boolean | null
+
+    allow_smokers: boolean
+    require_non_smoker: boolean
+
+    min_cleanliness_level: number | null
+    max_noise_tolerance: number | null
+
+    preferred_home_vibe: HomeVibe | null
+
+    prefers_works_from_home: boolean | null
+    avoids_works_from_home: boolean | null
+
+    created_at: string
+    updated_at: string
+}

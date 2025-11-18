@@ -11,5 +11,6 @@
     "resolveJsonModule": true,
     "types": ["nuxt", "@types/node"]
   },
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules"],
+  "extends": "./.nuxt/tsconfig.json",
 }

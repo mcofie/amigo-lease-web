@@ -1,8 +1,10 @@
 // src/composables/useProfile.ts
-import type { Profile, ProfileRole } from '~/types/amigo'
+import {ref} from 'vue'
+import {useNuxtApp} from '#app'
+import type {Profile, ProfileRole} from '~/types/amigo'
 
 export const useProfile = () => {
-    const { $supabase } = useNuxtApp()
+    const {$supabase} = useNuxtApp()
 
     const profile = ref<Profile | null>(null)
     const loading = ref(false)
@@ -13,7 +15,7 @@ export const useProfile = () => {
         error.value = null
 
         const {
-            data: { user },
+            data: {user},
             error: authError
         } = await $supabase.auth.getUser()
 
@@ -23,8 +25,9 @@ export const useProfile = () => {
             return
         }
 
-        const { data, error: profileError } = await $supabase
-            .from('amigo.profiles')
+        const {data, error: profileError} = await $supabase
+            .schema("amigo")
+            .from('profiles')
             .select('*')
             .eq('id', user.id)
             .maybeSingle()
@@ -32,7 +35,7 @@ export const useProfile = () => {
         if (profileError) {
             error.value = profileError.message
         } else {
-            profile.value = data as Profile | null
+            profile.value = (data as Profile) ?? null
         }
 
         loading.value = false
@@ -44,7 +47,7 @@ export const useProfile = () => {
         error.value = null
 
         const {
-            data: { user },
+            data: {user},
             error: authError
         } = await $supabase.auth.getUser()
 
@@ -53,14 +56,15 @@ export const useProfile = () => {
             return null
         }
 
-        const { data, error: upsertError } = await $supabase
-            .from('amigo.profiles')
+        const {data, error: upsertError} = await $supabase
+            .schema("amigo")
+            .from('profiles')
             .upsert(
                 {
                     id: user.id,
                     ...payload
-                },
-                { onConflict: 'id' }
+                } as any,                        // cast to avoid TS complaining about `never`
+                {onConflict: 'id'}
             )
             .select('*')
             .maybeSingle()
@@ -77,7 +81,6 @@ export const useProfile = () => {
     const setRole = async (role: ProfileRole) => {
         return upsertProfile({
             role,
-            // keep simple defaults
             has_place: role === 'host' || role === 'both',
             looking_for_place: role === 'seeker' || role === 'both'
         })
