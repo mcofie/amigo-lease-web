@@ -6,6 +6,21 @@ export type ProfileRole = 'seeker' | 'host' | 'both'
 export type SleepSchedule = 'early_bird' | 'regular' | 'night_owl'
 export type HomeVibe = 'sanctuary' | 'social_hub' | 'flexible'
 
+export interface QuizQuestion {
+    id: string
+    answer_key: string
+    question_text: string
+    help_text: string | null
+    input_type: 'scale' | 'boolean' | 'choice' | 'multi_choice'
+    scale_min: number | null
+    scale_max: number | null
+    scale_min_label: string | null
+    scale_max_label: string | null
+    options: string[] | null   // we’ll parse JSON to string[]
+    weight: number
+    category: string | null
+}
+
 export interface Profile {
     id: string
     full_name: string | null

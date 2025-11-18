@@ -1,13 +1,19 @@
 <!-- src/pages/onboarding/basics.vue -->
 <template>
-  <UApp>
-    <div class="min-h-screen flex items-center justify-center px-4 py-10 bg-gray-50">
-      <UContainer class="max-w-lg w-full space-y-6">
+  <div
+      class="min-h-screen w-full bg-gradient-to-b from-orange-100 via-rose-50 to-white flex items-center justify-center px-4 py-10">
+    <div class="w-full max-w-lg">
+      <div
+          class="bg-white/90 border border-orange-100 shadow-[0_18px_40px_rgba(0,0,0,0.06)] rounded-3xl p-6 md:p-8 space-y-6">
 
         <!-- Step header -->
-        <div class="flex items-center justify-between text-xs text-gray-500">
-          <span>Step 2 of 4</span>
-          <span>Basics</span>
+        <div class="flex items-center justify-between text-[11px] text-gray-500">
+          <div
+              class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-50 text-orange-700 border border-orange-100">
+            <span>📍</span>
+            <span class="font-medium tracking-wide uppercase">Step 2 · Basics</span>
+          </div>
+          <span>2 of 4</span>
         </div>
 
         <!-- Title -->
@@ -22,14 +28,15 @@
 
         <!-- Loading state -->
         <div v-if="loading" class="py-8 text-center text-xs text-gray-500">
-          Loading your details...
+          <div class="mx-auto mb-3 h-8 w-8 border-2 border-dashed border-gray-300 rounded-full animate-spin"/>
+          Loading your details…
         </div>
 
         <!-- Main card -->
-        <UCard v-else>
+        <UCard v-else :ui="{ base: 'rounded-2xl border border-gray-200' }">
           <template #header>
             <div class="space-y-1">
-              <p class="text-sm font-medium">Where and when?</p>
+              <p class="text-sm font-medium text-gray-900">Where and when?</p>
               <p class="text-xs text-gray-500">
                 You can always update this later if your plans change.
               </p>
@@ -140,7 +147,7 @@
                   :loading="submitting"
                   class="sm:flex-1"
               >
-                {{ submitting ? 'Saving...' : 'Continue to quiz' }}
+                {{ submitting ? 'Saving…' : 'Continue to quiz' }}
               </UButton>
 
               <UButton
@@ -157,20 +164,24 @@
           </form>
         </UCard>
 
-      </UContainer>
+      </div>
     </div>
-  </UApp>
+  </div>
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted } from 'vue'
-import { useRouter } from '#imports'
-import { useNuxtApp } from '#app'
-import { useProfile } from '~/composables/useProfile'
+definePageMeta({
+  layout: 'onboarding'
+})
+
+import {ref, reactive, onMounted} from 'vue'
+import {useRouter} from '#imports'
+import {useNuxtApp} from '#app'
+import {useProfile} from '~/composables/useProfile'
 
 const router = useRouter()
-const { $supabase } = useNuxtApp()
-const { profile, upsertProfile, fetchProfile, error } = useProfile()
+const {$supabase} = useNuxtApp()
+const {profile, upsertProfile, fetchProfile, error} = useProfile()
 
 const loading = ref(true)
 const submitting = ref(false)
@@ -187,7 +198,7 @@ const form = reactive({
 onMounted(async () => {
   // Ensure user is authenticated, otherwise send to auth
   const {
-    data: { user }
+    data: {user}
   } = await $supabase.auth.getUser()
 
   if (!user) {

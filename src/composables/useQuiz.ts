@@ -1,7 +1,7 @@
 // src/composables/useQuiz.ts
 import {ref} from 'vue'
 import {useNuxtApp} from '#app'
-import type {HomeVibe, RoommateTraits, SleepSchedule} from '~/types/amigo'
+import type {HomeVibe, RoommateTraits, SleepSchedule, QuizQuestion} from '~/types/amigo'
 
 export interface QuizAnswers {
     cleanliness?: number
@@ -20,9 +20,45 @@ export interface QuizAnswers {
 export const useQuiz = () => {
     const {$supabase} = useNuxtApp()
 
+    const questions = ref<QuizQuestion[]>([])
     const answers = ref<QuizAnswers>({})
     const loading = ref(false)
     const error = ref<string | null>(null)
+
+    const loadQuizQuestions = async (numQuestions = 8) => {
+        loading.value = true
+        error.value = null
+
+        const {data, error: rpcError} = await $supabase
+            .schema('amigo')
+            .rpc(
+                'get_quiz_questions',
+                {num_questions: numQuestions}
+            )
+
+        if (rpcError) {
+            error.value = rpcError.message
+            loading.value = false
+            return
+        }
+
+        // Normalise options json -> string[]
+        questions.value = (data || []).map((q: any) => ({
+            id: q.id,
+            answer_key: q.answer_key,
+            question_text: q.question_text,
+            help_text: q.help_text ?? null,
+            input_type: q.input_type,
+            scale_min: q.scale_min,
+            scale_max: q.scale_max,
+            scale_min_label: q.scale_min_label,
+            scale_max_label: q.scale_max_label,
+            options: q.options ? (q.options as string[]) : null,
+            weight: q.weight ?? 1,
+            category: q.category ?? null
+        }))
+        loading.value = false
+    }
 
     const loadExistingTraits = async () => {
         loading.value = true
@@ -47,7 +83,6 @@ export const useQuiz = () => {
             .maybeSingle()
 
         if (traitsError) {
-            // It's okay if there's simply no row yet
             if ((traitsError as any).code !== 'PGRST116') {
                 error.value = traitsError.message
             }
@@ -70,8 +105,8 @@ export const useQuiz = () => {
         loading.value = false
     }
 
-    const setAnswer = (key: keyof QuizAnswers, value: unknown) => {
-        answers.value[key] = value
+    const setAnswer = (answerKey: string, value: unknown) => {
+        answers.value[answerKey] = value
     }
 
     const buildTraitsPayload = (profileId: string): Partial<RoommateTraits> => {
@@ -110,9 +145,7 @@ export const useQuiz = () => {
         const {data, error: upsertError} = await $supabase
             .schema('amigo')
             .from('roommate_traits')
-            .upsert(payload as any, {
-                onConflict: 'profile_id'
-            })
+            .upsert(payload, {onConflict: 'profile_id'})
             .select('*')
             .maybeSingle()
 
@@ -127,9 +160,11 @@ export const useQuiz = () => {
     }
 
     return {
+        questions,
         answers,
         loading,
         error,
+        loadQuizQuestions,
         loadExistingTraits,
         setAnswer,
         saveTraits

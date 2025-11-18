@@ -1,104 +1,165 @@
+<!-- src/pages/auth.vue -->
 <template>
-  <UApp>
-    <div class="min-h-screen flex items-center justify-center px-4 py-10">
-      <UContainer class="max-w-sm w-full">
-        <UCard>
-          <template #header>
-            <div class="space-y-1">
-              <h1 class="text-lg font-semibold">Sign in to Amigo Lease</h1>
-              <p class="text-xs text-gray-500">
-                Use your email to continue and we’ll keep you signed in.
-              </p>
-            </div>
-          </template>
+  <div class="min-h-screen bg-gray-50 flex items-center justify-center px-4 py-8">
+    <div class="w-full max-w-md space-y-6">
+      <!-- Title -->
+      <div class="text-center space-y-1">
+        <h1 class="text-2xl font-semibold">
+          Welcome to Amigo Lease
+        </h1>
+        <p class="text-sm text-gray-500">
+          Sign in or create an account to save your quiz, matches, and chats.
+        </p>
+      </div>
 
-          <form class="space-y-4" @submit.prevent="handleSignIn">
-            <UFormGroup label="Email" name="email">
-              <UInput
-                  v-model="email"
-                  type="email"
-                  placeholder="you@example.com"
-                  autocomplete="email"
-                  required
-              />
-            </UFormGroup>
+      <!-- Card -->
+      <div class="bg-white border border-gray-200 rounded-2xl shadow-sm p-5 space-y-4">
+        <!-- Tabs -->
+        <div class="flex rounded-lg bg-gray-100 p-1 text-xs">
+          <button
+              type="button"
+              class="flex-1 px-3 py-1.5 rounded-md"
+              :class="mode === 'signin'
+              ? 'bg-white text-gray-900 shadow'
+              : 'text-gray-500'"
+              @click="mode = 'signin'"
+          >
+            Sign in
+          </button>
+          <button
+              type="button"
+              class="flex-1 px-3 py-1.5 rounded-md"
+              :class="mode === 'signup'
+              ? 'bg-white text-gray-900 shadow'
+              : 'text-gray-500'"
+              @click="mode = 'signup'"
+          >
+            Create account
+          </button>
+        </div>
 
-            <UFormGroup label="Password" name="password">
-              <UInput
-                  v-model="password"
-                  type="password"
-                  placeholder="••••••••"
-                  autocomplete="current-password"
-                  required
-              />
-            </UFormGroup>
+        <form class="space-y-4" @submit.prevent="handleSubmit">
+          <div>
+            <label class="block text-sm font-medium mb-1">Email</label>
+            <input
+                v-model="email"
+                type="email"
+                required
+                class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-orange-500 focus:border-orange-500"
+                placeholder="you@example.com"
+            />
+          </div>
 
-            <UButton
-                type="submit"
-                color="primary"
-                :loading="loading"
-                block
-            >
-              Continue
-            </UButton>
-
-            <p v-if="error" class="text-xs text-red-500 text-center mt-2">
-              {{ error }}
+          <div>
+            <label class="block text-sm font-medium mb-1">Password</label>
+            <input
+                v-model="password"
+                type="password"
+                required
+                minlength="6"
+                class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-orange-500 focus:border-orange-500"
+                placeholder="At least 6 characters"
+            />
+            <p class="mt-1 text-[11px] text-gray-400">
+              For now we’re keeping it simple with email + password.
             </p>
-          </form>
-        </UCard>
-      </UContainer>
+          </div>
+
+          <p v-if="errorMessage" class="text-xs text-red-500">
+            {{ errorMessage }}
+          </p>
+
+          <p v-if="infoMessage" class="text-xs text-emerald-600">
+            {{ infoMessage }}
+          </p>
+
+          <button
+              type="submit"
+              class="w-full text-sm px-4 py-2 rounded-lg bg-orange-500 text-white hover:bg-orange-600 disabled:opacity-60"
+              :disabled="loading"
+          >
+            {{ loading ? (mode === 'signin' ? 'Signing in…' : 'Creating account…') : submitLabel }}
+          </button>
+        </form>
+
+        <p class="text-[11px] text-gray-400 text-center">
+          By continuing you agree to keep things respectful and honest on Amigo Lease.
+        </p>
+      </div>
+
+      <div class="text-center text-[11px] text-gray-400">
+        Having trouble? You can always reset your password from the sign-in form later.
+      </div>
     </div>
-  </UApp>
+  </div>
 </template>
 
 <script setup lang="ts">
+import {ref, computed} from 'vue'
+import {useRouter, useRoute, useNuxtApp} from '#imports'
+
 const router = useRouter()
+const route = useRoute()
 const {$supabase} = useNuxtApp()
 
+type Mode = 'signin' | 'signup'
+
+const mode = ref<Mode>('signin')
 const email = ref('')
 const password = ref('')
 const loading = ref(false)
-const error = ref<string | null>(null)
+const errorMessage = ref<string | null>(null)
+const infoMessage = ref<string | null>(null)
 
-const handleSignIn = async () => {
+const submitLabel = computed(() =>
+    mode.value === 'signin' ? 'Sign in' : 'Create account'
+)
+
+const redirectTo = computed(() => {
+  const q = route.query.redirect as string | undefined
+  return q || '/onboarding/role'
+})
+
+const handleSubmit = async () => {
   if (loading.value) return
   loading.value = true
-  error.value = null
+  errorMessage.value = null
+  infoMessage.value = null
 
-  // Simple: try sign-in, if user doesn’t exist, sign them up
-  const {data, error: signInError} = await $supabase.auth.signInWithPassword({
-    email: email.value,
-    password: password.value
-  })
+  try {
+    if (mode.value === 'signup') {
+      const {data, error} = await $supabase.auth.signUp({
+        email: email.value,
+        password: password.value
+      })
 
-  if (signInError) {
-    // Try sign-up then sign-in
-    const {error: signUpError} = await $supabase.auth.signUp({
-      email: email.value,
-      password: password.value
-    })
+      if (error) throw error
 
-    if (signUpError) {
-      error.value = signUpError.message
-      loading.value = false
-      return
+      // If email confirmation is enabled, Supabase may require verification
+      if (data?.user) {
+        infoMessage.value = 'Account created. Redirecting…'
+        await router.push('/onboarding/role')
+      } else {
+        infoMessage.value = 'Check your email to confirm your account.'
+      }
+    } else {
+      const {data, error} = await $supabase.auth.signInWithPassword({
+        email: email.value,
+        password: password.value
+      })
+
+      if (error) throw error
+
+      if (data?.user) {
+        infoMessage.value = 'Signed in. Redirecting…'
+        await router.push(redirectTo.value)
+      }
     }
-
-    // sign in again after signup
-    const {error: secondSignInError} = await $supabase.auth.signInWithPassword({
-      email: email.value,
-      password: password.value
-    })
-
-    if (secondSignInError) {
-      error.value = secondSignInError.message
-      loading.value = false
-      return
-    }
+  } catch (err: any) {
+    console.error(err)
+    errorMessage.value = err?.message ?? 'Something went wrong. Please try again.'
+  } finally {
+    loading.value = false
   }
-
-  loading.value = false
-  router.push('/onboarding/role')
 }
 </script>
