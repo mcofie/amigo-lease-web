@@ -39,25 +39,25 @@ export const useMatches = () => {
             return
         }
 
-        const {data, error: matchError} = await $supabase
+        const {data, error: matchError} = await ($supabase as any)
             .schema('amigo')
             .from('matches')
             .select(`
-        id,
-        profile_id,
-        matched_profile_id,
-        score,
-        compatibility_summary,
-        matched_profile:profiles!matched_profile_id (
-          id,
-          full_name,
-          city,
-          area,
-          avatar_url
-        )
-      `)
+    id,
+    profile_id,
+    matched_profile_id:other_profile_id,
+    score,
+    matched_profile:profiles!matches_other_profile_id_fkey (
+      id,
+      full_name,
+      city,
+      area,
+      avatar_url
+    )
+  `)
             .eq('profile_id', user.id)
             .order('score', {ascending: false})
+
 
         if (matchError) {
             error.value = matchError.message
@@ -65,7 +65,7 @@ export const useMatches = () => {
             return
         }
 
-        matches.value = data as MatchRow[]
+        matches.value = (data || []) as MatchRow[]
         loading.value = false
     }
 

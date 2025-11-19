@@ -30,6 +30,7 @@ export const useQuiz = () => {
         error.value = null
 
         const { data, error: rpcError } = await ($supabase as any)
+            .schema('amigo')
             .rpc('get_quiz_questions', { num_questions: numQuestions })
 
         if (rpcError) {

@@ -26,7 +26,8 @@ export const useListings = () => {
         error.value = null
 
         const { data, error: fetchError } = await ($supabase as any)
-            .from('amigo.listings')
+            .schema('amigo')
+            .from('listings')
             .select('*')
             .order('created_at', { ascending: false })
 
@@ -57,7 +58,8 @@ export const useListings = () => {
         }
 
         const { data, error: fetchError } = await ($supabase as any)
-            .from('amigo.listings')
+            .schema('amigo')
+            .from('listings')
             .select('*')
             .eq('host_profile_id', user.id)
             .order('created_at', { ascending: false })
@@ -88,7 +90,8 @@ export const useListings = () => {
         }
 
         const { data, error: insertError } = await ($supabase as any)
-            .from('amigo.listings')
+            .schema('amigo')
+            .from('listings')
             .insert({
                 host_profile_id: user.id,
                 title: payload.title,
