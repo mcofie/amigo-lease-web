@@ -29,8 +29,7 @@ export const useQuiz = () => {
         loading.value = true
         error.value = null
 
-        const { data, error: rpcError } = await $supabase
-            .schema('amigo')
+        const { data, error: rpcError } = await ($supabase as any)
             .rpc('get_quiz_questions', { num_questions: numQuestions })
 
         if (rpcError) {
@@ -39,7 +38,6 @@ export const useQuiz = () => {
             return
         }
 
-        // normalise options json -> string[]
         questions.value = (data || []).map((q: any) => ({
             id: q.id,
             answer_key: q.answer_key,
@@ -160,7 +158,7 @@ export const useQuiz = () => {
         return payload
     }
 
-    const saveTraits = async () => {
+    const saveTraits = async (): Promise<RoommateTraits | null> => {
         loading.value = true
         error.value = null
 
@@ -191,6 +189,12 @@ export const useQuiz = () => {
         }
 
         loading.value = false
+
+        if (!data) {
+            // no row returned – be explicit
+            return null
+        }
+
         return data as RoommateTraits
     }
 

@@ -34,7 +34,7 @@ export const useChatThread = () => {
         error.value = null
 
         const {
-            data: {user},
+            data: { user },
             error: authError
         } = await $supabase.auth.getUser()
 
@@ -44,8 +44,7 @@ export const useChatThread = () => {
             return null
         }
 
-        // You’ll need to create this RPC in SQL
-        const {data, error: rpcError} = await $supabase
+        const { data, error: rpcError } = await ($supabase as any)
             .rpc('amigo_ensure_direct_thread', {
                 other_profile_id: otherProfileId
             })
@@ -106,7 +105,7 @@ export const useChatThread = () => {
         if (!content.trim()) return
 
         const {
-            data: {user},
+            data: { user },
             error: authError
         } = await $supabase.auth.getUser()
 
@@ -115,13 +114,15 @@ export const useChatThread = () => {
             return
         }
 
-        const {data, error: insertError} = await $supabase
+        const { data, error: insertError } = await ($supabase as any)
             .from('amigo.messages')
-            .insert({
-                thread_id: threadId,
-                sender_profile_id: user.id,
-                content
-            })
+            .insert(
+                {
+                    thread_id: threadId,
+                    sender_profile_id: user.id,
+                    content
+                } as any
+            )
             .select('*')
             .maybeSingle()
 
@@ -130,7 +131,13 @@ export const useChatThread = () => {
             return
         }
 
-        messages.value.push(data as ChatMessage)
+        if (!data) {
+            // nothing returned – nothing to push
+            return
+        }
+
+        const msg = data as ChatMessage
+        messages.value.push(msg)
     }
 
     return {

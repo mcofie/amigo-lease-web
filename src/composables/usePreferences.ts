@@ -153,7 +153,6 @@ export const usePreferences = () => {
 
         const payload: Partial<RoommatePreferences> = {
             profile_id: user.id,
-
             preferred_age_min: numOrNull(form.preferred_age_min),
             preferred_age_max: numOrNull(form.preferred_age_max),
 
@@ -170,9 +169,7 @@ export const usePreferences = () => {
             min_cleanliness_level: numOrNull(form.min_cleanliness_level),
             max_noise_tolerance: numOrNull(form.max_noise_tolerance),
 
-            // 🔒 IMPORTANT:
-            // do NOT send `preferred_home_vibe` enum value until it's aligned with DB.
-            // preferred_home_vibe: null,
+            // preferred_home_vibe intentionally omitted
 
             prefers_works_from_home: boolOrNull(form.prefers_works_from_home),
             avoids_works_from_home: boolOrNull(form.avoids_works_from_home)
@@ -187,6 +184,12 @@ export const usePreferences = () => {
 
         if (upsertError) {
             error.value = upsertError.message
+            loading.value = false
+            return null
+        }
+
+        if (!data) {
+            // nothing came back – be explicit
             loading.value = false
             return null
         }

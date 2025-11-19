@@ -30,7 +30,7 @@
           <!-- SEEKER -->
           <UCard
               class="cursor-pointer transition hover:shadow-md hover:-translate-y-0.5"
-              :ui="{ base: 'rounded-2xl border border-gray-200 p-4' }"
+              :ui="{ root: 'rounded-2xl border border-gray-200 p-4' }"
               :disabled="loading"
               @click="selectRole('seeker')"
           >
@@ -50,7 +50,7 @@
           <!-- HOST -->
           <UCard
               class="cursor-pointer transition hover:shadow-md hover:-translate-y-0.5"
-              :ui="{ base: 'rounded-2xl border border-gray-200 p-4' }"
+              :ui="{ root: 'rounded-2xl border border-gray-200 p-4' }"
               :disabled="loading"
               @click="selectRole('host')"
           >
@@ -70,7 +70,7 @@
           <!-- BOTH -->
           <UCard
               class="cursor-pointer transition hover:shadow-md hover:-translate-y-0.5"
-              :ui="{ base: 'rounded-2xl border border-gray-200 p-4' }"
+              :ui="{ root: 'rounded-2xl border border-gray-200 p-4' }"
               :disabled="loading"
               @click="selectRole('both')"
           >
@@ -97,7 +97,7 @@
         <div v-if="!checkingSession" class="flex justify-between items-center pt-2 text-[11px]">
           <UButton
               variant="link"
-              color="gray"
+              color="secondary"
               size="xs"
               :disabled="loading"
               @click="goBack"
@@ -119,7 +119,7 @@
 definePageMeta({
   layout: 'onboarding'
 })
-
+import { ref, onMounted } from 'vue'
 import type {ProfileRole} from '~/types/amigo'
 import {useRouter, useNuxtApp} from '#imports'
 import {useProfile} from '~/composables/useProfile'

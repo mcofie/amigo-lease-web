@@ -455,37 +455,36 @@ const handleSubmit = async () => {
   }
 
   // 2) Insert amenities
+// 2) Insert amenities
   try {
     const amenityPayload = selectedAmenities.value.map(key => ({
       listing_id: listingId,
-      amenity_key: key
+      amenity_key: key,
     }))
 
     if (amenityPayload.length) {
-      await $supabase
-          .schema('amigo')
-          .from('listing_amenities')
-          .insert(amenityPayload)
+      await ($supabase as any)
+          .from('amigo.listing_amenities')
+          .insert(amenityPayload as any[])
     }
   } catch (e) {
     console.error('Failed to save amenities', e)
-    // you can optionally surface a small message, but don’t block listing creation
   }
 
   // 3) Insert photos
+// 3) Insert photos
   try {
     const urls = photoInputs.value.map(u => u.trim()).filter(Boolean)
     if (urls.length) {
       const photoPayload = urls.map((url, index) => ({
         listing_id: listingId,
         url,
-        sort_order: index
+        sort_order: index,
       }))
 
-      await $supabase
-          .schema('amigo')
-          .from('listing_photos')
-          .insert(photoPayload)
+      await ($supabase as any)
+          .from('amigo.listing_photos')
+          .insert(photoPayload as any[])
     }
   } catch (e) {
     console.error('Failed to save photos', e)

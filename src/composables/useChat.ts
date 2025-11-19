@@ -109,13 +109,15 @@ export const useChat = () => {
             return
         }
 
-        const {data, error: insertError} = await $supabase
+        const { data, error: insertError } = await ($supabase as any)
             .from('amigo.messages')
-            .insert({
-                thread_id: threadId,
-                sender_profile_id: user.id,
-                content: content.trim()
-            })
+            .insert(
+                {
+                    thread_id: threadId,
+                    sender_profile_id: user.id,
+                    content: content.trim()
+                } as any
+            )
             .select('*')
             .maybeSingle()
 
@@ -136,16 +138,17 @@ export const useChat = () => {
         sending.value = false
     }
 
+
     const markMessagesRead = async (threadId: string) => {
         const {
-            data: {user}
+            data: { user }
         } = await $supabase.auth.getUser()
         if (!user) return
 
-        await $supabase
+        await ($supabase as any)
             .schema('amigo')
             .from('messages')
-            .update({read_at: new Date().toISOString()})
+            .update({ read_at: new Date().toISOString() })
             .eq('thread_id', threadId)
             .neq('sender_profile_id', user.id)
             .is('read_at', null)

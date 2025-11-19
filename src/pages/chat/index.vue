@@ -218,10 +218,21 @@ const loadData = async () => {
     return
   }
 
-  const mapProfiles: Record<string, any> = {}
-  for (const p of profilesData || []) {
-    mapProfiles[p.id] = p
+  const mapProfiles: Record<string, { full_name?: string | null; city?: string | null; area?: string | null }> = {}
+
+  for (const p of (profilesData || []) as {
+    id: string
+    full_name?: string | null
+    city?: string | null
+    area?: string | null
+  }[]) {
+    mapProfiles[p.id] = {
+      full_name: p.full_name ?? null,
+      city: p.city ?? null,
+      area: p.area ?? null
+    }
   }
+
   profilesById.value = mapProfiles
 
   // 4) Load match scores for these people (if exist)
@@ -237,8 +248,11 @@ const loadData = async () => {
     console.warn(matchesErr)
   } else {
     const mapMatches: Record<string, { score: number | null }> = {}
-    for (const m of matchesData || []) {
-      mapMatches[m.other_profile_id] = {score: m.score}
+    for (const m of (matchesData || []) as {
+      other_profile_id: string
+      score: number | null
+    }[]) {
+      mapMatches[m.other_profile_id] = { score: m.score }
     }
     matchesByOtherId.value = mapMatches
   }
@@ -284,9 +298,22 @@ const threadsWithMeta = computed<ThreadWithMeta[]>(() => {
 
 // helpers
 const initials = (name: string): string => {
-  const parts = name.trim().split(' ')
-  if (parts.length === 1) return parts[0].charAt(0).toUpperCase()
-  return (parts[0].charAt(0) + parts[1].charAt(0)).toUpperCase()
+  const trimmed = name.trim()
+  if (!trimmed) return '?' // fallback if name is empty
+
+  const parts = trimmed.split(/\s+/).filter(Boolean)
+  const first = parts[0]?.charAt(0)
+  const second = parts[1]?.charAt(0)
+
+  if (first && second) {
+    return (first + second).toUpperCase()
+  }
+
+  if (first) {
+    return first.toUpperCase()
+  }
+
+  return '?'
 }
 
 const formatTime = (iso: string) => {

@@ -519,15 +519,23 @@ const answerAndAdvance = (key: string, value: unknown) => {
 }
 
 const goPrev = () => {
+  // If there’s a previous question in the same section, just move back one
   if (currentQuestionIndex.value > 0) {
     currentQuestionIndex.value--
     return
   }
+
+  // Otherwise, move to the previous section (if any) and go to its last question
   if (currentSectionIndex.value > 0) {
     currentSectionIndex.value--
-    const prevQuestions =
-        sections.value[currentSectionIndex.value].questions
-    currentQuestionIndex.value = prevQuestions.length - 1
+
+    const prevSection = sections.value[currentSectionIndex.value]
+    if (!prevSection || !prevSection.questions || prevSection.questions.length === 0) {
+      currentQuestionIndex.value = 0
+      return
+    }
+
+    currentQuestionIndex.value = prevSection.questions.length - 1
   }
 }
 

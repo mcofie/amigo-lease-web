@@ -120,10 +120,15 @@ const draft = ref('')
 const headerTitle = ref('Chat')
 const subtitle = ref<string | null>('')
 
+interface ChatThreadRow {
+  title?: string | null
+  context?: string | null
+}
+
 // Optional: load some basic thread info (if you have amigo.chat_threads)
 const loadThreadInfo = async () => {
   const {
-    data: {user}
+    data: { user }
   } = await $supabase.auth.getUser()
 
   if (!user) {
@@ -131,19 +136,25 @@ const loadThreadInfo = async () => {
     return
   }
 
-  // If you have a chat_threads table with metadata, load it here
-  // Example (adjust columns to your schema):
-  const {data} = await $supabase
+  const { data, error } = await $supabase
       .schema('amigo')
       .from('chat_threads')
-      .select('*')
+      .select('title, context') // only what you need
       .eq('id', threadId)
       .maybeSingle()
 
-  if (data) {
-    // adapt these fields to your actual schema
-    headerTitle.value = data.title ?? 'Chat'
-    subtitle.value = data.context ?? null
+  if (error) {
+    // optional: handle/log error
+    headerTitle.value = 'Chat'
+    subtitle.value = null
+    return
+  }
+
+  const thread = data as ChatThreadRow | null
+
+  if (thread) {
+    headerTitle.value = thread.title ?? 'Chat'
+    subtitle.value = thread.context ?? null
   } else {
     headerTitle.value = 'Chat'
     subtitle.value = null

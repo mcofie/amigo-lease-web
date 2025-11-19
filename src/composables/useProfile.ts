@@ -35,7 +35,7 @@ export const useProfile = () => {
         if (profileError) {
             error.value = profileError.message
         } else {
-            profile.value = (data as Profile) ?? null
+            profile.value = data ? (data as Profile) : null
         }
 
         loading.value = false
@@ -74,7 +74,7 @@ export const useProfile = () => {
             return null
         }
 
-        profile.value = data as Profile
+        profile.value = data ? (data as Profile) : null
         return profile.value
     }
 

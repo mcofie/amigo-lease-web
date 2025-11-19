@@ -335,11 +335,22 @@ onMounted(async () => {
 
   const name = profile?.full_name ?? user.email ?? ''
   if (name) {
-    const parts = name.trim().split(' ')
-    if (parts.length === 1) {
-      userInitials.value = parts[0][0]?.toUpperCase() ?? null
+    const trimmed = name.trim()
+
+    if (!trimmed) {
+      userInitials.value = null
     } else {
-      userInitials.value = (parts[0][0] + parts[1][0]).toUpperCase()
+      const parts = trimmed.split(/\s+/).filter(Boolean)
+      const first = parts[0]?.[0]
+      const second = parts[1]?.[0]
+
+      if (first && second) {
+        userInitials.value = (first + second).toUpperCase()
+      } else if (first) {
+        userInitials.value = first.toUpperCase()
+      } else {
+        userInitials.value = null
+      }
     }
   }
 

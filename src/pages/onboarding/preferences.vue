@@ -203,9 +203,9 @@
                     :key="option.value"
                     type="button"
                     class="inline-flex items-center gap-1 px-3 py-1.5 rounded-full border text-xs"
-                    :class="form.preferred_home_vibe === option.value
-                    ? 'border-gray-900 bg-gray-900 text-white'
-                    : 'border-gray-200 text-gray-700 hover:bg-gray-50'"
+                    :class="(form.preferred_home_vibe as any) === option.value
+  ? 'border-gray-900 bg-gray-900 text-white'
+  : 'border-gray-200 text-gray-700 hover:bg-gray-50'"
                     @click="setHomeVibe(option.value)"
                 >
                   <span>{{ option.emoji }}</span>
