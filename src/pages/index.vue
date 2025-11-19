@@ -28,7 +28,7 @@
             <h1
                 class="text-3xl md:text-4xl font-semibold leading-tight text-gray-900 dark:text-gray-50"
             >
-              Find a roommate<br />
+              Find a roommate<br/>
               you’ll actually vibe with.
             </h1>
 
@@ -90,210 +90,11 @@
 
           <!-- RIGHT: VISUAL AREA -->
           <div class="flex justify-center fade-in-up-delayed">
-            <div class="w-full max-w-xs space-y-4">
-              <!-- Mobile-friendly “phone” illustration -->
-              <div
-                  class="md:hidden bg-white/80 dark:bg-gray-900/80 border border-gray-200/80 dark:border-gray-700 rounded-2xl shadow-sm p-4"
-              >
-                <div class="flex items-center justify-between mb-3">
-                  <p class="text-xs font-medium text-gray-700 dark:text-gray-100">
-                    Your vibe snapshot
-                  </p>
-                  <span
-                      class="px-2 py-0.5 rounded-full text-[10px] bg-green-50 text-green-700 border border-green-100 dark:bg-green-500/10 dark:text-green-300 dark:border-green-500/30"
-                  >
-                    Example
-                  </span>
-                </div>
-
-                <div class="flex justify-center">
-                  <svg
-                      viewBox="0 0 120 180"
-                      class="h-40 w-auto text-gray-900 dark:text-gray-50"
-                      role="img"
-                      aria-label="Example of your match snapshot"
-                  >
-                    <!-- phone body -->
-                    <rect
-                        x="16"
-                        y="8"
-                        rx="16"
-                        ry="16"
-                        width="88"
-                        height="164"
-                        class="fill-white stroke-gray-200 dark:fill-gray-900 dark:stroke-gray-700"
-                        stroke-width="2"
-                    />
-                    <!-- top notch -->
-                    <rect
-                        x="44"
-                        y="14"
-                        width="32"
-                        height="4"
-                        rx="2"
-                        class="fill-gray-200 dark:fill-gray-700"
-                    />
-                    <!-- header bar -->
-                    <rect
-                        x="26"
-                        y="26"
-                        width="68"
-                        height="12"
-                        rx="6"
-                        class="fill-orange-100 dark:fill-orange-500/20"
-                    />
-                    <rect
-                        x="30"
-                        y="29"
-                        width="26"
-                        height="6"
-                        rx="3"
-                        class="fill-orange-500/90 dark:fill-orange-400"
-                    />
-                    <!-- match pill -->
-                    <rect
-                        x="34"
-                        y="52"
-                        width="52"
-                        height="10"
-                        rx="5"
-                        class="fill-gray-100 dark:fill-gray-800"
-                    />
-                    <rect
-                        x="38"
-                        y="54"
-                        width="24"
-                        height="6"
-                        rx="3"
-                        class="fill-gray-300 dark:fill-gray-600"
-                    />
-                    <!-- score circle -->
-                    <circle
-                        cx="46"
-                        cy="88"
-                        r="14"
-                        class="fill-orange-100 dark:fill-orange-500/20"
-                    />
-                    <text
-                        x="46"
-                        y="92"
-                        text-anchor="middle"
-                        class="fill-orange-600 dark:fill-orange-300 text-[10px]"
-                    >
-                      82%
-                    </text>
-                    <!-- bars -->
-                    <rect
-                        x="70"
-                        y="80"
-                        width="20"
-                        height="4"
-                        rx="2"
-                        class="fill-gray-200 dark:fill-gray-700"
-                    />
-                    <rect
-                        x="70"
-                        y="88"
-                        width="26"
-                        height="4"
-                        rx="2"
-                        class="fill-gray-200 dark:fill-gray-700"
-                    />
-                    <rect
-                        x="70"
-                        y="96"
-                        width="16"
-                        height="4"
-                        rx="2"
-                        class="fill-gray-200 dark:fill-gray-700"
-                    />
-                    <!-- chips -->
-                    <rect
-                        x="30"
-                        y="120"
-                        width="26"
-                        height="8"
-                        rx="4"
-                        class="fill-gray-100 dark:fill-gray-800"
-                    />
-                    <rect
-                        x="60"
-                        y="120"
-                        width="30"
-                        height="8"
-                        rx="4"
-                        class="fill-gray-100 dark:fill-gray-800"
-                    />
-                    <rect
-                        x="42"
-                        y="132"
-                        width="34"
-                        height="8"
-                        rx="4"
-                        class="fill-gray-100 dark:fill-gray-800"
-                    />
-                  </svg>
-                </div>
-
-                <p class="mt-3 text-xs text-gray-600 dark:text-gray-300">
-                  Your quiz answers become an easy-to-skim profile and compatibility score,
-                  so potential roommates can understand your living style at a glance.
-                </p>
-              </div>
-
-              <!-- Desktop sample cards -->
-              <div class="hidden md:block space-y-4">
-                <!-- Sample Match Card -->
-                <div
-                    class="bg-white/90 dark:bg-gray-900/90 border border-gray-200/80 dark:border-gray-700 rounded-2xl shadow-sm p-5 space-y-3 hover:shadow-md transition-shadow"
-                >
-                  <p class="text-xs text-gray-500 dark:text-gray-400">Sample match</p>
-
-                  <div class="flex items-center justify-between">
-                    <div>
-                      <p class="text-sm font-medium text-gray-900 dark:text-gray-50">
-                        You & Alex
-                      </p>
-                      <p class="text-xs text-gray-500 dark:text-gray-400">
-                        East Legon · 2 bed · ₵2,500
-                      </p>
-                    </div>
-
-                    <div class="text-right">
-                      <p class="text-xs text-gray-500 dark:text-gray-400">Match score</p>
-                      <p class="text-xl font-semibold text-orange-600 dark:text-orange-400">
-                        82%
-                      </p>
-                    </div>
-                  </div>
-
-                  <ul class="text-xs text-gray-600 dark:text-gray-300 space-y-1 mt-2">
-                    <li>✅ Both prefer calm evenings</li>
-                    <li>✅ Similar cleanliness expectations</li>
-                    <li>✅ Budgets in the same range</li>
-                    <li>⚠️ They host friends slightly more often</li>
-                  </ul>
-                </div>
-
-                <!-- How it works -->
-                <div
-                    class="bg-white/90 dark:bg-gray-900/90 border border-gray-200/80 dark:border-gray-700 rounded-2xl shadow-sm p-5 space-y-3 hover:shadow-md transition-shadow"
-                >
-                  <p class="font-medium text-sm text-gray-900 dark:text-gray-50">
-                    How it works
-                  </p>
-
-                  <ol
-                      class="list-decimal ml-4 text-xs text-gray-600 dark:text-gray-300 space-y-1"
-                  >
-                    <li>Take a quick lifestyle quiz (sleep, guests, cleanliness, etc.).</li>
-                    <li>Set your budget, area and non-negotiables.</li>
-                    <li>See roommates & rooms with a clear compatibility score.</li>
-                    <li>Chat, then request a viewing when it feels right.</li>
-                  </ol>
-                </div>
-              </div>
-            </div>
+            <img
+                src="/images/handshake.gif"
+                alt="Amigo Lease animation"
+                class="w-full max-w-[460px]"
+            />
           </div>
         </div>
       </div>
@@ -479,62 +280,96 @@
     </section>
 
     <!-- SECTION: Built for how you live -->
-    <section class="py-12 md:py-16">
-      <div class="max-w-5xl mx-auto px-6 space-y-6">
-        <h2 class="text-xl md:text-2xl font-semibold text-gray-900 dark:text-gray-50">
-          Built for how you actually live — not just where you sleep.
-        </h2>
-        <p class="text-sm text-gray-600 dark:text-gray-300 max-w-2xl">
-          Most platforms only ask for price and location. Amigo Lease goes deeper, so you
-          don’t end up sharing a home with someone whose lifestyle clashes with yours.
-        </p>
+    <section class="py-14 md:py-20 bg-white dark:bg-gray-950">
+      <div class="max-w-5xl mx-auto px-6 space-y-10">
 
-        <div class="grid gap-4 md:grid-cols-3">
+        <!-- Header -->
+        <div class="text-center max-w-2xl mx-auto space-y-2">
+          <h2 class="text-2xl md:text-3xl font-semibold text-gray-900 dark:text-gray-50">
+            Built for how you actually live.
+          </h2>
+          <p class="text-sm text-gray-600 dark:text-gray-300">
+            Not just rooms — real-life compatibility based on habits, boundaries and lifestyle.
+          </p>
+        </div>
+
+        <!-- Cards -->
+        <div class="grid gap-6 md:grid-cols-3">
+
+          <!-- Card -->
           <article
-              class="bg-white/80 dark:bg-gray-900/80 border border-gray-200/70 dark:border-gray-800 rounded-2xl p-4 flex flex-col gap-2"
+              class="rounded-2xl p-5 text-white shadow-lg hover:-translate-y-1 hover:shadow-2xl transition-all duration-200
+               bg-gradient-to-br from-orange-500 to-rose-500 dark:from-orange-600 dark:to-rose-600 relative overflow-hidden"
           >
-            <p class="text-xs font-semibold text-orange-600 dark:text-orange-300 uppercase">
-              Quiz-powered matching
-            </p>
-            <h3 class="text-sm font-medium text-gray-900 dark:text-gray-50">
-              Compatibility score that actually means something
-            </h3>
-            <p class="text-xs text-gray-600 dark:text-gray-300">
-              We ask about routines, social energy, guests, noise, cleanliness and more,
-              then turn it into a simple score and “why this works” breakdown.
+            <div class="text-4xl mb-3">🎯</div>
+            <h3 class="text-base font-semibold">Quiz-powered matching</h3>
+            <p class="text-xs text-white/95 leading-relaxed">
+              We ask about routines, guests, noise, cleanliness and more —
+              then turn it into a compatibility score that actually means something.
             </p>
           </article>
 
+          <!-- Card -->
           <article
-              class="bg-white/80 dark:bg-gray-900/80 border border-gray-200/70 dark:border-gray-800 rounded-2xl p-4 flex flex-col gap-2"
+              class="rounded-2xl p-5 text-white shadow-lg hover:-translate-y-1 hover:shadow-2xl transition-all duration-200
+               bg-gradient-to-br from-orange-500 to-rose-500 dark:from-orange-600 dark:to-rose-600 relative overflow-hidden"
           >
-            <p class="text-xs font-semibold text-orange-600 dark:text-orange-300 uppercase">
-              Hosts & seekers
-            </p>
-            <h3 class="text-sm font-medium text-gray-900 dark:text-gray-50">
-              One flow for rooms & roommates
-            </h3>
-            <p class="text-xs text-gray-600 dark:text-gray-300">
-              Whether you have a spare room or need one, we match you on both the person
-              and the place — not just a long list of random ads.
+            <div class="text-4xl mb-3">🏠</div>
+            <h3 class="text-base font-semibold">Hosts & seekers together</h3>
+            <p class="text-xs text-white/95 leading-relaxed">
+              Whether you have a spare room or need one, you’re matched on both lifestyle
+              and living conditions — not random ads or WhatsApp spams.
             </p>
           </article>
 
+          <!-- Card -->
           <article
-              class="bg-white/80 dark:bg-gray-900/80 border border-gray-200/70 dark:border-gray-800 rounded-2xl p-4 flex flex-col gap-2"
+              class="rounded-2xl p-5 text-white shadow-lg hover:-translate-y-1 hover:shadow-2xl transition-all duration-200
+               bg-gradient-to-br from-orange-500 to-rose-500 dark:from-orange-600 dark:to-rose-600 relative overflow-hidden"
           >
-            <p class="text-xs font-semibold text-orange-600 dark:text-orange-300 uppercase">
-              Dealbreakers upfront
-            </p>
-            <h3 class="text-sm font-medium text-gray-900 dark:text-gray-50">
-              No more awkward “I wish I’d known”
-            </h3>
-            <p class="text-xs text-gray-600 dark:text-gray-300">
-              Set clear non-negotiables around smoking, pets, visitors and bills so you
+            <div class="text-4xl mb-3">🚦</div>
+            <h3 class="text-base font-semibold">Dealbreakers upfront</h3>
+            <p class="text-xs text-white/95 leading-relaxed">
+              Set non-negotiables like smoking, pets, visitors and bills so you
               only see matches that respect your boundaries.
             </p>
           </article>
+
         </div>
+
+        <!-- CTA BUTTON -->
+        <!-- CTA BUTTONS -->
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-3 pt-6 fade-in-up">
+
+          <!-- Primary CTA -->
+          <button
+              @click="goToOnboarding"
+              class="relative px-7 py-3 rounded-full bg-black text-white text-sm font-medium shadow-sm
+           hover:bg-gray-900 transition-all select-none
+           dark:bg-white dark:text-black dark:hover:bg-gray-100
+           group overflow-hidden"
+          >
+            <!-- Glow effect -->
+            <span
+                class="absolute inset-0 rounded-full opacity-0 group-hover:opacity-20 transition-opacity
+             bg-gradient-to-r from-orange-500 to-rose-500 blur-xl"
+            ></span>
+
+            <span class="relative z-10">Start now</span>
+          </button>
+
+          <!-- Secondary (Ghost) CTA -->
+          <button
+              @click="goToOnboarding"
+              class="px-7 py-3 rounded-full border border-gray-300 bg-white/70 backdrop-blur text-sm font-medium
+           text-gray-700 hover:bg-gray-100 transition-all select-none
+           dark:text-gray-100 dark:border-gray-700 dark:bg-gray-900/60 dark:hover:bg-gray-800"
+          >
+            Take the lifestyle quiz
+          </button>
+
+        </div>
+
       </div>
     </section>
 
@@ -728,7 +563,7 @@
 </template>
 
 <script setup lang="ts">
-import { useRouter } from '#imports'
+import {useRouter} from '#imports'
 
 const router = useRouter()
 
@@ -818,11 +653,10 @@ const goToOnboarding = () => {
 
 /* Card hover */
 .card-lift {
-  transition:
-      transform 0.18s ease-out,
-      box-shadow 0.18s ease-out,
-      background-color 0.18s ease-out,
-      border-color 0.18s ease-out;
+  transition: transform 0.18s ease-out,
+  box-shadow 0.18s ease-out,
+  background-color 0.18s ease-out,
+  border-color 0.18s ease-out;
 }
 
 .card-lift:hover {
