@@ -1,12 +1,14 @@
 <!-- src/pages/chat/index.vue -->
 <template>
-  <div class="min-h-screen bg-gradient-to-b from-orange-50 via-rose-50 to-white">
-    <div class="max-w-5xl mx-auto px-4 py-10 space-y-8">
+  <div class="min-h-screen bg-gradient-to-b from-orange-50 via-rose-50 to-white px-4 py-10">
+    <div class="max-w-4xl mx-auto space-y-8">
       <!-- Header -->
       <header class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div class="space-y-1">
-          <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-white/80 border border-orange-100 text-[11px] text-gray-600 shadow-sm">
-            <span class="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+          <div
+              class="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-white/80 border border-orange-100 text-[11px] text-gray-600 shadow-sm"
+          >
+            <span class="h-1.5 w-1.5 rounded-full bg-emerald-400"/>
             <span>Inbox</span>
           </div>
           <h1 class="text-2xl md:text-3xl font-semibold text-gray-900">
@@ -19,45 +21,54 @@
 
         <button
             type="button"
-            class="self-start inline-flex items-center gap-2 text-xs px-3 py-2 rounded-xl border border-gray-300 bg-white/80 text-gray-700 hover:bg-gray-100 shadow-sm"
+            class="inline-flex items-center justify-center px-4 py-2.5 rounded-xl bg-gray-900 text-white text-sm font-medium hover:bg-black shadow-sm self-start"
             :disabled="loading"
             @click="refresh"
         >
-          <span class="h-1.5 w-1.5 rounded-full" :class="loading ? 'bg-emerald-400 animate-pulse' : 'bg-gray-300'" />
-          <span>{{ loading ? 'Refreshing…' : 'Refresh' }}</span>
+          <span
+              class="mr-2 h-1.5 w-1.5 rounded-full"
+              :class="loading ? 'bg-emerald-400 animate-pulse' : 'bg-gray-300'"
+          />
+          <span>{{ loading ? 'Refreshing…' : 'Refresh inbox' }}</span>
         </button>
       </header>
 
       <!-- Error -->
       <div
           v-if="errorMessage"
-          class="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-xs text-red-700"
+          class="rounded-3xl bg-white/95 border border-red-100 px-6 py-4 text-xs text-red-600 shadow-[0_18px_40px_rgba(0,0,0,0.04)]"
       >
         {{ errorMessage }}
       </div>
 
       <!-- Loading -->
-      <section v-if="loading" class="py-16 flex flex-col items-center justify-center gap-3">
-        <div class="h-10 w-10 border-2 border-dashed rounded-full animate-spin border-gray-400" />
-        <p class="text-sm text-gray-500">Loading your conversations…</p>
+      <section
+          v-else-if="loading"
+          class="py-16 flex flex-col items-center justify-center gap-3"
+      >
+        <div class="h-10 w-10 rounded-full border-2 border-dashed border-gray-400 animate-spin"/>
+        <p class="text-sm text-gray-500">
+          Loading your conversations…
+        </p>
       </section>
 
-      <!-- Empty state -->
-      <section
-          v-else-if="threadsWithMeta.length === 0"
-          class="py-16"
-      >
-        <div class="max-w-md mx-auto text-center rounded-3xl bg-white/90 border border-gray-200 shadow-[0_18px_40px_rgba(0,0,0,0.04)] px-6 py-10 space-y-3">
+      <!-- Empty state (match listings style) -->
+      <section v-else-if="threadsWithMeta.length === 0" class="py-14">
+        <div
+            class="rounded-3xl bg-white/95 border border-dashed border-gray-200
+           px-6 py-14 text-center space-y-3 shadow-[0_18px_40px_rgba(0,0,0,0.04)] text-sm"
+        >
           <div class="text-3xl">💬</div>
-          <p class="text-sm font-medium text-gray-900">
+          <p class="text-gray-900 font-medium">
             You don’t have any conversations yet.
           </p>
-          <p class="text-xs text-gray-500">
+          <p class="text-gray-500 text-xs max-w-sm mx-auto">
             Start by checking your matches and saying hi to someone who fits your vibe.
           </p>
           <button
               type="button"
-              class="mt-3 inline-flex items-center justify-center px-4 py-2.5 rounded-xl bg-gray-900 text-white text-sm hover:bg-black shadow-sm"
+              class="mt-3 inline-flex items-center justify-center px-4 py-2.5
+             rounded-xl bg-gray-900 text-white text-sm hover:bg-black shadow-sm"
               @click="goToMatches"
           >
             Go to matches
@@ -65,22 +76,22 @@
         </div>
       </section>
 
-      <!-- Thread list -->
-      <section v-else class="space-y-3">
+      <!-- Thread list (styled like listings cards) -->
+      <section v-else class="grid gap-4">
         <article
             v-for="item in threadsWithMeta"
             :key="item.thread.id"
-            class="bg-white/95 border border-gray-200 rounded-2xl px-4 py-3.5 shadow-sm flex items-center justify-between gap-3 cursor-pointer hover:shadow-md hover:border-gray-300 transition"
+            class="rounded-3xl bg-white/95 border border-gray-200 px-4 py-4 md:px-5 md:py-5 flex items-center justify-between gap-3 text-sm shadow-sm hover:shadow-md hover:border-gray-300 transition cursor-pointer"
             @click="openChat(item.thread.id)"
         >
-          <div class="flex items-center gap-3">
+          <div class="flex items-center gap-3 min-w-0">
             <div
-                class="w-9 h-9 rounded-full bg-orange-100 flex items-center justify-center text-[11px] font-semibold text-orange-700"
+                class="w-9 h-9 rounded-full bg-orange-100 flex items-center justify-center text-[11px] font-semibold text-orange-700 flex-shrink-0"
             >
               {{ initials(item.otherName) }}
             </div>
-            <div class="space-y-0.5">
-              <p class="text-sm font-medium text-gray-900">
+            <div class="space-y-0.5 min-w-0">
+              <p class="text-sm font-medium text-gray-900 truncate">
                 {{ item.otherName }}
               </p>
               <p class="text-[11px] text-gray-500 line-clamp-1">
@@ -92,8 +103,10 @@
             </div>
           </div>
 
-          <div class="text-right text-[11px] text-gray-400 space-y-1">
-            <p>{{ formatTime(item.thread.last_message_at || item.thread.created_at) }}</p>
+          <div class="text-right text-[11px] text-gray-400 space-y-1 flex-shrink-0">
+            <p>
+              {{ formatTime(item.thread.last_message_at || item.thread.created_at) }}
+            </p>
             <p v-if="item.score != null">
               Match:
               <span class="text-orange-600 font-medium">
@@ -108,8 +121,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
-import { useRouter, useNuxtApp } from '#imports'
+import {ref, computed, onMounted} from 'vue'
+import {useRouter, useNuxtApp} from '#imports'
 
 interface ChatThread {
   id: string
@@ -129,7 +142,7 @@ interface ThreadWithMeta {
 }
 
 const router = useRouter()
-const { $supabase } = useNuxtApp()
+const {$supabase} = useNuxtApp()
 
 const loading = ref(true)
 const errorMessage = ref<string | null>(null)
@@ -148,7 +161,7 @@ const loadData = async () => {
   errorMessage.value = null
 
   const {
-    data: { user },
+    data: {user},
     error: authError
   } = await $supabase.auth.getUser()
 
@@ -159,7 +172,7 @@ const loadData = async () => {
   currentUserId.value = user.id
 
   // 1) Load threads where I'm either side
-  const { data: threadsData, error: threadsErr } = await $supabase
+  const {data: threadsData, error: threadsErr} = await $supabase
       .schema('amigo')
       .from('chat_threads')
       .select('*')
@@ -181,7 +194,8 @@ const loadData = async () => {
   // 2) Figure out "other" profile IDs
   const otherIds = new Set<string>()
   for (const t of threads.value) {
-    const otherId = t.profile_one_id === user.id ? t.profile_two_id : t.profile_one_id
+    const otherId =
+        t.profile_one_id === user.id ? t.profile_two_id : t.profile_one_id
     otherIds.add(otherId)
   }
 
@@ -192,7 +206,7 @@ const loadData = async () => {
   }
 
   // 3) Load those profiles
-  const { data: profilesData, error: profilesErr } = await $supabase
+  const {data: profilesData, error: profilesErr} = await $supabase
       .schema('amigo')
       .from('profiles')
       .select('id, full_name, city, area')
@@ -211,7 +225,7 @@ const loadData = async () => {
   profilesById.value = mapProfiles
 
   // 4) Load match scores for these people (if exist)
-  const { data: matchesData, error: matchesErr } = await $supabase
+  const {data: matchesData, error: matchesErr} = await $supabase
       .schema('amigo')
       .from('matches')
       .select('other_profile_id, score')
@@ -224,7 +238,7 @@ const loadData = async () => {
   } else {
     const mapMatches: Record<string, { score: number | null }> = {}
     for (const m of matchesData || []) {
-      mapMatches[m.other_profile_id] = { score: m.score }
+      mapMatches[m.other_profile_id] = {score: m.score}
     }
     matchesByOtherId.value = mapMatches
   }
@@ -244,7 +258,7 @@ const threadsWithMeta = computed<ThreadWithMeta[]>(() => {
             : t.profile_one_id
 
     const profile = profilesById.value[otherId] || {}
-    const matchInfo = matchesByOtherId.value[otherId] || { score: null }
+    const matchInfo = matchesByOtherId.value[otherId] || {score: null}
 
     const location =
         profile.city && profile.area
@@ -277,7 +291,7 @@ const initials = (name: string): string => {
 
 const formatTime = (iso: string) => {
   const d = new Date(iso)
-  return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+  return d.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})
 }
 
 // actions

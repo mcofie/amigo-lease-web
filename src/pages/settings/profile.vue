@@ -1,11 +1,11 @@
 <template>
-  <div class="min-h-screen bg-gradient-to-b from-orange-50 via-rose-50 to-white flex items-center justify-center px-4 py-10">
-    <div class="w-full max-w-3xl space-y-8">
+  <div class="min-h-screen bg-gradient-to-b from-orange-50 via-rose-50 to-white px-4 py-10">
+    <div class="w-full max-w-4xl mx-auto space-y-8">
       <!-- Header -->
-      <div class="flex items-center justify-between">
+      <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div class="space-y-1">
           <p class="inline-flex items-center gap-1 text-[11px] font-medium tracking-wide text-gray-500 uppercase">
-            <span class="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+            <span class="h-1.5 w-1.5 rounded-full bg-emerald-400"/>
             Profile
           </p>
           <h1 class="text-2xl md:text-3xl font-semibold text-gray-900">
@@ -16,11 +16,23 @@
           </p>
         </div>
 
-        <!-- Simple avatar placeholder -->
-        <div
-            class="hidden sm:flex h-12 w-12 rounded-full bg-gray-900 text-white items-center justify-center text-sm font-semibold shadow-md"
-        >
-          {{ form.full_name ? form.full_name.charAt(0).toUpperCase() : '👤' }}
+        <!-- Right side: avatar + back to quiz -->
+        <div class="flex items-center gap-3">
+          <button
+              type="button"
+              class="inline-flex items-center gap-1.5 text-[11px] px-3 py-1.5 rounded-full border border-gray-200 bg-white/80 text-gray-700 hover:bg-gray-100 hover:border-gray-300 shadow-sm"
+              @click="goToQuiz"
+          >
+            <span>←</span>
+            <span>Back to vibe quiz</span>
+          </button>
+
+          <!-- Simple avatar placeholder -->
+          <div
+              class="hidden sm:flex h-12 w-12 rounded-full bg-gray-900 text-white items-center justify-center text-sm font-semibold shadow-md"
+          >
+            {{ form.full_name ? form.full_name.charAt(0).toUpperCase() : '👤' }}
+          </div>
         </div>
       </div>
 
@@ -46,32 +58,38 @@
             </div>
 
             <!-- Role -->
-            <div class="space-y-1.5">
+            <div class="space-y-2">
               <label class="block text-sm font-medium text-gray-800">
                 I’m here as
               </label>
-              <div class="flex flex-wrap gap-2">
+
+              <div class="flex flex-col gap-2">
                 <button
                     v-for="option in roleOptions"
                     :key="option.value"
                     type="button"
-                    class="px-3 py-1.5 rounded-full text-[11px] border transition shadow-sm"
+                    class="w-full flex items-center justify-start gap-2 px-4 py-2.5 rounded-xl text-xs border transition-all shadow-sm active:scale-[0.98]"
                     :class="form.role === option.value
-                    ? 'bg-gray-900 text-white border-gray-900'
-                    : 'bg-gray-50 text-gray-700 border-gray-200 hover:bg-gray-100'"
+        ? 'bg-gray-900 text-white border-gray-900 shadow'
+        : 'bg-white text-gray-700 border-gray-200 hover:bg-gray-100'"
                     @click="form.role = option.value"
                 >
-                  {{ option.label }}
+                  <span v-if="option.value === 'seeker'" class="text-base">🔎</span>
+                  <span v-if="option.value === 'host'" class="text-base">🏡</span>
+                  <span v-if="option.value === 'both'" class="text-base">✨</span>
+
+                  <span class="font-medium">{{ option.label }}</span>
                 </button>
               </div>
+
               <p class="text-[11px] text-gray-400">
-                This helps us decide whether to show you rooms, roommates, or both.
+                This helps us know whether to show you rooms, roommates, or both.
               </p>
             </div>
           </div>
 
           <!-- Divider -->
-          <div class="h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent" />
+          <div class="h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent"/>
 
           <!-- Short bio -->
           <div class="space-y-1.5">
@@ -158,7 +176,7 @@
         <div class="flex items-center justify-between">
           <div class="space-y-1">
             <p class="inline-flex items-center gap-1 text-[11px] font-medium tracking-wide text-gray-500 uppercase">
-              <span class="h-1.5 w-1.5 rounded-full bg-orange-400" />
+              <span class="h-1.5 w-1.5 rounded-full bg-orange-400"/>
               Saved places
             </p>
             <h2 class="text-lg font-semibold text-gray-900">
@@ -179,7 +197,7 @@
             class="rounded-2xl bg-white/80 border border-gray-200 py-8 flex items-center justify-center"
         >
           <div class="flex flex-col items-center gap-2 text-xs text-gray-500">
-            <div class="h-8 w-8 rounded-full border-2 border-dashed border-gray-300 animate-spin" />
+            <div class="h-8 w-8 rounded-full border-2 border-dashed border-gray-300 animate-spin"/>
             <span>Loading your saved places…</span>
           </div>
         </div>
@@ -267,22 +285,22 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref, onMounted } from 'vue'
-import { useRouter, useNuxtApp } from '#imports'
-import { useProfile } from '~/composables/useProfile'
-import type { ProfileRole } from '~/types/amigo'
+import {reactive, ref, onMounted} from 'vue'
+import {useRouter, useNuxtApp} from '#imports'
+import {useProfile} from '~/composables/useProfile'
+import type {ProfileRole} from '~/types/amigo'
 
 const router = useRouter()
-const { $supabase } = useNuxtApp()
-const { profile, fetchProfile, upsertProfile, error } = useProfile()
+const {$supabase} = useNuxtApp()
+const {profile, fetchProfile, upsertProfile, error} = useProfile()
 
 const saving = ref(false)
 const saved = ref(false)
 
 const roleOptions: { value: ProfileRole; label: string }[] = [
-  { value: 'seeker', label: 'Looking for a place / roommate' },
-  { value: 'host', label: 'I have a place, need a roommate' },
-  { value: 'both', label: 'I’m open to both' }
+  {value: 'seeker', label: 'Looking for a place / roommate'},
+  {value: 'host', label: 'I have a place, need a roommate'},
+  {value: 'both', label: 'I’m open to both'}
 ]
 
 const form = reactive({
@@ -315,7 +333,7 @@ const favError = ref<string | null>(null)
 
 onMounted(async () => {
   const {
-    data: { user }
+    data: {user}
   } = await $supabase.auth.getUser()
 
   if (!user) {
@@ -339,7 +357,7 @@ const loadFavorites = async (profileId: string) => {
   favLoading.value = true
   favError.value = null
 
-  const { data, error: favErr } = await $supabase
+  const {data, error: favErr} = await $supabase
       .schema('amigo')
       .from('favorites')
       .select(
@@ -359,7 +377,7 @@ const loadFavorites = async (profileId: string) => {
     `
       )
       .eq('profile_id', profileId)
-      .order('created_at', { ascending: false })
+      .order('created_at', {ascending: false})
 
   if (favErr) {
     favError.value = favErr.message
@@ -393,6 +411,10 @@ const handleSave = async () => {
 
 const goBack = () => {
   router.back()
+}
+
+const goToQuiz = () => {
+  router.push('/onboarding/quiz')
 }
 
 // helpers for favourites
