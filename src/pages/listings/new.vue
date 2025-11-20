@@ -1,12 +1,13 @@
-<!-- src/pages/listings/new.vue -->
 <template>
   <div
-      class="min-h-screen bg-gradient-to-b from-orange-50 via-rose-50 to-white flex items-center justify-center px-4 py-10">
+      class="min-h-screen bg-gradient-to-b from-orange-50 via-rose-50 to-white flex items-center justify-center px-4 py-10"
+  >
     <div class="w-full max-w-5xl space-y-6">
       <!-- Header -->
       <div class="space-y-2 text-center">
         <div
-            class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/80 border border-orange-100 text-[11px] text-gray-600 shadow-sm">
+            class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/80 border border-orange-100 text-[11px] text-gray-600 shadow-sm"
+        >
           <span class="h-1.5 w-1.5 rounded-full bg-emerald-400"/>
           <span>Host listing</span>
         </div>
@@ -14,42 +15,65 @@
           List your room or place
         </h1>
         <p class="text-sm text-gray-500 max-w-xl mx-auto">
-          We’ll show this to people whose vibe and preferences match yours.
+          Add the basics about your space. We’ll show it to people whose vibe and preferences match yours.
         </p>
       </div>
 
-      <!-- Form + Preview -->
-      <div class="bg-white/95 border border-orange-100 rounded-3xl shadow-[0_18px_40px_rgba(0,0,0,0.06)] p-5 md:p-7">
+      <!-- Card -->
+      <div
+          class="bg-white/95 border border-orange-100 rounded-3xl shadow-[0_18px_40px_rgba(0,0,0,0.06)] p-5 md:p-7"
+      >
+        <!-- Card header: steps -->
+        <div class="flex items-center justify-between mb-5 text-[11px] text-gray-500">
+          <div class="flex items-center gap-2">
+            <span
+                class="inline-flex h-5 w-5 items-center justify-center rounded-full bg-gray-900 text-white text-[10px]">
+              1
+            </span>
+            <span class="font-medium text-gray-800">Listing details</span>
+            <span class="hidden sm:inline text-gray-400">·</span>
+            <span class="hidden sm:inline">Basics, price, amenities</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span
+                class="inline-flex h-5 w-5 items-center justify-center rounded-full bg-gray-100 text-gray-500 text-[10px]">
+              2
+            </span>
+            <span>Preview</span>
+          </div>
+        </div>
+
         <div class="grid gap-6 md:grid-cols-5">
           <!-- FORM -->
-          <div class="md:col-span-3 space-y-5">
+          <div
+              class="md:col-span-3 space-y-5 border-b md:border-b-0 md:border-r border-dashed border-gray-200 pr-0 md:pr-6 pb-5 md:pb-0">
             <form class="space-y-5" @submit.prevent="handleSubmit">
               <!-- Title -->
               <div class="space-y-1.5">
-                <label class="block text-sm font-medium text-gray-800">Title</label>
+                <label class="block text-sm font-medium text-gray-900">Title</label>
                 <input
                     v-model="form.title"
                     type="text"
                     required
                     class="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm bg-white focus:outline-none focus:ring-1 focus:ring-gray-900 focus:border-gray-900 placeholder:text-gray-400"
-                    placeholder="e.g. Room in 2-bed apartment in Osu"
+                    placeholder="e.g. Ensuite room in 2-bed in Osu"
                 />
                 <p class="text-[11px] text-gray-400">
-                  Keep it short but descriptive so it stands out in search.
+                  Short, clear, and specific works best.
                 </p>
               </div>
 
               <!-- Description -->
               <div class="space-y-1.5">
-                <label class="block text-sm font-medium text-gray-800">Description</label>
+                <label class="block text-sm font-medium text-gray-900">Description</label>
                 <textarea
                     v-model="form.description"
                     rows="3"
                     class="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm bg-white focus:outline-none focus:ring-1 focus:ring-gray-900 focus:border-gray-900 resize-none placeholder:text-gray-400"
-                    placeholder="What’s it like to live here? Who are you hoping to live with?"
+                    placeholder="What’s it like to live here? What kind of roommate are you hoping for?"
                 />
                 <p class="text-[11px] text-gray-400">
-                  A few sentences about the space, vibe, and what you’re looking for is perfect.
+                  A few sentences about the space, vibe, and expectations is perfect.
                 </p>
               </div>
 
@@ -60,7 +84,7 @@
                 </p>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div class="space-y-1.5">
-                    <label class="block text-sm font-medium text-gray-800">City</label>
+                    <label class="block text-sm font-medium text-gray-900">City</label>
                     <input
                         v-model="form.city"
                         type="text"
@@ -69,7 +93,7 @@
                     />
                   </div>
                   <div class="space-y-1.5">
-                    <label class="block text-sm font-medium text-gray-800">Area / Neighbourhood</label>
+                    <label class="block text-sm font-medium text-gray-900">Area / neighbourhood</label>
                     <input
                         v-model="form.area"
                         type="text"
@@ -80,14 +104,14 @@
                 </div>
               </div>
 
-              <!-- Rent -->
+              <!-- Pricing -->
               <div class="space-y-2">
                 <p class="text-[11px] font-semibold tracking-[0.18em] text-gray-400 uppercase">
                   Pricing
                 </p>
                 <div class="grid grid-cols-3 gap-4">
                   <div class="col-span-2 space-y-1.5">
-                    <label class="block text-sm font-medium text-gray-800">Monthly rent</label>
+                    <label class="block text-sm font-medium text-gray-900">Monthly rent</label>
                     <input
                         v-model.number="form.monthly_rent"
                         type="number"
@@ -97,13 +121,13 @@
                     />
                   </div>
                   <div class="space-y-1.5">
-                    <label class="block text-sm font-medium text-gray-800">Currency</label>
+                    <label class="block text-sm font-medium text-gray-900">Currency</label>
                     <select
                         v-model="form.currency"
                         class="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm bg-white focus:outline-none focus:ring-1 focus:ring-gray-900 focus:border-gray-900"
                     >
-                      <option value="GHS">GHS</option>
-                      <option value="USD">USD</option>
+                      <option value="GHS">₵ GHS</option>
+                      <option value="USD">$ USD</option>
                     </select>
                   </div>
                 </div>
@@ -116,7 +140,7 @@
                 </p>
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   <div class="space-y-1.5">
-                    <label class="block text-sm font-medium text-gray-800">Bedrooms</label>
+                    <label class="block text-sm font-medium text-gray-900">Bedrooms</label>
                     <input
                         v-model.number="form.bedrooms"
                         type="number"
@@ -125,7 +149,7 @@
                     />
                   </div>
                   <div class="space-y-1.5">
-                    <label class="block text-sm font-medium text-gray-800">Bathrooms</label>
+                    <label class="block text-sm font-medium text-gray-900">Bathrooms</label>
                     <input
                         v-model.number="form.bathrooms"
                         type="number"
@@ -134,7 +158,7 @@
                     />
                   </div>
                   <div class="space-y-1.5">
-                    <label class="block text-sm font-medium text-gray-800">Available from</label>
+                    <label class="block text-sm font-medium text-gray-900">Available from</label>
                     <input
                         v-model="form.available_from"
                         type="date"
@@ -155,9 +179,11 @@
                       :key="amenity.key"
                       type="button"
                       class="px-3 py-1.5 rounded-full text-[11px] border transition flex items-center gap-1.5"
-                      :class="selectedAmenities.includes(amenity.key)
-                      ? 'bg-gray-900 text-white border-gray-900 shadow-sm'
-                      : 'bg-gray-50 text-gray-700 border-gray-200 hover:bg-gray-100'"
+                      :class="
+                      selectedAmenities.includes(amenity.key)
+                        ? 'bg-gray-900 text-white border-gray-900 shadow-sm'
+                        : 'bg-gray-50 text-gray-700 border-gray-200 hover:bg-gray-100'
+                    "
                       @click="toggleAmenity(amenity.key)"
                   >
                     <span>{{ amenity.emoji }}</span>
@@ -165,7 +191,7 @@
                   </button>
                 </div>
                 <p class="text-[11px] text-gray-400">
-                  These help seekers quickly see if your place fits their basics.
+                  These help seekers quickly decide if your place fits their basics.
                 </p>
               </div>
 
@@ -192,7 +218,7 @@
                   </div>
                 </div>
                 <p class="text-[11px] text-gray-400">
-                  Image uploads coming soon — for now, you can paste hosted image links.
+                  Image uploads are coming soon — for now you can paste links to hosted images.
                 </p>
               </div>
 
@@ -213,7 +239,7 @@
                 <button
                     type="submit"
                     class="inline-flex items-center justify-center text-sm px-4 py-2.5 rounded-xl bg-gray-900 text-white hover:bg-black disabled:opacity-60 shadow-sm"
-                    :disabled="submitting"
+                    :disabled="submitting || !form.title.trim()"
                 >
                   {{ submitting ? 'Publishing…' : 'Publish listing' }}
                 </button>
@@ -222,19 +248,19 @@
           </div>
 
           <!-- PREVIEW -->
-          <div class="md:col-span-2 space-y-3">
+          <div class="md:col-span-2 space-y-3 pt-4 md:pt-0 md:pl-2">
             <div class="flex items-center justify-between text-xs text-gray-500">
               <p class="font-medium text-gray-700 flex items-center gap-1.5">
                 <span class="text-base">👀</span> Live preview
               </p>
               <p class="text-[11px]">
-                How it will look to seekers
+                What seekers will see
               </p>
             </div>
 
             <div class="rounded-2xl border border-gray-200 bg-gray-50/80 p-3">
               <div class="rounded-xl bg-white border border-gray-200 p-4 space-y-2 shadow-sm">
-                <!-- (Optional) photo thumb if first url present -->
+                <!-- Photo -->
                 <div
                     v-if="firstPhotoUrl"
                     class="mb-2 rounded-lg overflow-hidden bg-gray-100 h-32 w-full flex items-center justify-center"
@@ -307,7 +333,10 @@
                 </div>
 
                 <!-- Amenity chips -->
-                <div v-if="selectedAmenityObjects.length" class="flex flex-wrap gap-1.5 mt-2">
+                <div
+                    v-if="selectedAmenityObjects.length"
+                    class="flex flex-wrap gap-1.5 mt-2"
+                >
                   <span
                       v-for="amenity in selectedAmenityObjects"
                       :key="amenity.key"
@@ -329,7 +358,7 @@
             </div>
 
             <p class="text-[11px] text-gray-400">
-              This is a rough preview — final layout may include your photo and personality info from your profile.
+              This is a rough preview — in the app, we’ll also show your profile photo and vibe.
             </p>
           </div>
         </div>
@@ -367,7 +396,6 @@ const form = reactive({
   available_from: ''
 })
 
-// simple amenity config – keys should match what you store in DB
 const amenityOptions = [
   {key: 'wifi', label: 'Wi-Fi', emoji: '📶'},
   {key: 'parking', label: 'Parking', emoji: '🅿️'},
@@ -391,7 +419,6 @@ onMounted(async () => {
   }
 })
 
-// preview helpers
 const currencySymbol = computed(() => {
   if (form.currency === 'USD') return '$'
   return '₵'
@@ -415,7 +442,6 @@ const selectedAmenityObjects = computed(() =>
     amenityOptions.filter(a => selectedAmenities.value.includes(a.key))
 )
 
-// UI actions
 const toggleAmenity = (key: string) => {
   if (selectedAmenities.value.includes(key)) {
     selectedAmenities.value = selectedAmenities.value.filter(k => k !== key)
@@ -429,7 +455,7 @@ const handleSubmit = async () => {
   submitting.value = true
   justCreated.value = false
 
-  // 1) Create main listing via composable
+  // 1) Create main listing
   const created = await createListing({
     title: form.title,
     description: form.description || null,
@@ -454,36 +480,24 @@ const handleSubmit = async () => {
     return
   }
 
-  // 2) Insert amenities
-// 2) Insert amenities
-  try {
-    const amenityPayload = selectedAmenities.value.map(key => ({
-      listing_id: listingId,
-      amenity_key: key,
-    }))
+  // 2) (Optional) save amenities
+  // NOTE: Your DB schema for listing_amenities uses (listing_id, amenity_id).
+  // To actually insert these, you’ll want a mapping from `key` -> amenity_id
+  // loaded from amigo.amenities. For now we just keep them in UI / preview.
 
-    if (amenityPayload.length) {
-      await ($supabase as any)
-          .from('amigo.listing_amenities')
-          .insert(amenityPayload as any[])
-    }
-  } catch (e) {
-    console.error('Failed to save amenities', e)
-  }
-
-  // 3) Insert photos
-// 3) Insert photos
+  // 3) Save photos (listings_photos.image_url)
   try {
     const urls = photoInputs.value.map(u => u.trim()).filter(Boolean)
     if (urls.length) {
       const photoPayload = urls.map((url, index) => ({
         listing_id: listingId,
-        url,
-        sort_order: index,
+        image_url: url,
+        sort_order: index
       }))
 
       await ($supabase as any)
-          .from('amigo.listing_photos')
+          .schema('amigo')
+          .from('listing_photos')
           .insert(photoPayload as any[])
     }
   } catch (e) {

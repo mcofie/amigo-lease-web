@@ -96,8 +96,8 @@ const startChat = async (otherProfileId: string) => {
   }
 
   // data is the chat_threads row
-  if(data !== null){
-    router.push(`/chat/${data.id}`)
+  if (data !== null) {
+    router.push(`/chat/${otherProfileId}`)
   }
 }
 

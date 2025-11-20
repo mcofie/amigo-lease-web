@@ -1,3 +1,4 @@
+// src/composables/useListings.ts
 import { ref } from 'vue'
 import { useNuxtApp } from '#app'
 
@@ -10,7 +11,7 @@ export interface ListingInput {
     currency: string
     bedrooms: number | null
     bathrooms: number | null
-    available_from: string | null
+    available_from: string | null // 'YYYY-MM-DD'
 }
 
 export const useListings = () => {
@@ -20,7 +21,6 @@ export const useListings = () => {
     const loading = ref(false)
     const error = ref<string | null>(null)
 
-    // (optional) generic loader
     const loadListings = async () => {
         loading.value = true
         error.value = null
@@ -41,14 +41,13 @@ export const useListings = () => {
         loading.value = false
     }
 
-    // ✅ specific: only listings for the current host
     const loadMyListings = async () => {
         loading.value = true
         error.value = null
 
         const {
             data: { user },
-            error: authError,
+            error: authError
         } = await $supabase.auth.getUser()
 
         if (authError || !user) {
@@ -80,7 +79,7 @@ export const useListings = () => {
 
         const {
             data: { user },
-            error: authError,
+            error: authError
         } = await $supabase.auth.getUser()
 
         if (authError || !user) {
@@ -98,12 +97,12 @@ export const useListings = () => {
                 description: payload.description,
                 city: payload.city,
                 area: payload.area,
-                rent_amount: payload.monthly_rent,
+                monthly_rent: payload.monthly_rent,
                 currency: payload.currency,
                 bedrooms: payload.bedrooms,
                 bathrooms: payload.bathrooms,
                 available_from: payload.available_from,
-                is_active: true,
+                is_active: true
             } as any)
             .select('*')
             .maybeSingle()
@@ -123,7 +122,7 @@ export const useListings = () => {
         loading,
         error,
         loadListings,
-        loadMyListings, // 👈 add this
-        createListing,
+        loadMyListings,
+        createListing
     }
 }
