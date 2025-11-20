@@ -1,24 +1,28 @@
-import {ref} from 'vue'
-import {useNuxtApp} from '#imports'
-import type {RoommateTraits} from '~/types/amigo'
+// composables/useMatches.ts
+import { ref } from 'vue'
+import { useNuxtApp } from '#imports'
+
+export interface CompatibilitySummary {
+    pets?: 'match' | 'conflict' | 'unknown'
+    smoking?: 'match' | 'conflict' | 'unknown'
+    // keep it open for future categories
+    [key: string]: any
+}
 
 export interface MatchRow {
-    id: string
+    match_id: string
     profile_id: string
     matched_profile_id: string
     score: number
-    compatibility_summary: Record<string, any> | null
-    matched_profile: {
-        id: string
-        full_name: string | null
-        city: string | null
-        area: string | null
-        avatar_url: string | null
-    }
+    compatibility_summary: CompatibilitySummary | null
+    full_name: string | null
+    city: string | null
+    area: string | null
+    avatar_url: string | null
 }
 
 export const useMatches = () => {
-    const {$supabase} = useNuxtApp()
+    const { $supabase } = useNuxtApp()
 
     const matches = ref<MatchRow[]>([])
     const loading = ref(false)
@@ -29,7 +33,7 @@ export const useMatches = () => {
         error.value = null
 
         const {
-            data: {user},
+            data: { user },
             error: authError
         } = await $supabase.auth.getUser()
 
@@ -39,25 +43,22 @@ export const useMatches = () => {
             return
         }
 
-        const {data, error: matchError} = await ($supabase as any)
+        const { data, error: matchError } = await $supabase
             .schema('amigo')
-            .from('matches')
+            .from('v_profile_matches_for_me')
             .select(`
-    id,
-    profile_id,
-    matched_profile_id:other_profile_id,
-    score,
-    matched_profile:profiles!matches_other_profile_id_fkey (
-      id,
-      full_name,
-      city,
-      area,
-      avatar_url
-    )
-  `)
+        match_id,
+        profile_id,
+        matched_profile_id,
+        score,
+        compatibility_summary,
+        full_name,
+        city,
+        area,
+        avatar_url
+      `)
             .eq('profile_id', user.id)
-            .order('score', {ascending: false})
-
+            .order('score', { ascending: false })
 
         if (matchError) {
             error.value = matchError.message
@@ -69,5 +70,5 @@ export const useMatches = () => {
         loading.value = false
     }
 
-    return {matches, loading, error, loadMatches}
+    return { matches, loading, error, loadMatches }
 }

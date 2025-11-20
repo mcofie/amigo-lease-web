@@ -1,143 +1,93 @@
 // src/composables/useChatThread.ts
-import {ref} from 'vue'
-import {useNuxtApp} from '#app'
+import { ref, computed } from 'vue'
+import { useNuxtApp } from '#imports'
+import { useChat } from '~/composables/useChat' // ✅ import the composable
 
-export interface ChatMessage {
+export interface ChatThread {
     id: string
-    thread_id: string
-    sender_profile_id: string
-    content: string
+    kind: string
+    profile_one_id: string
+    profile_two_id: string
     created_at: string
-}
-
-export interface ChatThreadInfo {
-    id: string
-    created_at: string
-    subject: string | null
-    other_profile: {
+    other_profile?: {
         id: string
         full_name: string | null
+        city: string | null
+        area: string | null
         avatar_url: string | null
     } | null
 }
 
 export const useChatThread = () => {
-    const {$supabase} = useNuxtApp()
+    const { $supabase } = useNuxtApp()
 
-    const thread = ref<ChatThreadInfo | null>(null)
-    const messages = ref<ChatMessage[]>([])
-    const loading = ref(false)
-    const error = ref<string | null>(null)
+    const thread = ref<ChatThread | null>(null)
+    const threadLoading = ref(false)
+    const threadError = ref<string | null>(null)
+
+    const {
+        messages,
+        loading: messagesLoading,
+        sending,
+        error: chatError,
+        currentUserId,
+        loadMessages,
+        sendMessage,
+        markMessagesRead
+    } = useChat()
+
+    const loading = computed(() => threadLoading.value || messagesLoading.value)
+    const error = computed(() => threadError.value || chatError.value)
 
     const ensureThreadWithProfile = async (otherProfileId: string) => {
-        loading.value = true
-        error.value = null
+        threadLoading.value = true
+        threadError.value = null
 
-        const {
-            data: { user },
-            error: authError
-        } = await $supabase.auth.getUser()
-
-        if (authError || !user) {
-            error.value = authError?.message ?? 'Not authenticated'
-            loading.value = false
-            return null
-        }
-
-        const { data, error: rpcError } = await ($supabase as any)
-            .rpc('amigo_ensure_direct_thread', {
-                other_profile_id: otherProfileId
-            })
+        // 1) call RPC to get/create thread
+        const { data, error: rpcError } = await $supabase
+            .rpc('get_or_create_profile_thread', { other_profile_id: otherProfileId })
 
         if (rpcError || !data) {
-            error.value = rpcError?.message ?? 'Could not create chat'
-            loading.value = false
-            return null
+            threadError.value = rpcError?.message ?? 'Failed to start chat'
+            threadLoading.value = false
+            return
         }
 
-        const threadId = data as string
-        await loadThread(threadId)
-        await loadMessages(threadId)
-        loading.value = false
-        return threadId
+        const t = data as ChatThread
+        thread.value = t
+
+        // 2) fetch other profile summary
+        const { data: other, error: profileError } = await $supabase
+            .schema('amigo')
+            .from('profiles')
+            .select('id, full_name, city, area, avatar_url')
+            .eq('id', otherProfileId)
+            .maybeSingle<{
+                id: string
+                full_name: string | null
+                city: string | null
+                area: string | null
+                avatar_url: string | null
+            }>()
+
+        if (!profileError && other && thread.value) {
+            thread.value = {
+                ...thread.value,
+                other_profile: other
+            }
+        }
+
+        // 3) load messages + mark read
+        await loadMessages(t.id)
+        await markMessagesRead(t.id)
+
+        threadLoading.value = false
     }
 
-    const loadThread = async (threadId: string) => {
-        const {data, error: threadError} = await $supabase
-            .from('amigo.chat_threads')
-            .select(`
-        id,
-        created_at,
-        subject,
-        other_profile:profiles!thread_other_profile_id_fkey (
-          id,
-          full_name,
-          avatar_url
-        )
-      `)
-            .eq('id', threadId)
-            .maybeSingle()
-
-        if (threadError || !data) {
-            error.value = threadError?.message ?? 'Thread not found'
-            return
-        }
-
-        thread.value = data as ChatThreadInfo
-    }
-
-    const loadMessages = async (threadId: string) => {
-        const {data, error: msgError} = await $supabase
-            .from('amigo.messages')
-            .select('*')
-            .eq('thread_id', threadId)
-            .order('created_at', {ascending: true})
-
-        if (msgError) {
-            error.value = msgError.message
-            return
-        }
-
-        messages.value = data as ChatMessage[]
-    }
-
-    const sendMessage = async (threadId: string, content: string) => {
-        if (!content.trim()) return
-
-        const {
-            data: { user },
-            error: authError
-        } = await $supabase.auth.getUser()
-
-        if (authError || !user) {
-            error.value = authError?.message ?? 'Not authenticated'
-            return
-        }
-
-        const { data, error: insertError } = await ($supabase as any)
-            .from('amigo.messages')
-            .insert(
-                {
-                    thread_id: threadId,
-                    sender_profile_id: user.id,
-                    content
-                } as any
-            )
-            .select('*')
-            .maybeSingle()
-
-        if (insertError) {
-            error.value = insertError.message
-            return
-        }
-
-        if (!data) {
-            // nothing returned – nothing to push
-            return
-        }
-
-        const msg = data as ChatMessage
-        messages.value.push(msg)
+    const sendMessageInThread = async (content: string) => {
+        if (!thread.value) return
+        await sendMessage(thread.value.id, content)
+        await markMessagesRead(thread.value.id)
     }
 
     return {
@@ -145,9 +95,9 @@ export const useChatThread = () => {
         messages,
         loading,
         error,
+        sending,
+        currentUserId,
         ensureThreadWithProfile,
-        loadThread,
-        loadMessages,
-        sendMessage
+        sendMessage: sendMessageInThread
     }
 }

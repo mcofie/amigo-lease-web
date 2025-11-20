@@ -1,6 +1,6 @@
 // src/composables/useChat.ts
 import {ref, onUnmounted} from 'vue'
-import {useNuxtApp} from '#app'
+import {useNuxtApp} from '#imports'
 
 export interface ChatMessage {
     id: string
@@ -11,7 +11,6 @@ export interface ChatMessage {
     read_at: string | null
 }
 
-
 export const useChat = () => {
     const {$supabase} = useNuxtApp()
 
@@ -21,10 +20,15 @@ export const useChat = () => {
     const error = ref<string | null>(null)
     const currentUserId = ref<string | null>(null)
 
-    let channel: any = null
+    // Supabase Realtime channel
+    let channel: ReturnType<typeof $supabase.channel> | null = null
 
-
+    /**
+     * Ensure we know who the current user is.
+     */
     const initUser = async () => {
+        if (currentUserId.value) return currentUserId.value
+
         const {
             data: {user},
             error: authError
@@ -36,21 +40,25 @@ export const useChat = () => {
         }
 
         currentUserId.value = user.id
-        return user
+        return user.id
     }
 
+    /**
+     * Load all messages in a thread and start realtime subscription.
+     */
     const loadMessages = async (threadId: string) => {
         loading.value = true
         error.value = null
 
-        const user = await initUser()
-        if (!user) {
+        const userId = await initUser()
+        if (!userId) {
             loading.value = false
             return
         }
 
         const {data, error: fetchError} = await $supabase
-            .from('amigo.messages')
+            .schema('amigo')
+            .from('messages')
             .select('*')
             .eq('thread_id', threadId)
             .order('created_at', {ascending: true})
@@ -64,12 +72,14 @@ export const useChat = () => {
         messages.value = (data || []) as ChatMessage[]
         loading.value = false
 
-        // subscribe to realtime inserts
         subscribeToThread(threadId)
     }
 
+    /**
+     * Subscribe to realtime INSERTs on this thread.
+     */
     const subscribeToThread = (threadId: string) => {
-        // clean existing channel
+        // Clean up any existing channel
         if (channel) {
             $supabase.removeChannel(channel)
             channel = null
@@ -85,10 +95,9 @@ export const useChat = () => {
                     table: 'messages',
                     filter: `thread_id=eq.${threadId}`
                 },
-                (payload: any) => {
+                payload => {
                     const newMsg = payload.new as ChatMessage
-                    // avoid duplicates
-                    if (!messages.value.find((m) => m.id === newMsg.id)) {
+                    if (!messages.value.find(m => m.id === newMsg.id)) {
                         messages.value = [...messages.value, newMsg]
                     }
                 }
@@ -96,30 +105,29 @@ export const useChat = () => {
             .subscribe()
     }
 
+    /**
+     * Send a message in the thread.
+     */
     const sendMessage = async (threadId: string, content: string) => {
-        if (!content.trim()) return
-        if (sending.value) return
+        const text = content.trim()
+        if (!text || sending.value) return
+
+        const userId = await initUser()
+        if (!userId) return
 
         sending.value = true
         error.value = null
 
-        const user = await initUser()
-        if (!user) {
-            sending.value = false
-            return
-        }
-
-        const { data, error: insertError } = await ($supabase as any)
-            .from('amigo.messages')
-            .insert(
-                {
-                    thread_id: threadId,
-                    sender_profile_id: user.id,
-                    content: content.trim()
-                } as any
-            )
+        const {data, error: insertError} = await $supabase
+            .schema('amigo')
+            .from('messages')
+            .insert({
+                thread_id: threadId,
+                sender_profile_id: userId,
+                content: text
+            })
             .select('*')
-            .maybeSingle()
+            .maybeSingle<ChatMessage>()
 
         if (insertError) {
             error.value = insertError.message
@@ -128,32 +136,30 @@ export const useChat = () => {
         }
 
         if (data) {
-            const msg = data as ChatMessage
-            // optimistic add (realtime will also send it, but we guard against dupes)
-            if (!messages.value.find((m) => m.id === msg.id)) {
-                messages.value = [...messages.value, msg]
+            // optimistic add; realtime will also send it, but we de-dup
+            if (!messages.value.find(m => m.id === data.id)) {
+                messages.value = [...messages.value, data]
             }
         }
 
         sending.value = false
     }
 
-
+    /**
+     * Mark messages as read (for this thread and not sent by me).
+     */
     const markMessagesRead = async (threadId: string) => {
-        const {
-            data: { user }
-        } = await $supabase.auth.getUser()
-        if (!user) return
+        const userId = await initUser()
+        if (!userId) return
 
-        await ($supabase as any)
+        await $supabase
             .schema('amigo')
             .from('messages')
-            .update({ read_at: new Date().toISOString() })
+            .update({read_at: new Date().toISOString()})
             .eq('thread_id', threadId)
-            .neq('sender_profile_id', user.id)
+            .neq('sender_profile_id', userId)
             .is('read_at', null)
     }
-
 
     onUnmounted(() => {
         if (channel) {

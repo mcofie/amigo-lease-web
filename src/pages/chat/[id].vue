@@ -1,3 +1,4 @@
+<!-- src/pages/chat/[id].vue (or similar) -->
 <template>
   <div class="min-h-screen bg-gray-50 flex flex-col">
     <!-- Top bar -->
@@ -32,7 +33,7 @@
     <main class="flex-1 overflow-y-auto px-4 py-4">
       <div class="max-w-3xl mx-auto space-y-4">
         <div v-if="loading" class="flex justify-center py-10">
-          <div class="h-8 w-8 border-2 border-dashed border-gray-400 rounded-full animate-spin"/>
+          <div class="h-8 w-8 border-2 border-dashed border-gray-400 rounded-full animate-spin" />
         </div>
 
         <div
@@ -42,10 +43,7 @@
           No messages yet. Say hi 👋
         </div>
 
-        <div
-            v-else
-            class="space-y-3"
-        >
+        <div v-else class="space-y-3">
           <div
               v-for="m in messages"
               :key="m.id"
@@ -62,11 +60,15 @@
                 {{ m.content }}
               </p>
               <p class="text-[10px] mt-1 text-gray-400 text-right">
-                {{ new Date(m.created_at).toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'}) }}
+                {{ new Date(m.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) }}
               </p>
             </div>
           </div>
         </div>
+
+        <p v-if="error" class="text-[11px] text-red-500">
+          {{ error }}
+        </p>
       </div>
     </main>
 
@@ -93,14 +95,12 @@
 </template>
 
 <script setup lang="ts">
-import {ref, onMounted} from 'vue'
-import {useRoute, useRouter, useNuxtApp} from '#imports'
-import {useChatThread} from '~/composables/useChatThread'
+import { ref, onMounted } from 'vue'
+import { useRoute, useRouter } from '#imports'
+import { useChatThread } from '~/composables/useChatThread'
 
 const route = useRoute()
 const router = useRouter()
-const {$supabase} = useNuxtApp()
-
 const otherProfileId = route.params.id as string
 
 const {
@@ -108,29 +108,22 @@ const {
   messages,
   loading,
   error,
+  sending,
+  currentUserId,
   ensureThreadWithProfile,
   sendMessage
 } = useChatThread()
 
-const currentUserId = ref<string | null>(null)
 const draft = ref('')
-const sending = ref(false)
 
 onMounted(async () => {
-  const {data, error: authError} = await $supabase.auth.getUser()
-  if (!authError && data.user) {
-    currentUserId.value = data.user.id
-  }
-
   await ensureThreadWithProfile(otherProfileId)
 })
 
 const handleSend = async () => {
-  if (!thread.value || !draft.value.trim()) return
-  sending.value = true
-  await sendMessage(thread.value.id, draft.value.trim())
+  if (!draft.value.trim()) return
+  await sendMessage(draft.value.trim())
   draft.value = ''
-  sending.value = false
 }
 
 const handleEnter = () => {
