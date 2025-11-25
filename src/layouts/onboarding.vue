@@ -1,35 +1,36 @@
-<!-- src/layouts/onboarding.vue -->
 <template>
-  <div class="min-h-screen flex flex-col bg-gray-50">
-    <!-- Top nav (match main layout look & feel) -->
+  <div class="min-h-screen flex flex-col bg-slate-50 font-sans selection:bg-slate-200 text-slate-900">
+    <!-- Top nav -->
     <header
-        class="bg-gradient-to-r from-orange-500 via-rose-500 to-amber-400 text-white shadow-sm"
+        class="sticky top-0 z-50 w-full bg-white/80 backdrop-blur-md border-b border-slate-200"
     >
       <div
-          class="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between gap-4"
+          class="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between gap-4"
       >
         <!-- Brand -->
-        <NuxtLink to="/" class="flex items-center gap-2">
+        <NuxtLink to="/" class="flex items-center gap-3 group">
+          <!-- Logo Icon -->
           <div
-              class="h-7 w-7 rounded-xl bg-white/10 flex items-center justify-center text-[11px] font-semibold text-white shadow-sm"
+              class="h-9 w-9 rounded-xl bg-slate-900 text-white flex items-center justify-center text-xs font-bold shadow-md shadow-slate-900/10 group-hover:scale-105 transition-transform"
           >
             AL
           </div>
-          <div class="flex flex-col leading-tight">
-            <span class="text-sm font-semibold tracking-tight text-white">
+          <!-- Logo Text -->
+          <div class="flex flex-col leading-none">
+            <span class="text-sm font-bold text-slate-900 tracking-tight">
               Amigo Lease
             </span>
-            <span class="text-[10px] text-orange-100/90">
+            <span class="text-[10px] font-medium text-slate-500 mt-0.5">
               Find the friend in your roommate
             </span>
           </div>
         </NuxtLink>
 
-        <!-- Right-side actions (onboarding-specific) -->
-        <div class="flex items-center gap-3">
+        <!-- Right-side actions -->
+        <div class="flex items-center gap-4">
           <button
               type="button"
-              class="text-[11px] text-orange-50/95 hover:text-white"
+              class="text-xs font-semibold text-slate-500 hover:text-slate-900 transition-colors"
               @click="skipToMatches"
           >
             Skip for now
@@ -37,7 +38,7 @@
 
           <NuxtLink
               to="/auth"
-              class="text-[11px] text-orange-50/95 hover:text-white border border-white/40 px-3 py-1.5 rounded-full hidden sm:inline-flex items-center gap-1"
+              class="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-slate-100 border border-slate-200 text-slate-900 text-xs font-bold hover:bg-slate-200 hover:border-slate-300 transition-all"
           >
             <span class="text-xs">🔑</span>
             <span>Sign in</span>
@@ -47,27 +48,27 @@
     </header>
 
     <!-- Main content -->
-    <main class="flex-1 w-full">
+    <main class="flex-1 w-full flex flex-col">
       <slot />
     </main>
 
-    <!-- Footer (match main layout’s darker style) -->
-    <footer class="bg-gray-950 text-gray-300">
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200">
       <div
-          class="max-w-5xl mx-auto px-4 py-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 text-[11px]"
+          class="max-w-5xl mx-auto px-6 py-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-8"
       >
         <!-- Left: brand + tagline -->
-        <div class="flex items-start gap-2">
+        <div class="flex items-start gap-3">
           <div
-              class="h-7 w-7 rounded-xl bg-gradient-to-br from-orange-500 to-rose-500 flex items-center justify-center text-[10px] font-semibold text-white shadow-sm"
+              class="h-8 w-8 rounded-lg bg-slate-100 flex items-center justify-center text-[10px] font-bold text-slate-900"
           >
             AL
           </div>
-          <div class="flex flex-col">
-            <span class="font-medium text-gray-100">
+          <div class="flex flex-col gap-1">
+            <span class="text-xs font-bold text-slate-900">
               © {{ year }} Amigo Lease
             </span>
-            <span class="text-[10px] text-gray-400">
+            <span class="text-[11px] text-slate-500 max-w-[240px] leading-relaxed">
               Built for roommates who actually vibe — not just share rent.
             </span>
           </div>
@@ -75,18 +76,18 @@
 
         <!-- Right: links -->
         <div
-            class="flex flex-wrap items-center gap-x-4 gap-y-1 text-[11px] md:justify-end"
+            class="flex flex-wrap items-center gap-x-6 gap-y-2 text-xs font-medium text-slate-500"
         >
-          <NuxtLink to="/privacy" class="hover:text-white">
+          <NuxtLink to="/privacy" class="hover:text-slate-900 transition-colors">
             Privacy
           </NuxtLink>
-          <NuxtLink to="/terms" class="hover:text-white">
+          <NuxtLink to="/terms" class="hover:text-slate-900 transition-colors">
             Terms
           </NuxtLink>
 
-          <span class="hidden sm:inline text-gray-600">|</span>
+          <span class="hidden sm:inline text-slate-300">|</span>
 
-          <span class="text-gray-500">
+          <span class="text-slate-400 font-normal">
             Made with Nuxt &amp; Supabase
           </span>
         </div>

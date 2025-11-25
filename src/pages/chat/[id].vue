@@ -1,14 +1,15 @@
 <template>
-  <div class="min-h-screen bg-gradient-to-b from-orange-50 via-rose-50 to-white flex justify-center px-4 py-6">
+  <div
+      class="min-h-screen bg-slate-50 text-slate-900 selection:bg-orange-100 selection:text-orange-900 dark:bg-gray-950 dark:text-white flex items-center justify-center px-4 py-6">
     <div
-        class="w-full max-w-3xl flex flex-col rounded-3xl bg-white/90 shadow-[0_18px_40px_rgba(15,23,42,0.12)] border border-orange-100 overflow-hidden"
+        class="w-full max-w-3xl flex flex-col rounded-3xl bg-white border border-slate-200 shadow-xl overflow-hidden dark:bg-gray-900 dark:border-slate-800 h-[650px] max-h-[85vh] relative"
     >
-      <!-- Top bar -->
+      <!-- Top bar (Fixed Overlay) -->
       <header
-          class="h-14 flex items-center justify-between px-4 border-b border-orange-100 bg-white/80 backdrop-blur-sm"
+          class="absolute top-0 left-0 w-full h-16 flex items-center justify-between px-6 border-b border-slate-100 bg-white/80 backdrop-blur-md z-20 dark:bg-gray-900/80 dark:border-slate-800"
       >
         <button
-            class="inline-flex items-center gap-1.5 text-xs font-medium text-gray-500 hover:text-gray-900"
+            class="inline-flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-slate-900 transition-colors px-2 py-1 rounded-lg hover:bg-slate-50 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800"
             type="button"
             @click="router.back()"
         >
@@ -16,10 +17,10 @@
           <span>Back</span>
         </button>
 
-        <div class="flex items-center gap-2 max-w-[60%]">
+        <div class="flex items-center gap-3">
           <!-- Avatar / initials -->
           <div
-              class="h-8 w-8 rounded-full overflow-hidden bg-gradient-to-tr from-orange-500 to-rose-500 flex items-center justify-center text-[11px] font-semibold text-white shadow-sm"
+              class="h-9 w-9 rounded-xl overflow-hidden bg-slate-100 flex items-center justify-center text-xs font-bold text-slate-900 border border-slate-200 dark:bg-slate-800 dark:text-white dark:border-slate-700"
           >
             <template v-if="thread?.other_profile?.avatar_url">
               <img
@@ -33,70 +34,80 @@
             </template>
           </div>
 
-          <div class="min-w-0 text-left">
-            <p class="text-sm font-semibold text-gray-900 truncate">
+          <div class="text-left">
+            <p class="text-sm font-bold text-slate-900 dark:text-white leading-none">
               {{ headerName }}
             </p>
-            <p class="text-[11px] text-gray-500 truncate">
-              Chatting on Amigo Lease
+            <p class="text-[10px] font-medium text-slate-400 mt-1 dark:text-slate-500">
+              Amigo Lease Chat
             </p>
           </div>
         </div>
 
-        <div class="w-14" />
+        <!-- Placeholder for spacing or action menu -->
+        <div class="w-16 flex justify-end">
+          <!-- Optional: Menu icon could go here -->
+        </div>
       </header>
 
-      <!-- Messages -->
-      <main class="flex-1 flex flex-col bg-gradient-to-b from-white via-orange-50/40 to-white">
-        <div class="flex-1 overflow-y-auto px-4 py-4">
-          <div class="space-y-4 max-w-full">
+      <!-- Messages Area -->
+      <main class="w-full h-full bg-slate-50/50 dark:bg-gray-900/50 relative">
+        <!-- Decorative background pattern -->
+        <div
+            class="absolute inset-0 opacity-[0.03] pointer-events-none bg-[radial-gradient(#0f172a_1px,transparent_1px)] [background-size:16px_16px] dark:bg-[radial-gradient(#ffffff_1px,transparent_1px)]"></div>
+
+        <!-- Scrollable List (Padding top/bottom ensures content isn't hidden behind absolute header/footer) -->
+        <div class="w-full h-full overflow-y-auto px-6 pt-20 pb-24 scroll-smooth">
+          <div class="space-y-6">
             <!-- Loading -->
             <div v-if="loading" class="flex justify-center py-10">
-              <div class="flex flex-col items-center gap-2 text-xs text-gray-500">
-                <div class="h-8 w-8 rounded-full border-2 border-dashed border-gray-300 animate-spin" />
-                <span>Loading messages…</span>
+              <div class="flex flex-col items-center gap-3 text-xs font-medium text-slate-400">
+                <div
+                    class="h-6 w-6 rounded-full border-2 border-t-slate-900 border-slate-200 animate-spin dark:border-t-white dark:border-slate-700"/>
+                <span>Loading history...</span>
               </div>
             </div>
 
             <!-- Empty -->
             <div
                 v-else-if="messages.length === 0"
-                class="flex flex-col items-center justify-center py-14 text-center gap-2"
+                class="flex flex-col items-center justify-center py-20 text-center"
             >
-              <div class="h-10 w-10 rounded-full bg-orange-100 flex items-center justify-center text-lg">
-                💬
+              <div
+                  class="h-14 w-14 rounded-2xl bg-slate-100 flex items-center justify-center text-2xl mb-4 dark:bg-slate-800">
+                👋
               </div>
-              <p class="text-sm font-medium text-gray-800">
-                No messages yet
+              <p class="text-sm font-bold text-slate-900 dark:text-white">
+                Start the conversation
               </p>
-              <p class="text-xs text-gray-500 max-w-xs">
-                Say hi, share your vibe, or ask about the place. First messages don’t have to be perfect.
+              <p class="text-xs text-slate-500 max-w-xs mt-1 dark:text-slate-400">
+                Say hi, ask about the room, or see if your vibes match.
               </p>
             </div>
 
             <!-- Messages list -->
             <div
                 v-else
-                class="space-y-3"
+                class="space-y-2"
             >
               <div
                   v-for="m in messages"
                   :key="m.id"
-                  class="flex"
+                  class="flex w-full"
                   :class="m.sender_profile_id === currentUserId ? 'justify-end' : 'justify-start'"
               >
                 <div
-                    class="max-w-[75%] rounded-2xl px-3 py-2 text-xs shadow-sm"
+                    class="max-w-[80%] sm:max-w-[70%] rounded-2xl px-4 py-3 text-sm shadow-sm relative group"
                     :class="m.sender_profile_id === currentUserId
-                    ? 'bg-gray-900 text-white rounded-br-sm'
-                    : 'bg-white text-gray-800 border border-gray-200 rounded-bl-sm'"
+                    ? 'bg-slate-900 text-white rounded-br-sm dark:bg-white dark:text-slate-900'
+                    : 'bg-white text-slate-700 border border-slate-200 rounded-bl-sm dark:bg-slate-800 dark:text-slate-200 dark:border-slate-700'"
                 >
-                  <p class="whitespace-pre-wrap break-words">
+                  <p class="whitespace-pre-wrap break-words leading-relaxed">
                     {{ m.content }}
                   </p>
                   <p
-                      class="mt-1 text-[10px] text-right"
-                      :class="m.sender_profile_id === currentUserId ? 'text-gray-300' : 'text-gray-400'"
+                      class="mt-1 text-[10px] font-medium text-right opacity-60"
+                      :class="m.sender_profile_id === currentUserId ? 'text-white' : 'text-slate-400'"
                   >
                     {{ formatTime(m.created_at) }}
                   </p>
@@ -105,45 +116,59 @@
             </div>
 
             <!-- Error -->
-            <div v-if="error" class="pt-1">
+            <div v-if="error" class="flex justify-center pt-2">
               <p
-                  class="inline-flex items-center gap-1 rounded-full bg-red-50 px-3 py-1 text-[11px] text-red-600 border border-red-100"
+                  class="inline-flex items-center gap-1.5 rounded-full bg-rose-50 px-4 py-1.5 text-xs font-bold text-rose-600 border border-rose-100 dark:bg-rose-900/20 dark:border-rose-800 dark:text-rose-400"
               >
-                <span class="text-xs">⚠️</span>
+                <span>⚠️</span>
                 <span>{{ error }}</span>
               </p>
             </div>
           </div>
         </div>
-
-        <!-- Input -->
-        <footer class="border-t border-orange-100 bg-white/90 px-3 py-3">
-          <div class="flex items-end gap-2">
-            <textarea
-                v-model="draft"
-                rows="1"
-                class="flex-1 resize-none rounded-2xl border border-gray-200 px-3 py-2 text-xs bg-white/90 shadow-inner focus:outline-none focus:ring-1 focus:ring-gray-900 focus:border-gray-900"
-                placeholder="Say hi 👋, share your vibe, or ask about the place…"
-                @keydown.enter.prevent="handleEnter"
-            />
-            <button
-                class="px-4 py-2 rounded-2xl bg-gray-900 text-white text-xs font-medium hover:bg-black disabled:opacity-40 disabled:cursor-not-allowed shadow-sm"
-                :disabled="!draft.trim() || sending"
-                @click="handleSend"
-            >
-              {{ sending ? 'Sending…' : 'Send' }}
-            </button>
-          </div>
-        </footer>
       </main>
+
+      <!-- Input (Fixed Overlay) -->
+      <footer
+          class="absolute bottom-0 left-0 w-full p-4 border-t border-slate-100 bg-white/80 backdrop-blur-md z-20 dark:bg-gray-900/80 dark:border-slate-800">
+        <div
+            class="flex items-end gap-3 bg-slate-50 p-2 rounded-3xl border border-slate-200 dark:bg-slate-800 dark:border-slate-700">
+          <textarea
+              v-model="draft"
+              rows="1"
+              class="flex-1 resize-none bg-transparent border-0 px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 focus:ring-0 dark:text-white max-h-32"
+              placeholder="Type a message..."
+              @keydown.enter.prevent="handleEnter"
+          />
+          <button
+              class="h-10 w-10 rounded-full flex items-center justify-center transition-all shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
+              :class="!draft.trim() || sending
+                ? 'bg-slate-200 text-slate-400 dark:bg-slate-700 dark:text-slate-500'
+                : 'bg-slate-900 text-white hover:bg-slate-800 hover:scale-105 dark:bg-white dark:text-slate-900'"
+              :disabled="!draft.trim() || sending"
+              @click="handleSend"
+          >
+            <svg v-if="sending" class="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none"
+                 viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            <svg v-else class="h-4 w-4 ml-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                    d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+            </svg>
+          </button>
+        </div>
+      </footer>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
-import { useRoute, useRouter } from '#imports'
-import { useChat } from '~/composables/useChat'
+import {ref, onMounted, computed} from 'vue'
+import {useRoute, useRouter} from '#imports'
+import {useChat} from '~/composables/useChat'
 
 const route = useRoute()
 const router = useRouter()
@@ -212,12 +237,14 @@ const handleSend = async () => {
   }
 }
 
-const handleEnter = () => {
-  handleSend()
+const handleEnter = (e: KeyboardEvent) => {
+  if (!e.shiftKey) {
+    handleSend()
+  }
 }
 
 const formatTime = (iso: string) => {
   const d = new Date(iso)
-  return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+  return d.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})
 }
 </script>

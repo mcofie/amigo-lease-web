@@ -1,682 +1,402 @@
 <template>
   <main
-      class="min-h-screen bg-gradient-to-b from-orange-50/40 via-white to-gray-50 dark:from-gray-900 dark:via-gray-950 dark:to-black"
+      class="min-h-screen bg-white text-slate-900 selection:bg-orange-100 selection:text-orange-900 dark:bg-gray-950 dark:text-white"
   >
     <!-- HERO -->
-    <section class="relative flex items-center overflow-hidden">
-      <!-- Soft background accent -->
+    <section class="relative flex items-center overflow-hidden pt-10 pb-20 lg:pt-24">
+      <!-- Modern Mesh Gradients (Warmer Tones) -->
       <div
-          class="pointer-events-none absolute -top-24 -right-40 h-72 w-72 rounded-full bg-orange-200/50 blur-3xl opacity-70 dark:bg-orange-500/20 dark:opacity-60"
+          class="absolute -top-[20%] -left-[10%] h-[600px] w-[600px] rounded-full bg-orange-500/20 blur-[120px] opacity-60 dark:bg-orange-600/10"
+          aria-hidden="true"
+      ></div>
+      <div
+          class="absolute top-[10%] -right-[10%] h-[500px] w-[500px] rounded-full bg-rose-500/20 blur-[120px] opacity-60 dark:bg-rose-600/10"
           aria-hidden="true"
       ></div>
 
-      <div class="relative w-full max-w-5xl mx-auto px-6 py-16 md:py-20">
-        <div class="grid gap-12 md:grid-cols-2 items-center">
+      <div class="relative w-full max-w-6xl mx-auto px-6">
+        <div class="grid gap-16 lg:grid-cols-2 items-center">
           <!-- LEFT: TEXT -->
-          <div class="space-y-6 fade-in-up">
+          <div class="space-y-8 fade-in-up max-w-xl">
             <!-- Eyebrow -->
             <div
-                class="inline-flex items-center gap-2 bg-orange-50 border border-orange-100 px-3 py-1.5 rounded-full shadow-sm/10 dark:bg-orange-500/10 dark:border-orange-500/30"
+                class="inline-flex items-center gap-2.5 bg-white/80 backdrop-blur-md border border-orange-200 px-4 py-2 rounded-full shadow-sm shadow-orange-500/10 dark:bg-white/5 dark:border-white/10"
             >
-              <span class="h-2 w-2 rounded-full bg-orange-500 animate-pulse"></span>
-              <span class="text-orange-700 text-xs font-medium dark:text-orange-300">
-                Roommates that match your real-life habits
+              <span class="relative flex h-2.5 w-2.5">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-orange-500"></span>
+              </span>
+              <span class="text-orange-700 text-xs font-bold tracking-wide uppercase dark:text-orange-200">
+                Match Habits, Not Just Rooms
               </span>
             </div>
 
             <!-- Headline -->
             <h1
-                class="text-3xl md:text-4xl font-semibold leading-tight text-gray-900 dark:text-gray-50"
+                class="text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight text-slate-900 leading-[1.05] dark:text-white"
             >
-              Find a roommate<br/>
-              you’ll actually vibe with.
+              Find a roommate<br />
+              you <span class="text-transparent bg-clip-text bg-gradient-to-r from-orange-600 via-rose-600 to-amber-500 dark:from-orange-400 dark:via-rose-400 dark:to-amber-300">actually vibe</span> with.
             </h1>
 
             <!-- Description -->
-            <p class="text-gray-600 dark:text-gray-300 text-sm md:text-base max-w-md">
-              Amigo Lease starts with a playful lifestyle quiz. We turn your routines,
-              boundaries and budget into a compatibility score, then connect you with
-              people and places that feel like an easy fit — whether you’re hosting or
-              looking for a room.
+            <p class="text-lg md:text-xl text-slate-600 leading-relaxed dark:text-slate-400">
+              Amigo Lease turns your routines, boundaries, and budget into a
+              <strong class="text-slate-900 dark:text-white">compatibility score</strong>. Connect with people and places
+              that feel like home—without the awkward interviews.
             </p>
 
             <!-- Feature pills -->
-            <div class="flex flex-wrap gap-2 pt-1 text-xs">
-              <span
-                  class="px-3 py-1 rounded-full border text-gray-700 border-gray-200 bg-white/70 backdrop-blur dark:text-gray-100 dark:border-gray-700 dark:bg-gray-900/60"
-              >
-                Quiz-powered compatibility score
+            <div class="flex flex-wrap gap-2">
+              <span class="px-4 py-2 rounded-full bg-slate-50 text-slate-700 text-xs font-bold border border-slate-200 flex items-center gap-2 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700">
+                ✨ Quiz-powered matching
               </span>
-              <span
-                  class="px-3 py-1 rounded-full border text-gray-700 border-gray-200 bg-white/70 backdrop-blur dark:text-gray-100 dark:border-gray-700 dark:bg-gray-900/60"
-              >
-                Hosts & seekers in one place
+              <span class="px-4 py-2 rounded-full bg-slate-50 text-slate-700 text-xs font-bold border border-slate-200 flex items-center gap-2 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700">
+                🏡 Verified lifestyles
               </span>
-              <span
-                  class="px-3 py-1 rounded-full border text-gray-700 border-gray-200 bg-white/70 backdrop-blur dark:text-gray-100 dark:border-gray-700 dark:bg-gray-900/60"
-              >
-                Habits, boundaries & budget aligned
-              </span>
-              <span
-                  class="px-3 py-1 rounded-full border text-gray-700 border-gray-200 bg-white/70 backdrop-blur dark:text-gray-100 dark:border-gray-700 dark:bg-gray-900/60"
-              >
-                Dealbreakers agreed upfront
+              <span class="px-4 py-2 rounded-full bg-slate-50 text-slate-700 text-xs font-bold border border-slate-200 flex items-center gap-2 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700">
+                🛡️ Dealbreakers upfront
               </span>
             </div>
 
             <!-- Primary actions -->
-            <div class="flex flex-col sm:flex-row gap-3 pt-4">
+            <div class="flex flex-col sm:flex-row gap-4 pt-4">
               <button
                   type="button"
                   @click="goToOnboarding"
-                  class="w-full sm:w-auto px-4 py-2.5 rounded-lg bg-black text-white text-sm font-medium hover:bg-gray-900 transition-colors shadow-sm dark:bg-white dark:text-black dark:hover:bg-gray-100"
+                  class="group relative inline-flex h-14 items-center justify-center overflow-hidden rounded-2xl bg-gradient-to-br from-orange-600 to-rose-600 px-8 font-bold text-white shadow-xl shadow-orange-500/30 transition-all duration-300 hover:scale-[1.02] hover:shadow-orange-500/50 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
               >
-                Take the roommate quiz
+                <span class="mr-2 text-lg">Take the Quiz</span>
+                <svg class="w-5 h-5 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
               </button>
 
               <button
                   type="button"
                   @click="goToOnboarding"
-                  class="w-full sm:w-auto px-4 py-2.5 rounded-lg border text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors border-gray-300 bg-white/70 backdrop-blur dark:text-gray-100 dark:border-gray-700 dark:bg-gray-900/60 dark:hover:bg-gray-800"
+                  class="inline-flex h-14 items-center justify-center rounded-2xl border-2 border-slate-200 bg-white px-8 font-bold text-slate-700 shadow-sm transition-all duration-300 hover:bg-slate-50 hover:border-slate-300 hover:text-slate-900 dark:border-white/10 dark:bg-white/5 dark:text-slate-200 dark:hover:bg-white/10"
               >
-                List my spare room
+                List my place
               </button>
             </div>
 
-            <p class="text-xs text-gray-400 dark:text-gray-500">
-              ~5 minutes · No long forms · Change your answers anytime
-            </p>
+            <!-- Social Proof -->
+            <div class="flex items-center gap-4 pt-4">
+              <div class="flex -space-x-4">
+                <img class="w-10 h-10 rounded-full border-4 border-white dark:border-slate-900 object-cover" src="https://i.pravatar.cc/100?img=12" alt="User">
+                <img class="w-10 h-10 rounded-full border-4 border-white dark:border-slate-900 object-cover" src="https://i.pravatar.cc/100?img=32" alt="User">
+                <img class="w-10 h-10 rounded-full border-4 border-white dark:border-slate-900 object-cover" src="https://i.pravatar.cc/100?img=47" alt="User">
+                <div class="w-10 h-10 rounded-full border-4 border-white bg-orange-50 flex items-center justify-center text-xs font-bold text-orange-700 dark:border-slate-900 dark:bg-slate-800 dark:text-orange-400">
+                  +2k
+                </div>
+              </div>
+              <div>
+                <div class="flex gap-0.5 text-amber-400">
+                  <svg v-for="i in 5" :key="i" class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                </div>
+                <p class="text-xs font-medium text-slate-500 dark:text-slate-400">Trusted by happy roommates</p>
+              </div>
+            </div>
           </div>
 
           <!-- RIGHT: VISUAL AREA -->
-          <div class="flex justify-center fade-in-up-delayed">
-            <img
-                src="/images/handshake.gif"
-                alt="Amigo Lease animation"
-                class="w-full max-w-[460px]"
-            />
+          <div class="relative flex justify-center fade-in-up-delayed perspective-1000">
+            <!-- Decorative blob -->
+            <div class="absolute inset-0 bg-gradient-to-tr from-orange-400 to-rose-500 rounded-full blur-[80px] opacity-30 scale-90 animate-pulse-slow dark:opacity-20"></div>
+
+            <!-- Image Container -->
+            <div class="relative w-full max-w-[420px] transform transition-transform hover:scale-[1.02] duration-500 group">
+              <!-- Glass ring -->
+              <div class="absolute -inset-1 rounded-[2.5rem] bg-gradient-to-b from-white/60 to-white/0 border border-white/30 blur-sm"></div>
+
+              <img
+                  src="/images/handshake.gif"
+                  alt="Amigo Lease match"
+                  class="relative rounded-[2rem] shadow-2xl shadow-orange-900/20 border-4 border-white dark:border-slate-800 dark:shadow-black/50 w-full h-auto"
+              />
+
+              <!-- Floating Badge: Match Score -->
+              <div class="absolute top-8 -right-8 bg-white p-4 rounded-2xl shadow-xl border border-slate-100 flex items-center gap-3 animate-float delay-100 dark:bg-slate-800 dark:border-slate-700">
+                <div class="w-12 h-12 rounded-full bg-gradient-to-br from-orange-500 to-rose-500 flex items-center justify-center text-white font-bold text-sm shadow-lg">
+                  94%
+                </div>
+                <div>
+                  <p class="text-xs text-slate-500 font-semibold uppercase tracking-wide dark:text-slate-400">Compatibility</p>
+                  <p class="text-sm font-bold text-slate-900 dark:text-white">Perfect Match</p>
+                </div>
+              </div>
+
+              <!-- Floating Badge: Vibe -->
+              <div class="absolute -bottom-6 -left-6 bg-white p-3 pr-5 rounded-full shadow-xl border border-slate-100 flex items-center gap-3 animate-float dark:bg-slate-800 dark:border-slate-700">
+                <div class="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-lg">
+                  🌿
+                </div>
+                <div>
+                  <p class="text-sm font-bold text-slate-900 dark:text-white">Chill & Tidy</p>
+                  <p class="text-[10px] text-slate-500 font-medium dark:text-slate-400">Verified Vibe</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- SECTION: Sample matches with themed background -->
-    <section
-        class="py-12 md:py-16 bg-orange-50/80 dark:bg-orange-950/30 border-y border-orange-100 dark:border-orange-900"
-    >
-      <div class="max-w-5xl mx-auto px-6 space-y-6">
-        <!-- Header -->
-        <div class="space-y-1 fade-in-up">
-          <p
-              class="inline-flex items-center gap-1 text-[11px] font-medium tracking-wide text-orange-700 uppercase dark:text-orange-300"
-          >
-            <span class="h-1.5 w-1.5 rounded-full bg-orange-500"></span>
-            Preview
-          </p>
-          <h2 class="text-xl md:text-2xl font-semibold text-gray-900 dark:text-gray-50">
-            See your matches and living style at a glance.
+    <!-- SECTION: ARCHETYPES TEASER (NEW) -->
+    <section class="py-24 bg-white dark:bg-slate-900 border-y border-slate-100 dark:border-slate-800 relative overflow-hidden">
+      <!-- Background Decoration -->
+      <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-3xl h-full bg-gradient-to-b from-orange-50/50 to-transparent pointer-events-none dark:from-orange-900/10"></div>
+
+      <div class="max-w-6xl mx-auto px-6 relative z-10">
+        <div class="text-center max-w-3xl mx-auto mb-16 space-y-4">
+            <span class="inline-block py-1 px-3 rounded-full bg-orange-100 text-orange-700 text-xs font-bold uppercase tracking-wider dark:bg-orange-900/30 dark:text-orange-400">
+              Know Thyself
+            </span>
+          <h2 class="text-3xl md:text-5xl font-bold text-slate-900 dark:text-white">
+            What’s your roommate <span class="text-orange-600 dark:text-orange-500">archetype?</span>
           </h2>
-          <p class="text-xs text-gray-600 dark:text-gray-400">
-            These examples show how your matches and homes will appear once you complete the quiz.
+          <p class="text-lg text-slate-600 dark:text-slate-400">
+            Are you a <strong>Social Sunbeam</strong> or a <strong>Quiet Nest-Builder</strong>? Discover your living style and find people who complement it perfectly.
           </p>
         </div>
 
-        <!-- Cards -->
-        <div
-            class="mt-4 -mx-2 flex gap-4 overflow-x-auto pb-4 md:mx-0 md:grid md:grid-cols-3 md:gap-4 md:overflow-visible cards-reveal"
-        >
-          <!-- CARD 1 -->
-          <article
-              class="min-w-[260px] max-w-xs md:max-w-none bg-white dark:bg-gray-900 border border-orange-100 dark:border-orange-900 rounded-2xl p-5 shadow-[0_6px_20px_-6px_rgba(0,0,0,0.25)] flex flex-col gap-3
-                   transition-transform transition-shadow duration-200 ease-out hover:-translate-y-1 hover:shadow-[0_18px_40px_-10px_rgba(0,0,0,0.35)]"
+        <div class="grid md:grid-cols-3 gap-6">
+          <!-- Arch Card 1 -->
+          <div class="group relative bg-slate-50 rounded-3xl p-8 border border-slate-100 hover:border-orange-200 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 dark:bg-slate-800 dark:border-slate-700 dark:hover:border-orange-500/30">
+            <div class="text-4xl mb-4 transform group-hover:scale-110 transition-transform duration-300">🕯️</div>
+            <h3 class="text-xl font-bold text-slate-900 mb-2 dark:text-white">The Quiet Nest-Builder</h3>
+            <p class="text-sm text-slate-600 leading-relaxed dark:text-slate-400">
+              Home is a sanctuary. You value peace, cozy evenings, and a tidy space to recharge.
+            </p>
+          </div>
+
+          <!-- Arch Card 2 -->
+          <div class="group relative bg-white rounded-3xl p-8 border-2 border-orange-100 shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 dark:bg-slate-800 dark:border-orange-500/30">
+            <div class="absolute top-4 right-4 bg-orange-100 text-orange-700 text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wide dark:bg-orange-900/50 dark:text-orange-300">Popular</div>
+            <div class="text-4xl mb-4 transform group-hover:scale-110 transition-transform duration-300">🦎</div>
+            <h3 class="text-xl font-bold text-slate-900 mb-2 dark:text-white">The Easygoing Chameleon</h3>
+            <p class="text-sm text-slate-600 leading-relaxed dark:text-slate-400">
+              Flexible and chill. You can vibe with almost anyone as long as there's mutual respect.
+            </p>
+          </div>
+
+          <!-- Arch Card 3 -->
+          <div class="group relative bg-slate-50 rounded-3xl p-8 border border-slate-100 hover:border-orange-200 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 dark:bg-slate-800 dark:border-slate-700 dark:hover:border-orange-500/30">
+            <div class="text-4xl mb-4 transform group-hover:scale-110 transition-transform duration-300">🎉</div>
+            <h3 class="text-xl font-bold text-slate-900 mb-2 dark:text-white">The Party Pulse</h3>
+            <p class="text-sm text-slate-600 leading-relaxed dark:text-slate-400">
+              Home is a hub. You love hosting dinners, game nights, and keeping the energy high.
+            </p>
+          </div>
+        </div>
+
+        <div class="mt-12 text-center">
+          <button
+              @click="goToArchetypes"
+              class="inline-flex items-center gap-2 text-sm font-bold text-slate-900 border-b-2 border-slate-900 hover:text-orange-600 hover:border-orange-600 transition-colors pb-0.5 dark:text-white dark:border-white dark:hover:text-orange-400 dark:hover:border-orange-400"
           >
-            <div class="flex items-start justify-between">
+            Explore all 6 archetypes
+            <span class="text-lg">→</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION: Sample matches -->
+    <section
+        class="py-24 bg-slate-50 dark:bg-black/20 border-b border-slate-200 dark:border-slate-800"
+    >
+      <div class="max-w-6xl mx-auto px-6 space-y-12">
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+          <div class="max-w-2xl space-y-4">
+            <h2 class="text-3xl font-bold tracking-tight text-slate-900 dark:text-white">
+              See your matches at a glance.
+            </h2>
+            <p class="text-lg text-slate-600 dark:text-slate-400">
+              No hidden surprises. See compatibility scores, dealbreakers, and vibe checks upfront.
+            </p>
+          </div>
+          <button
+              @click="goToMatches"
+              class="inline-flex items-center justify-center px-6 py-3 rounded-xl bg-white border border-slate-200 text-slate-700 font-bold hover:border-slate-300 hover:bg-slate-50 transition-all shadow-sm dark:bg-slate-800 dark:border-slate-700 dark:text-white dark:hover:bg-slate-700"
+          >
+            View Live Demo
+          </button>
+        </div>
+
+        <!-- Cards Grid -->
+        <div class="grid gap-6 md:grid-cols-3 cards-reveal">
+          <!-- CARD 1 -->
+          <article class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm hover:shadow-xl hover:border-slate-300 transition-all duration-300 cursor-pointer dark:bg-gray-900 dark:border-slate-800 dark:hover:border-slate-700 group">
+            <div class="flex items-start justify-between mb-4">
               <div>
-                <h3 class="text-sm font-semibold text-gray-900 dark:text-gray-50">
+                <h3 class="text-lg font-bold text-slate-900 group-hover:text-orange-600 transition-colors dark:text-white">
                   You & Nana
                 </h3>
-                <p class="text-[11px] text-gray-500 dark:text-gray-400">
-                  Osu · 2 bed · ₵3,000 each
+                <p class="text-xs font-medium text-slate-500 mt-1 dark:text-slate-400">
+                  Osu · 2 bed · ₵3,000
                 </p>
               </div>
-              <div class="text-right">
-                <p class="text-[10px] text-gray-400">Match</p>
-                <p class="text-xl font-bold text-orange-600 dark:text-orange-400">
-                  89%
-                </p>
+              <div class="bg-orange-50 text-orange-600 px-3 py-1 rounded-lg font-bold text-sm border border-orange-100 dark:bg-orange-900/20 dark:text-orange-400 dark:border-orange-800">
+                89%
               </div>
             </div>
-
-            <div class="flex flex-wrap gap-1.5 text-[11px] leading-tight">
-              <span
-                  class="px-2 py-0.5 rounded-full bg-green-50 text-green-700 border border-green-100 dark:bg-green-500/10 dark:text-green-300"
-              >
-                Early risers
-              </span>
-              <span
-                  class="px-2 py-0.5 rounded-full bg-gray-100 text-gray-700 border border-gray-200 dark:bg-gray-800 dark:border-gray-700"
-              >
-                Quiet weeknights
-              </span>
-              <span
-                  class="px-2 py-0.5 rounded-full bg-gray-100 text-gray-700 border border-gray-200 dark:bg-gray-800 dark:border-gray-700"
-              >
-                Shared cleaning
-              </span>
+            <div class="flex flex-wrap gap-2 mb-4">
+              <span class="px-2.5 py-1 rounded-md text-[10px] font-bold tracking-wide uppercase border bg-emerald-50 text-emerald-700 border-emerald-100 dark:bg-emerald-900/20 dark:text-emerald-400 dark:border-emerald-800">Early risers</span>
+              <span class="px-2.5 py-1 rounded-md text-[10px] font-bold tracking-wide uppercase border bg-slate-100 text-slate-600 border-slate-200 dark:bg-slate-800 dark:text-slate-400 dark:border-slate-700">Quiet nights</span>
             </div>
-
-            <p class="text-[11px] text-gray-600 dark:text-gray-300">
+            <p class="text-xs text-slate-600 leading-relaxed dark:text-slate-400">
               Ideal for someone who prefers calm evenings, clear routines, and light hosting.
             </p>
           </article>
 
           <!-- CARD 2 -->
-          <article
-              class="min-w-[260px] max-w-xs md:max-w-none bg-white dark:bg-gray-900 border border-orange-100 dark:border-orange-900 rounded-2xl p-5 shadow-[0_6px_20px_-6px_rgba(0,0,0,0.25)] flex flex-col gap-3
-                   transition-transform transition-shadow duration-200 ease-out hover:-translate-y-1 hover:shadow-[0_18px_40px_-10px_rgba(0,0,0,0.35)]"
-          >
-            <div class="flex items-start justify-between">
+          <article class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm hover:shadow-xl hover:border-slate-300 transition-all duration-300 cursor-pointer dark:bg-gray-900 dark:border-slate-800 dark:hover:border-slate-700 group">
+            <div class="flex items-start justify-between mb-4">
               <div>
-                <h3 class="text-sm font-semibold text-gray-900 dark:text-gray-50">
-                  Ensuite room in shared home
+                <h3 class="text-lg font-bold text-slate-900 group-hover:text-emerald-600 transition-colors dark:text-white">
+                  Shared Home
                 </h3>
-                <p class="text-[11px] text-gray-500 dark:text-gray-400">
-                  East Legon · 3 bed · ₵2,400/mo
+                <p class="text-xs font-medium text-slate-500 mt-1 dark:text-slate-400">
+                  East Legon · ₵2,400
                 </p>
               </div>
-              <div class="text-right">
-                <p class="text-[10px] text-gray-400">Fit score</p>
-                <p class="text-xl font-bold text-emerald-600 dark:text-emerald-400">
-                  84%
-                </p>
+              <div class="bg-emerald-50 text-emerald-600 px-3 py-1 rounded-lg font-bold text-sm border border-emerald-100 dark:bg-emerald-900/20 dark:text-emerald-400 dark:border-emerald-800">
+                92%
               </div>
             </div>
-
-            <div class="flex flex-wrap gap-1.5 text-[11px]">
-              <span
-                  class="px-2 py-0.5 rounded-full bg-green-50 text-green-700 border border-green-100 dark:bg-green-500/10 dark:text-green-300"
-              >
-                Pet-friendly 🐾
-              </span>
-              <span
-                  class="px-2 py-0.5 rounded-full bg-gray-100 text-gray-700 border border-gray-200 dark:bg-gray-800"
-              >
-                No smoking 🚭
-              </span>
-              <span
-                  class="px-2 py-0.5 rounded-full bg-gray-100 text-gray-700 border border-gray-200 dark:bg-gray-800"
-              >
-                Cleaning rota
-              </span>
+            <div class="flex flex-wrap gap-2 mb-4">
+              <span class="px-2.5 py-1 rounded-md text-[10px] font-bold tracking-wide uppercase border bg-emerald-50 text-emerald-700 border-emerald-100 dark:bg-emerald-900/20 dark:text-emerald-400 dark:border-emerald-800">Pet-friendly 🐾</span>
+              <span class="px-2.5 py-1 rounded-md text-[10px] font-bold tracking-wide uppercase border bg-slate-100 text-slate-600 border-slate-200 dark:bg-slate-800 dark:text-slate-400 dark:border-slate-700">No smoking</span>
             </div>
-
-            <p class="text-[11px] text-gray-600 dark:text-gray-300">
-              A bright ensuite with a host whose habits and dealbreakers line up with yours.
+            <p class="text-xs text-slate-600 leading-relaxed dark:text-slate-400">
+              A bright ensuite with a host whose habits line up with yours.
             </p>
           </article>
 
           <!-- CARD 3 -->
-          <article
-              class="min-w-[260px] max-w-xs md:max-w-none bg-white dark:bg-gray-900 border border-orange-100 dark:border-orange-900 rounded-2xl p-5 shadow-[0_6px_20px_-6px_rgba(0,0,0,0.25)] flex flex-col gap-3
-                   transition-transform transition-shadow duration-200 ease-out hover:-translate-y-1 hover:shadow-[0_18px_40px_-10px_rgba(0,0,0,0.35)]"
-          >
-            <div class="flex items-start justify-between">
+          <article class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm hover:shadow-xl hover:border-slate-300 transition-all duration-300 cursor-pointer dark:bg-gray-900 dark:border-slate-800 dark:hover:border-slate-700 group">
+            <div class="flex items-start justify-between mb-4">
               <div>
-                <h3 class="text-sm font-semibold text-gray-900 dark:text-gray-50">
+                <h3 class="text-lg font-bold text-slate-900 group-hover:text-purple-600 transition-colors dark:text-white">
                   You & Kojo
                 </h3>
-                <p class="text-[11px] text-gray-500 dark:text-gray-400">
-                  Haatso · 3 bed · ₵2,100 each
+                <p class="text-xs font-medium text-slate-500 mt-1 dark:text-slate-400">
+                  Haatso · 3 bed · ₵2,100
                 </p>
               </div>
-              <div class="text-right">
-                <p class="text-[10px] text-gray-400">Match</p>
-                <p class="text-xl font-bold text-orange-600 dark:text-orange-400">
-                  78%
-                </p>
+              <div class="bg-purple-50 text-purple-600 px-3 py-1 rounded-lg font-bold text-sm border border-purple-100 dark:bg-purple-900/20 dark:text-purple-400 dark:border-purple-800">
+                78%
               </div>
             </div>
-
-            <div class="flex flex-wrap gap-1.5 text-[11px]">
-              <span
-                  class="px-2 py-0.5 rounded-full bg-gray-100 text-gray-700 border border-gray-200 dark:bg-gray-800"
-              >
-                Weekend guests
-              </span>
-              <span
-                  class="px-2 py-0.5 rounded-full bg-gray-100 text-gray-700 border border-gray-200 dark:bg-gray-800"
-              >
-                Medium noise
-              </span>
-              <span
-                  class="px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 border border-amber-100 dark:bg-amber-500/10 dark:text-amber-300"
-              >
-                1 small flag
-              </span>
+            <div class="flex flex-wrap gap-2 mb-4">
+              <span class="px-2.5 py-1 rounded-md text-[10px] font-bold tracking-wide uppercase border bg-slate-100 text-slate-600 border-slate-200 dark:bg-slate-800 dark:text-slate-400 dark:border-slate-700">Social</span>
+              <span class="px-2.5 py-1 rounded-md text-[10px] font-bold tracking-wide uppercase border bg-amber-50 text-amber-700 border-amber-100 dark:bg-amber-900/20 dark:text-amber-400 dark:border-amber-800">1 Flag</span>
             </div>
-
-            <p class="text-[11px] text-gray-600 dark:text-gray-300">
-              Great alignment on social energy & budget — just chat about sleep schedules.
+            <p class="text-xs text-slate-600 leading-relaxed dark:text-slate-400">
+              Great alignment on budget — just check on sleep schedules.
             </p>
           </article>
-        </div>
-
-        <!-- CTA Row -->
-        <div
-            class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2 fade-in-up-delayed"
-        >
-          <p class="text-[11px] text-gray-600 dark:text-gray-400">
-            When you’re signed in, this section turns into real people and real homes based on your quiz.
-          </p>
-          <NuxtLink
-              to="/matches"
-              class="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-gray-900 text-white text-xs font-medium hover:bg-black transition dark:bg-white dark:text-black dark:hover:bg-gray-100 shadow-sm"
-          >
-            View my matches
-            <span>→</span>
-          </NuxtLink>
         </div>
       </div>
     </section>
 
-    <!-- SECTION: Built for how you live -->
-    <section class="py-14 md:py-20 bg-white dark:bg-gray-950">
-      <div class="max-w-5xl mx-auto px-6 space-y-10">
+    <!-- SECTION: Final CTA -->
+    <section class="py-24 bg-white dark:bg-gray-950">
+      <div class="max-w-4xl mx-auto px-6 text-center space-y-8">
+        <h2 class="text-4xl md:text-5xl font-bold tracking-tight text-slate-900 dark:text-white">
+          Ready to find your <span class="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-rose-500">roommate soulmate?</span>
+        </h2>
+        <p class="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
+          Join thousands of roommates who found their perfect match. No awkward interviews, just good vibes.
+        </p>
 
-        <!-- Header -->
-        <div class="text-center max-w-2xl mx-auto space-y-2">
-          <h2 class="text-2xl md:text-3xl font-semibold text-gray-900 dark:text-gray-50">
-            Built for how you actually live.
-          </h2>
-          <p class="text-sm text-gray-600 dark:text-gray-300">
-            Not just rooms — real-life compatibility based on habits, boundaries and lifestyle.
-          </p>
-        </div>
-
-        <!-- Cards -->
-        <div class="grid gap-6 md:grid-cols-3">
-
-          <!-- Card -->
-          <article
-              class="rounded-2xl p-5 text-white shadow-lg hover:-translate-y-1 hover:shadow-2xl transition-all duration-200
-               bg-gradient-to-br from-orange-500 to-rose-500 dark:from-orange-600 dark:to-rose-600 relative overflow-hidden"
-          >
-            <div class="text-4xl mb-3">🎯</div>
-            <h3 class="text-base font-semibold">Quiz-powered matching</h3>
-            <p class="text-xs text-white/95 leading-relaxed">
-              We ask about routines, guests, noise, cleanliness and more —
-              then turn it into a compatibility score that actually means something.
-            </p>
-          </article>
-
-          <!-- Card -->
-          <article
-              class="rounded-2xl p-5 text-white shadow-lg hover:-translate-y-1 hover:shadow-2xl transition-all duration-200
-               bg-gradient-to-br from-orange-500 to-rose-500 dark:from-orange-600 dark:to-rose-600 relative overflow-hidden"
-          >
-            <div class="text-4xl mb-3">🏠</div>
-            <h3 class="text-base font-semibold">Hosts & seekers together</h3>
-            <p class="text-xs text-white/95 leading-relaxed">
-              Whether you have a spare room or need one, you’re matched on both lifestyle
-              and living conditions — not random ads or WhatsApp spams.
-            </p>
-          </article>
-
-          <!-- Card -->
-          <article
-              class="rounded-2xl p-5 text-white shadow-lg hover:-translate-y-1 hover:shadow-2xl transition-all duration-200
-               bg-gradient-to-br from-orange-500 to-rose-500 dark:from-orange-600 dark:to-rose-600 relative overflow-hidden"
-          >
-            <div class="text-4xl mb-3">🚦</div>
-            <h3 class="text-base font-semibold">Dealbreakers upfront</h3>
-            <p class="text-xs text-white/95 leading-relaxed">
-              Set non-negotiables like smoking, pets, visitors and bills so you
-              only see matches that respect your boundaries.
-            </p>
-          </article>
-
-        </div>
-
-        <!-- CTA BUTTON -->
-        <!-- CTA BUTTONS -->
-        <div class="flex flex-col sm:flex-row items-center justify-center gap-3 pt-6 fade-in-up">
-
-          <!-- Primary CTA -->
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
           <button
               @click="goToOnboarding"
-              class="relative px-7 py-3 rounded-full bg-black text-white text-sm font-medium shadow-sm
-           hover:bg-gray-900 transition-all select-none
-           dark:bg-white dark:text-black dark:hover:bg-gray-100
-           group overflow-hidden"
+              class="w-full sm:w-auto px-8 py-4 rounded-2xl bg-slate-900 text-white text-base font-bold shadow-xl shadow-slate-900/20 hover:bg-slate-800 hover:-translate-y-1 transition-all duration-200 dark:bg-white dark:text-slate-900"
           >
-            <!-- Glow effect -->
-            <span
-                class="absolute inset-0 rounded-full opacity-0 group-hover:opacity-20 transition-opacity
-             bg-gradient-to-r from-orange-500 to-rose-500 blur-xl"
-            ></span>
-
-            <span class="relative z-10">Start now</span>
-          </button>
-
-          <!-- Secondary (Ghost) CTA -->
-          <button
-              @click="goToOnboarding"
-              class="px-7 py-3 rounded-full border border-gray-300 bg-white/70 backdrop-blur text-sm font-medium
-           text-gray-700 hover:bg-gray-100 transition-all select-none
-           dark:text-gray-100 dark:border-gray-700 dark:bg-gray-900/60 dark:hover:bg-gray-800"
-          >
-            Take the lifestyle quiz
-          </button>
-
-        </div>
-
-      </div>
-    </section>
-
-    <!-- SECTION: Quiz Summary & Personality Types -->
-    <section
-        class="relative pb-16 pt-16 bg-rose-50/80 dark:bg-rose-950/30 border-y border-rose-100 dark:border-rose-900 overflow-hidden"
-    >
-      <!-- Soft animated background blobs -->
-      <div
-          class="pointer-events-none absolute -top-24 -left-32 h-64 w-64 rounded-full bg-orange-200/60 blur-3xl opacity-70 dark:bg-orange-500/30 animate-blob"
-      ></div>
-      <div
-          class="pointer-events-none absolute -bottom-32 -right-24 h-72 w-72 rounded-full bg-rose-200/70 blur-3xl opacity-60 dark:bg-rose-500/25 animate-blob-slow"
-      ></div>
-
-      <div class="relative max-w-5xl mx-auto px-6 space-y-10">
-        <!-- Header -->
-        <div class="space-y-2 fade-in-up">
-          <p
-              class="inline-flex items-center gap-1 text-[11px] font-medium tracking-wide uppercase text-rose-700 dark:text-rose-300"
-          >
-            <span class="h-1.5 w-1.5 rounded-full bg-rose-500"></span>
-            Quiz Summary Sample
-          </p>
-          <h2 class="text-xl md:text-2xl font-semibold text-gray-900 dark:text-gray-50">
-            What your vibe summary looks like after the quiz.
-          </h2>
-          <p class="text-sm text-gray-600 dark:text-gray-400 max-w-lg">
-            This is an example of what someone sees when they match with you — a clear snapshot of your lifestyle,
-            boundaries, and household preferences.
-          </p>
-        </div>
-
-        <!-- 3-Column Layout -->
-        <div class="grid gap-6 md:grid-cols-3">
-          <!-- QUIZ SUMMARY CARD -->
-          <article
-              class="bg-white/95 dark:bg-gray-900/95 border border-rose-100/80 dark:border-rose-900 rounded-2xl p-5 shadow-sm flex flex-col gap-4 card-lift fade-in-up"
-              style="animation-delay: 0.05s"
-          >
-            <p class="text-xs font-semibold text-rose-600 dark:text-rose-300 uppercase">
-              Your Summary
-            </p>
-
-            <div class="flex items-center justify-between">
-              <h3 class="text-sm font-medium text-gray-900 dark:text-gray-50">
-                Lifestyle Compatibility Snapshot
-              </h3>
-              <span
-                  class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] bg-rose-50 text-rose-700 border border-rose-100 dark:bg-rose-500/10 dark:text-rose-200 dark:border-rose-500/40"
-              >
-                <span class="h-1.5 w-1.5 rounded-full bg-emerald-400"></span>
-                82% match
-              </span>
-            </div>
-
-            <p class="text-[11px] text-gray-600 dark:text-gray-300">
-              Based on sample answers, this is the kind of quick overview your matches will see — a clean, friendly
-              breakdown of your living style.
-            </p>
-
-            <div class="flex flex-wrap gap-1.5 text-[11px]">
-              <span
-                  class="px-2 py-0.5 rounded-full bg-green-50 text-green-700 border border-green-100 dark:bg-green-500/10 dark:text-green-300 dark:border-green-500/30"
-              >
-                Tidy & considerate
-              </span>
-              <span
-                  class="px-2 py-0.5 rounded-full bg-gray-100 text-gray-700 border border-gray-200 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100"
-              >
-                Quiet weeknights
-              </span>
-              <span
-                  class="px-2 py-0.5 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-100 dark:bg-indigo-500/10 dark:text-indigo-300"
-              >
-                Low-drama household
-              </span>
-            </div>
-          </article>
-
-          <!-- PERSONALITY TYPE CARD -->
-          <article
-              class="bg-white/95 dark:bg-gray-900/95 border border-rose-100/80 dark:border-rose-900 rounded-2xl p-5 shadow-sm flex flex-col gap-3 card-lift fade-in-up"
-              style="animation-delay: 0.15s"
-          >
-            <p class="text-xs font-semibold text-rose-600 dark:text-rose-300 uppercase">
-              Personality Type
-            </p>
-
-            <h3 class="text-sm font-medium text-gray-900 dark:text-gray-50">
-              “The Calm Weeknight Roommate”
-            </h3>
-
-            <p class="text-[11px] text-gray-600 dark:text-gray-300">
-              You prefer peaceful evenings, shared respect for quiet hours, and maintaining a clean, comfy living space
-              without stress.
-            </p>
-
-            <ul class="space-y-1 text-[11px] text-gray-600 dark:text-gray-300">
-              <li>• Loves structure & predictable routines</li>
-              <li>• Hosts rarely, but warmly</li>
-              <li>• Works well with tidy, mindful roommates</li>
-            </ul>
-          </article>
-
-          <!-- CATEGORY BREAKDOWN CARD -->
-          <article
-              class="bg-white/95 dark:bg-gray-900/95 border border-rose-100/80 dark:border-rose-900 rounded-2xl p-5 shadow-sm flex flex-col gap-4 card-lift fade-in-up"
-              style="animation-delay: 0.25s"
-          >
-            <p class="text-xs font-semibold text-rose-600 dark:text-rose-300 uppercase">
-              Category Breakdown
-            </p>
-
-            <div class="space-y-3 text-[11px]">
-              <!-- Cleanliness -->
-              <div class="space-y-1">
-                <div class="flex justify-between">
-                  <span class="text-gray-600 dark:text-gray-300">Cleanliness</span>
-                  <span class="font-semibold text-rose-600 dark:text-rose-300">High</span>
-                </div>
-                <div class="w-full h-1.5 rounded-full bg-gray-200/80 dark:bg-gray-800 overflow-hidden">
-                  <div
-                      class="h-full w-4/5 rounded-full bg-gradient-to-r from-rose-500 to-orange-400 bar-fill"
-                  ></div>
-                </div>
-              </div>
-
-              <!-- Noise -->
-              <div class="space-y-1">
-                <div class="flex justify-between">
-                  <span class="text-gray-600 dark:text-gray-300">Noise Tolerance</span>
-                  <span class="font-semibold text-rose-600 dark:text-rose-300">Low</span>
-                </div>
-                <div class="w-full h-1.5 rounded-full bg-gray-200/80 dark:bg-gray-800 overflow-hidden">
-                  <div
-                      class="h-full w-2/5 rounded-full bg-gradient-to-r from-rose-500 to-orange-400 bar-fill"
-                  ></div>
-                </div>
-              </div>
-
-              <!-- Social -->
-              <div class="space-y-1">
-                <div class="flex justify-between">
-                  <span class="text-gray-600 dark:text-gray-300">Social Energy</span>
-                  <span class="font-semibold text-rose-600 dark:text-rose-300">Medium</span>
-                </div>
-                <div class="w-full h-1.5 rounded-full bg-gray-200/80 dark:bg-gray-800 overflow-hidden">
-                  <div
-                      class="h-full w-1/2 rounded-full bg-gradient-to-r from-rose-500 to-orange-400 bar-fill"
-                  ></div>
-                </div>
-              </div>
-
-              <!-- Sleep -->
-              <div class="space-y-1">
-                <div class="flex justify-between">
-                  <span class="text-gray-600 dark:text-gray-300">Sleep Schedule</span>
-                  <span class="font-semibold text-rose-600 dark:text-rose-300">Early</span>
-                </div>
-                <div class="w-full h-1.5 rounded-full bg-gray-200/80 dark:bg-gray-800 overflow-hidden">
-                  <div
-                      class="h-full w-3/4 rounded-full bg-gradient-to-r from-rose-500 to-orange-400 bar-fill"
-                  ></div>
-                </div>
-              </div>
-            </div>
-          </article>
-        </div>
-
-        <!-- CTA BUTTONS -->
-        <div class="flex flex-col sm:flex-row gap-3 pt-2 fade-in-up-delayed">
-          <button
-              type="button"
-              @click="goToOnboarding"
-              class="w-full sm:w-auto px-4 py-2 rounded-lg bg-black text-white text-sm font-medium hover:bg-gray-900 transition-colors dark:bg-white dark:text-black dark:hover:bg-gray-100"
-          >
-            Start my compatibility quiz
+            Start Compatibility Quiz
           </button>
           <button
-              type="button"
               @click="goToOnboarding"
-              class="w-full sm:w-auto px-4 py-2 rounded-lg border text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors border-gray-300 dark:text-gray-100 dark:border-gray-700 dark:hover:bg-gray-800"
+              class="w-full sm:w-auto px-8 py-4 rounded-2xl bg-slate-100 text-slate-900 text-base font-bold hover:bg-slate-200 transition-all duration-200 dark:bg-slate-800 dark:text-white dark:hover:bg-slate-700"
           >
-            I’m ready to list my room
+            List Your Room
           </button>
         </div>
+
+        <p class="text-xs text-slate-400 dark:text-slate-500">
+          Free to join · No credit card required
+        </p>
       </div>
     </section>
   </main>
 </template>
 
 <script setup lang="ts">
-import {useRouter} from '#imports'
+import { useRouter } from '#imports'
 
 const router = useRouter()
 
 const goToOnboarding = () => {
   router.push('/onboarding/role')
 }
+
+const goToArchetypes = () => {
+  router.push('/archetypes')
+}
+
+const goToMatches = () => {
+  router.push('/matches')
+}
 </script>
 
 <style scoped>
-/* Base fade-in animation */
-@keyframes fade-in-up {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* Animations */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
 }
 
-/* Elements that fade in */
-.fade-in-up,
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.3; transform: scale(0.95); }
+  50% { opacity: 0.5; transform: scale(1.05); }
+}
+
+.animate-pulse-slow {
+  animation: pulse-glow 6s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in-up {
+  animation: fade-in-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
 .fade-in-up-delayed {
   opacity: 0;
-  animation: fade-in-up 0.7s ease-out forwards;
+  animation: fade-in-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
 }
 
-/* Staggered timings */
-.fade-in-up {
-  animation-delay: 0.05s;
-}
-
-.fade-in-up-delayed {
-  animation-delay: 0.2s;
-}
-
-/* Respect reduced motion */
-@media (prefers-reduced-motion: reduce) {
-  .fade-in-up,
-  .fade-in-up-delayed,
-  .cards-reveal > article {
-    animation: none !important;
-    opacity: 1 !important;
-    transform: none !important;
-  }
-
-  .bar-fill {
-    animation: none !important;
-    transform: scaleX(1) !important;
-  }
-}
-
-/* Horizontal cards reveal */
 .cards-reveal > article {
   opacity: 0;
-  transform: translateY(10px);
-  animation: fade-in-up 0.6s ease-out forwards;
+  animation: fade-in-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-.cards-reveal > article:nth-child(2) {
-  animation-delay: 0.08s;
-}
+.cards-reveal > article:nth-child(1) { animation-delay: 0.1s; }
+.cards-reveal > article:nth-child(2) { animation-delay: 0.2s; }
+.cards-reveal > article:nth-child(3) { animation-delay: 0.3s; }
 
-.cards-reveal > article:nth-child(3) {
-  animation-delay: 0.16s;
-}
-
-/* Blob animations */
-@keyframes blob {
-  0%,
-  100% {
-    transform: translateY(0) scale(1);
-  }
-  50% {
-    transform: translateY(-6px) scale(1.05);
-  }
-}
-
-.animate-blob {
-  animation: blob 14s ease-in-out infinite;
-}
-
-.animate-blob-slow {
-  animation: blob 20s ease-in-out infinite;
-}
-
-/* Card hover */
-.card-lift {
-  transition: transform 0.18s ease-out,
-  box-shadow 0.18s ease-out,
-  background-color 0.18s ease-out,
-  border-color 0.18s ease-out;
-}
-
-.card-lift:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 18px 35px rgba(15, 23, 42, 0.12);
-}
-
-/* Animated bar fill */
-@keyframes bar-fill-in {
-  from {
-    transform: scaleX(0);
-  }
-  to {
-    transform: scaleX(1);
-  }
-}
-
-.bar-fill {
-  transform-origin: left center;
-  transform: scaleX(0);
-  animation: bar-fill-in 0.6s ease-out forwards;
+.perspective-1000 {
+  perspective: 1000px;
 }
 </style>

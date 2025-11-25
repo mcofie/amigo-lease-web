@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 2879 661" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:bevel;stroke-miterlimit:1.5;">
+    <g transform="matrix(1,0,0,1,-345.833333,-2356.833333)">
+        <g transform="matrix(0.70613,0,0,0.70613,-83.96252,1599.277113)">
+            <g transform="matrix(600,0,0,600,2988.743573,1831.302809)">
+            </g>
+            <text x="1599.144px" y="1831.303px" style="font-family:'Start-Story', 'Start Story';font-size:600px;">migo</text>
+        </g>
+        <g transform="matrix(1.127652,0,0,1.127652,-214.250953,-36.791664)">
+            <g transform="matrix(375.717159,0,0,375.717159,3065.563423,2606.644855)">
+            </g>
+            <text x="2020.694px" y="2606.645px" style="font-family:'Start-Story', 'Start Story';font-size:375.717px;">Lea<tspan x="2661.292px 2860.422px " y="2606.645px 2606.645px ">se</tspan></text>
+        </g>
+        <g transform="matrix(1.127652,0,0,1.127652,-245.208523,-577.46909)">
+            <path d="M826,2628C978.329,2628 1102,2787.518 1102,2984C1102,3046.491 1089.247,3107.881 1065.023,3162M814.72,2628.293C818.461,2628.098 822.222,2628 826,2628M586.977,3162C562.753,3107.881 550,3046.491 550,2984C550,2792.392 667.613,2635.936 814.72,2628.293" style="fill-opacity:0;stroke:black;stroke-width:51.73px;"/>
+        </g>
+        <g transform="matrix(0.502887,-0.005517,-0.005517,1.127603,-103.735273,1048.189987)">
+            <path d="M1342,1545L1567.733,1593.967L1795,1549" style="stroke:black;stroke-width:48.01px;"/>
+        </g>
+        <g transform="matrix(2.22462,0,0,2.22462,-443.501993,571.745993)">
+            <circle cx="551.5" cy="934.5" r="16.5" style="stroke:black;stroke-width:1.22px;stroke-linejoin:round;"/>
+        </g>
+        <g transform="matrix(2.22462,0,0,2.22462,-637.501993,567.745993)">
+            <circle cx="551.5" cy="934.5" r="16.5" style="stroke:black;stroke-width:1.22px;stroke-linejoin:round;"/>
+        </g>
+    </g>
+</svg>

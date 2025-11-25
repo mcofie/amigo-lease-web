@@ -1,10 +1,11 @@
 <template>
-  <div class="min-h-screen bg-gradient-to-b from-orange-50 via-rose-50 to-white px-4 py-8">
+  <div
+      class="min-h-screen bg-slate-50 text-slate-900 selection:bg-orange-100 selection:text-orange-900 dark:bg-gray-950 dark:text-white px-4 py-8">
     <div class="max-w-5xl mx-auto space-y-6">
       <!-- Top bar -->
       <div class="flex items-center justify-between mb-2">
         <button
-            class="inline-flex items-center gap-1.5 text-xs font-medium text-gray-500 hover:text-gray-900"
+            class="inline-flex items-center gap-1.5 text-xs font-bold text-slate-500 hover:text-slate-900 transition-colors dark:text-slate-400 dark:hover:text-white"
             type="button"
             @click="router.back()"
         >
@@ -12,29 +13,30 @@
           <span>Back</span>
         </button>
 
-        <div class="hidden sm:flex items-center gap-2 text-[11px] text-gray-400">
-          <span class="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+        <div class="hidden sm:flex items-center gap-2 text-[10px] font-semibold uppercase tracking-wide text-slate-400">
+          <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"/>
           <span>Amigo Lease · Roommate profile</span>
         </div>
       </div>
 
       <!-- Loading -->
       <div v-if="loading" class="flex justify-center py-20">
-        <div class="flex flex-col items-center gap-3">
-          <div class="h-10 w-10 rounded-full border-2 border-dashed border-gray-300 animate-spin" />
-          <p class="text-xs text-gray-500">Loading profile…</p>
+        <div class="flex flex-col items-center gap-4">
+          <div
+              class="w-10 h-10 border-4 border-slate-200 border-t-slate-900 rounded-full animate-spin dark:border-slate-700 dark:border-t-white"/>
+          <p class="text-xs font-medium text-slate-500 animate-pulse">Loading profile...</p>
         </div>
       </div>
 
       <!-- Error -->
       <div
           v-else-if="error"
-          class="rounded-3xl bg-white border border-red-100 py-12 px-6 text-center shadow-[0_18px_40px_rgba(15,23,42,0.08)]"
+          class="rounded-3xl bg-white border border-rose-100 py-12 px-6 text-center shadow-sm dark:bg-gray-900 dark:border-rose-900"
       >
-        <p class="text-sm font-medium text-red-600 mb-1">
-          We couldn’t load this profile.
+        <p class="text-sm font-bold text-rose-600 mb-1">
+          Profile unavailable
         </p>
-        <p class="text-xs text-red-500">
+        <p class="text-xs text-rose-500/80">
           {{ error }}
         </p>
       </div>
@@ -42,138 +44,135 @@
       <!-- Content -->
       <div
           v-else-if="profile"
-          class="rounded-3xl bg-white/95 border border-orange-100 shadow-[0_18px_40px_rgba(15,23,42,0.12)] p-5 sm:p-7 space-y-8"
+          class="space-y-6"
       >
-        <!-- Header / overview -->
-        <section class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
-          <div class="flex items-center gap-4">
-            <!-- Avatar / initials -->
-            <div
-                class="h-16 w-16 rounded-full overflow-hidden bg-gradient-to-tr from-orange-500 to-rose-500 flex items-center justify-center text-sm font-semibold text-white shadow-md"
-            >
-              <template v-if="profile.avatar_url">
-                <img
-                    :src="profile.avatar_url"
-                    class="h-full w-full object-cover"
-                    alt="Avatar"
-                />
-              </template>
-              <template v-else>
-                {{ initials }}
-              </template>
+        <!-- Header Card -->
+        <div
+            class="rounded-3xl bg-white border border-slate-200 shadow-xl p-6 sm:p-8 dark:bg-gray-900 dark:border-slate-800">
+          <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-8">
+
+            <!-- Identity -->
+            <div class="flex items-center gap-5">
+              <!-- Avatar -->
+              <div
+                  class="h-20 w-20 rounded-2xl bg-slate-100 flex items-center justify-center text-xl font-bold text-slate-900 shadow-inner border border-slate-200 overflow-hidden dark:bg-slate-800 dark:text-white dark:border-slate-700"
+              >
+                <template v-if="profile.avatar_url">
+                  <img
+                      :src="profile.avatar_url"
+                      class="h-full w-full object-cover"
+                      alt="Avatar"
+                  />
+                </template>
+                <template v-else>
+                  {{ initials }}
+                </template>
+              </div>
+
+              <div class="space-y-1.5">
+                <h1 class="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">
+                  {{ profile.full_name || 'Roommate' }}
+                </h1>
+
+                <div class="flex flex-wrap items-center gap-3 text-xs font-medium text-slate-500 dark:text-slate-400">
+                  <span v-if="ageLabel"
+                        class="inline-flex items-center gap-1.5 bg-slate-50 px-2 py-1 rounded-md border border-slate-100 dark:bg-slate-800 dark:border-slate-700">
+                    <span>🎂</span>
+                    <span>{{ ageLabel }}</span>
+                  </span>
+                  <span v-if="locationLabel"
+                        class="inline-flex items-center gap-1.5 bg-slate-50 px-2 py-1 rounded-md border border-slate-100 dark:bg-slate-800 dark:border-slate-700">
+                    <span>📍</span>
+                    <span>{{ locationLabel }}</span>
+                  </span>
+                </div>
+
+                <div class="flex flex-wrap gap-2 mt-3">
+                  <span
+                      v-if="profile.has_place"
+                      class="px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-100 text-[10px] font-bold uppercase tracking-wide inline-flex items-center gap-1.5 dark:bg-emerald-900/20 dark:text-emerald-400 dark:border-emerald-800"
+                  >
+                    <span>🏡</span>
+                    <span>Has Place</span>
+                  </span>
+                  <span
+                      v-if="profile.looking_for_place"
+                      class="px-2.5 py-1 rounded-full bg-orange-50 text-orange-700 border border-orange-100 text-[10px] font-bold uppercase tracking-wide inline-flex items-center gap-1.5 dark:bg-orange-900/20 dark:text-orange-400 dark:border-orange-800"
+                  >
+                    <span>🔍</span>
+                    <span>Looking</span>
+                  </span>
+                </div>
+              </div>
             </div>
 
-            <div class="space-y-1">
-              <h1 class="text-2xl sm:text-3xl font-semibold text-gray-900">
-                {{ profile.full_name || 'Roommate' }}
-              </h1>
+            <!-- Logistics Badges -->
+            <div class="flex flex-col gap-3 w-full md:w-auto md:min-w-[200px]">
+              <div
+                  v-if="profile.budget_min || profile.budget_max"
+                  class="rounded-xl bg-slate-50 border border-slate-100 px-4 py-3 dark:bg-slate-800/50 dark:border-slate-700"
+              >
+                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">
+                  Monthly Budget
+                </p>
+                <p class="font-bold text-slate-900 dark:text-white">
+                  {{ budgetLabel }}
+                </p>
+              </div>
 
-              <p class="text-sm text-gray-500 flex flex-wrap items-center gap-1.5">
-                <span v-if="ageLabel" class="inline-flex items-center gap-1">
-                  <span>🎂</span>
-                  <span>{{ ageLabel }}</span>
-                </span>
-                <span v-if="locationLabel" class="inline-flex items-center gap-1">
-                  <span>📍</span>
-                  <span>{{ locationLabel }}</span>
-                </span>
-              </p>
-
-              <div class="flex flex-wrap gap-2 mt-2 text-[11px]">
-                <span
-                    v-if="profile.has_place"
-                    class="px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-100 inline-flex items-center gap-1"
-                >
-                  <span>🏡</span>
-                  <span>Has a place</span>
-                </span>
-                <span
-                    v-if="profile.looking_for_place"
-                    class="px-2.5 py-1 rounded-full bg-orange-50 text-orange-700 border border-orange-100 inline-flex items-center gap-1"
-                >
-                  <span>🔍</span>
-                  <span>Looking for a place</span>
-                </span>
-                <span
-                    v-if="roleLabel"
-                    class="px-2.5 py-1 rounded-full bg-gray-900 text-white inline-flex items-center gap-1"
-                >
-                  <span>🧑‍🤝‍🧑</span>
-                  <span>{{ roleLabel }}</span>
-                </span>
+              <div
+                  v-if="moveWindowLabel"
+                  class="rounded-xl bg-slate-50 border border-slate-100 px-4 py-3 dark:bg-slate-800/50 dark:border-slate-700"
+              >
+                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">
+                  Move-in
+                </p>
+                <p class="text-xs font-medium text-slate-700 dark:text-slate-300 leading-snug">
+                  {{ moveWindowLabel }}
+                </p>
               </div>
             </div>
           </div>
+        </div>
 
-          <!-- Budget + move-in -->
-          <div class="flex flex-col gap-3 text-sm w-full md:w-auto md:max-w-xs">
-            <div
-                v-if="profile.budget_min || profile.budget_max"
-                class="rounded-2xl bg-white border border-gray-200 px-4 py-3 shadow-sm"
-            >
-              <p class="text-[11px] text-gray-500 mb-1">
-                Preferred budget
-              </p>
-              <p class="font-medium text-gray-900">
-                {{ budgetLabel }}
-              </p>
-              <p class="text-[11px] text-gray-400 mt-1">
-                Monthly rent they’re comfortable with.
-              </p>
-            </div>
-
-            <div
-                v-if="moveWindowLabel"
-                class="rounded-2xl bg-orange-50/60 border border-orange-100 px-4 py-3 text-sm text-gray-800"
-            >
-              <p class="text-[11px] text-orange-600 font-medium mb-1">
-                Move-in timing
-              </p>
-              <p class="text-xs text-gray-700">
-                {{ moveWindowLabel }}
-              </p>
-            </div>
-          </div>
-        </section>
-
-        <!-- About + vibe -->
-        <section class="grid md:grid-cols-3 gap-6">
+        <!-- About + Vibe Grid -->
+        <div class="grid md:grid-cols-3 gap-6">
           <!-- Bio -->
-          <div class="md:col-span-2 rounded-2xl bg-gray-50/80 border border-gray-200 p-5 space-y-3">
-            <h2 class="text-sm font-semibold text-gray-900 flex items-center gap-2">
+          <div
+              class="md:col-span-2 rounded-3xl bg-white border border-slate-200 p-6 sm:p-8 shadow-sm dark:bg-gray-900 dark:border-slate-800">
+            <h2 class="text-sm font-bold text-slate-900 flex items-center gap-2 mb-4 dark:text-white">
+              <span class="text-lg">💬</span>
               <span>About {{ firstName || 'this roommate' }}</span>
-              <span class="text-base">💬</span>
             </h2>
             <p
                 v-if="profile.bio"
-                class="text-sm text-gray-800 leading-relaxed"
+                class="text-sm text-slate-600 leading-relaxed dark:text-slate-300"
             >
               {{ profile.bio }}
             </p>
-            <p
+            <div
                 v-else
-                class="text-sm text-gray-400 italic"
+                class="rounded-xl bg-slate-50 p-4 border border-slate-100 text-xs text-slate-500 italic text-center dark:bg-slate-800 dark:border-slate-700 dark:text-slate-400"
             >
-              They haven’t written a bio yet, but their quiz answers still tell you a lot about how it feels to live
-              with them.
-            </p>
+              No bio yet, but their vibe stats below tell a story!
+            </div>
           </div>
 
-          <!-- Quick vibe -->
-          <div class="rounded-2xl bg-white border border-gray-200 p-5 space-y-3">
-            <h3 class="text-sm font-semibold text-gray-900 flex items-center gap-2">
-              <span>Quick vibe</span>
-              <span>✨</span>
+          <!-- Quick Vibe -->
+          <div class="rounded-3xl bg-slate-900 text-white p-6 sm:p-8 shadow-xl dark:bg-white dark:text-slate-900">
+            <h3 class="text-sm font-bold flex items-center gap-2 mb-4">
+              <span class="text-lg">✨</span>
+              <span>Quick Vibe</span>
             </h3>
 
             <div
                 v-if="vibeBadges.length"
-                class="flex flex-wrap gap-2 text-[11px]"
+                class="flex flex-wrap gap-2"
             >
               <span
                   v-for="badge in vibeBadges"
                   :key="badge.label"
-                  class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-gray-900 text-white"
+                  class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/10 border border-white/10 text-xs font-medium backdrop-blur-sm dark:bg-slate-900/10 dark:border-slate-900/10"
               >
                 <span>{{ badge.emoji }}</span>
                 <span>{{ badge.label }}</span>
@@ -182,136 +181,125 @@
 
             <p
                 v-else
-                class="text-[11px] text-gray-400"
+                class="text-xs text-white/50 dark:text-slate-900/50"
             >
-              Once they complete the lifestyle quiz, you’ll see quick tags here like “Very tidy”, “Chill vibe”, or
-              “Pet-friendly”.
+              Vibe tags will appear here once they take the quiz.
             </p>
           </div>
-        </section>
+        </div>
 
-        <!-- Roommate stats -->
-        <section
+        <!-- Stats Section -->
+        <div
             v-if="stats.length"
-            class="rounded-2xl bg-white border border-gray-200 p-5 space-y-4"
+            class="rounded-3xl bg-white border border-slate-200 p-6 sm:p-8 shadow-sm dark:bg-gray-900 dark:border-slate-800"
         >
-          <div class="flex items-center justify-between">
-            <h3 class="text-sm font-semibold text-gray-900 flex items-center gap-2">
-              <span>Roommate stats</span>
-              <span>📊</span>
+          <div class="flex items-center justify-between mb-6">
+            <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2 dark:text-white">
+              <span class="text-lg">📊</span>
+              <span>Compatibility Stats</span>
             </h3>
-            <span class="text-[11px] text-gray-400">
-              0 = low, 10 = high
+            <span class="text-[10px] font-bold text-slate-400 bg-slate-100 px-2 py-1 rounded dark:bg-slate-800">
+              0 - 10 Scale
             </span>
           </div>
 
-          <div class="grid md:grid-cols-2 gap-4">
+          <div class="grid md:grid-cols-2 gap-x-12 gap-y-6">
             <div
                 v-for="stat in stats"
                 :key="stat.key"
-                class="space-y-1.5"
+                class="space-y-2"
             >
-              <div class="flex items-center justify-between text-[11px] text-gray-500">
-                <span class="flex items-center gap-1.5">
+              <div class="flex items-center justify-between text-xs">
+                <span class="flex items-center gap-2 font-bold text-slate-700 dark:text-slate-200">
                   <span>{{ stat.emoji }}</span>
-                  <span class="font-medium text-gray-700">{{ stat.label }}</span>
+                  {{ stat.label }}
                 </span>
-                <span class="tabular-nums text-gray-700">
+                <span class="font-mono font-bold text-slate-400 dark:text-slate-500">
                   {{ stat.value }}/10
                 </span>
               </div>
 
-              <div class="h-1.5 w-full rounded-full bg-gray-100 overflow-hidden">
+              <div class="h-2 w-full rounded-full bg-slate-100 dark:bg-slate-800 overflow-hidden">
                 <div
-                    class="h-full rounded-full bg-gradient-to-r from-orange-500 via-pink-500 to-purple-500"
+                    class="h-full rounded-full bg-slate-900 dark:bg-white"
                     :style="{ width: (stat.value * 10) + '%' }"
                 />
               </div>
 
-              <p class="text-[11px] text-gray-400 italic">
+              <p class="text-[10px] text-slate-400 leading-snug dark:text-slate-500">
                 {{ stat.caption }}
               </p>
             </div>
           </div>
-        </section>
+        </div>
 
-        <!-- Logistics / preferences -->
-        <section
-            v-if="profile"
-            class="grid md:grid-cols-3 gap-6"
-        >
-          <div class="rounded-2xl bg-white border border-gray-200 p-4 space-y-2 text-xs text-gray-700">
-            <p class="font-semibold text-gray-900 flex items-center gap-2 text-sm">
-              <span>Home vibe</span>
-              <span>🏠</span>
-            </p>
-            <p v-if="homeVibeLabel">
-              {{ homeVibeLabel }}
-            </p>
-            <p v-else class="text-gray-400">
-              No specific home vibe set yet.
-            </p>
+        <!-- Logistics Grid -->
+        <div v-if="profile" class="grid md:grid-cols-3 gap-4">
+          <!-- Home Vibe -->
+          <div
+              class="rounded-2xl bg-white border border-slate-200 p-5 space-y-2 dark:bg-gray-900 dark:border-slate-800">
+            <p class="text-xs font-bold text-slate-400 uppercase tracking-wide">Home Energy</p>
+            <div class="flex items-start gap-2">
+              <span class="text-xl">🏠</span>
+              <p class="text-sm font-medium text-slate-900 dark:text-white">
+                {{ homeVibeLabel || 'Not specified' }}
+              </p>
+            </div>
           </div>
 
-          <div class="rounded-2xl bg-white border border-gray-200 p-4 space-y-2 text-xs text-gray-700">
-            <p class="font-semibold text-gray-900 flex items-center gap-2 text-sm">
-              <span>Pets & smoking</span>
-              <span>🐾</span>
-            </p>
-            <ul class="space-y-1">
-              <li>
-                <strong>Pets:</strong>
-                <span class="text-gray-600">
-                  {{ petsLabel }}
-                </span>
-              </li>
-              <li>
-                <strong>Smoking:</strong>
-                <span class="text-gray-600">
-                  {{ smokingLabel }}
-                </span>
-              </li>
-            </ul>
+          <!-- Habits -->
+          <div
+              class="rounded-2xl bg-white border border-slate-200 p-5 space-y-3 dark:bg-gray-900 dark:border-slate-800">
+            <p class="text-xs font-bold text-slate-400 uppercase tracking-wide">Habits</p>
+            <div class="space-y-2">
+              <div class="flex items-start gap-2 text-sm text-slate-700 dark:text-slate-300">
+                <span class="text-base">🐾</span>
+                <span>{{ petsLabel }}</span>
+              </div>
+              <div class="flex items-start gap-2 text-sm text-slate-700 dark:text-slate-300">
+                <span class="text-base">🚬</span>
+                <span>{{ smokingLabel }}</span>
+              </div>
+            </div>
           </div>
 
-          <div class="rounded-2xl bg-white border border-gray-200 p-4 space-y-2 text-xs text-gray-700">
-            <p class="font-semibold text-gray-900 flex items-center gap-2 text-sm">
-              <span>Rhythm</span>
-              <span>⏰</span>
-            </p>
-            <ul class="space-y-1">
-              <li v-if="sleepLabel">
-                <strong>Sleep:</strong>
-                <span class="text-gray-600">{{ sleepLabel }}</span>
-              </li>
-              <li v-if="wfhLabel">
-                <strong>Time at home:</strong>
-                <span class="text-gray-600">{{ wfhLabel }}</span>
-              </li>
-              <li v-if="!sleepLabel && !wfhLabel" class="text-gray-400">
-                No schedule preferences shared yet.
-              </li>
-            </ul>
+          <!-- Rhythm -->
+          <div
+              class="rounded-2xl bg-white border border-slate-200 p-5 space-y-3 dark:bg-gray-900 dark:border-slate-800">
+            <p class="text-xs font-bold text-slate-400 uppercase tracking-wide">Rhythm</p>
+            <div class="space-y-2">
+              <div v-if="sleepLabel" class="flex items-start gap-2 text-sm text-slate-700 dark:text-slate-300">
+                <span class="text-base">😴</span>
+                <span>{{ sleepLabel }}</span>
+              </div>
+              <div v-if="wfhLabel" class="flex items-start gap-2 text-sm text-slate-700 dark:text-slate-300">
+                <span class="text-base">💻</span>
+                <span>{{ wfhLabel }}</span>
+              </div>
+              <p v-if="!sleepLabel && !wfhLabel" class="text-xs text-slate-400 italic">
+                No schedule info yet.
+              </p>
+            </div>
           </div>
-        </section>
+        </div>
 
         <!-- Listings -->
-        <section class="space-y-3">
+        <div class="space-y-4 pt-4">
           <div class="flex items-center justify-between">
-            <h3 class="text-sm font-semibold text-gray-900 flex items-center gap-2">
-              <span>Places they’re offering</span>
-              <span>🏠</span>
+            <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2 dark:text-white">
+              <span class="text-lg">🏘️</span>
+              <span>Listings by {{ firstName }}</span>
             </h3>
-            <span class="text-[11px] text-gray-400">
-              {{ listings.length }} active
+            <span class="px-2 py-0.5 rounded bg-slate-100 text-[10px] font-bold text-slate-500 dark:bg-slate-800">
+              {{ listings.length }}
             </span>
           </div>
 
           <div
               v-if="listings.length === 0"
-              class="rounded-2xl bg-gray-50 border border-dashed border-gray-200 p-6 text-center text-xs text-gray-500"
+              class="rounded-2xl border-2 border-dashed border-slate-200 p-8 text-center dark:border-slate-800"
           >
-            This person doesn’t have any active listings yet.
+            <p class="text-sm text-slate-500 font-medium">No active listings at the moment.</p>
           </div>
 
           <div
@@ -321,49 +309,63 @@
             <article
                 v-for="listing in listings"
                 :key="listing.id"
-                class="rounded-2xl bg-white border border-gray-200 p-4 space-y-2 text-sm hover:shadow-md transition-shadow"
+                class="group rounded-2xl bg-white border border-slate-200 p-5 hover:border-slate-300 hover:shadow-md transition-all duration-200 cursor-pointer dark:bg-gray-900 dark:border-slate-800 dark:hover:border-slate-700"
             >
-              <p class="font-medium text-gray-900">
-                {{ listing.title }}
-              </p>
-              <p class="text-xs text-gray-500">
+              <div class="flex justify-between items-start mb-2">
+                <h4 class="font-bold text-slate-900 group-hover:text-blue-600 transition-colors dark:text-white dark:group-hover:text-blue-400">
+                  {{ listing.title }}
+                </h4>
+                <span
+                    class="text-xs font-bold bg-slate-100 px-2 py-1 rounded text-slate-600 dark:bg-slate-800 dark:text-slate-300">
+                  ₵{{ listing.rent_amount ?? '—' }}<span class="text-[10px] font-normal text-slate-400">/mo</span>
+                </span>
+              </div>
+
+              <p class="text-xs text-slate-500 mb-3 flex items-center gap-1 dark:text-slate-400">
+                <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                </svg>
                 <span v-if="listing.area">{{ listing.area }}, </span>{{ listing.city }}
               </p>
-              <p class="text-sm font-semibold text-gray-900">
-                ₵{{ listing.rent_amount ?? '—' }}
-                <span class="text-xs text-gray-500">/ month</span>
-              </p>
-              <p class="text-[11px] text-gray-400">
-                Available from: {{ listing.available_from || 'TBD' }}
-              </p>
+
+              <div
+                  class="flex items-center gap-2 text-[10px] font-medium text-slate-400 border-t border-slate-50 pt-3 dark:border-slate-800">
+                <span class="bg-green-50 text-green-700 px-1.5 py-0.5 rounded dark:bg-green-900/20 dark:text-green-400">Available</span>
+                <span>From: {{ listing.available_from || 'Now' }}</span>
+              </div>
             </article>
           </div>
-        </section>
+        </div>
+      </div>
+    </div>
 
-        <!-- Sticky CTA -->
-        <section class="pt-2 flex justify-between items-center gap-3 border-t border-gray-100 mt-2">
-          <p class="text-[11px] text-gray-500">
-            If the vibe feels right, start a friendly chat. No pressure – you’re just getting to know each other.
-          </p>
-          <button
-              type="button"
-              class="px-5 py-2.5 rounded-xl bg-gray-900 text-white text-sm font-medium hover:bg-black flex items-center gap-2"
-              @click="goToChat"
-          >
-            <span>Say hi</span>
-            <span>👋</span>
-          </button>
-        </section>
+    <!-- Floating Action Bar -->
+    <div class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 w-full max-w-md px-4">
+      <div
+          class="bg-slate-900/90 backdrop-blur-md text-white p-2 pl-5 rounded-full shadow-2xl flex items-center justify-between border border-slate-700/50 dark:bg-white/90 dark:text-slate-900 dark:border-white/20">
+        <span class="text-xs font-medium opacity-90">
+          Interested? Start a chat.
+        </span>
+        <button
+            type="button"
+            class="bg-white text-slate-900 px-5 py-2 rounded-full text-xs font-bold hover:bg-slate-100 transition-colors flex items-center gap-2 dark:bg-slate-900 dark:text-white dark:hover:bg-slate-800"
+            @click="goToChat"
+        >
+          Say Hi 👋
+        </button>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted } from 'vue'
-import { useRoute, useRouter } from '#imports'
-import { usePublicProfile } from '~/composables/usePublicProfile'
-import { getArchetypeMeta } from '~/types/archetypes'
+import {computed, onMounted} from 'vue'
+import {useRoute, useRouter} from '#imports'
+import {usePublicProfile} from '~/composables/usePublicProfile'
+import {getArchetypeMeta} from '~/types/archetypes'
 
 const props = defineProps<{
   archetype: string | null
@@ -373,7 +375,7 @@ const meta = computed(() => getArchetypeMeta(props.archetype))
 
 const route = useRoute()
 const router = useRouter()
-const { profile, traits, listings, loading, error, loadPublicProfile } = usePublicProfile()
+const {profile, traits, listings, loading, error, loadPublicProfile} = usePublicProfile()
 
 onMounted(async () => {
   const id = route.params.id as string
@@ -429,9 +431,9 @@ const moveWindowLabel = computed(() => {
   const from = p.move_in_from as string | null | undefined
   const to = p.move_in_to as string | null | undefined
 
-  if (from && to) return `Looking to move between ${from} and ${to}.`
-  if (from && !to) return `Earliest move-in from ${from}.`
-  if (!from && to) return `Hoping to move by ${to}.`
+  if (from && to) return `Flexible: ${from} to ${to}`
+  if (from && !to) return `From ${from}`
+  if (!from && to) return `By ${to}`
   return ''
 })
 
@@ -448,15 +450,15 @@ const ageLabel = computed(() => {
     age--
   }
   if (!Number.isFinite(age) || age <= 0) return ''
-  return `${age} years old`
+  return `${age} yrs`
 })
 
 const roleLabel = computed(() => {
   const role = (profile.value as any)?.role as string | undefined
   if (!role) return ''
-  if (role === 'seeker') return 'Looking for a place'
-  if (role === 'host') return 'Has a place / Host'
-  if (role === 'both') return 'Open to both'
+  if (role === 'seeker') return 'Seeker'
+  if (role === 'host') return 'Host'
+  if (role === 'both') return 'Host & Seeker'
   return role
 })
 
@@ -491,57 +493,57 @@ const stats = computed(() => {
       value: cleanliness,
       caption: describe(
           cleanliness,
-          'Relaxed about mess in shared spaces.',
-          'Likes things reasonably neat.',
-          'Really values a clean, organised home.'
+          'Relaxed',
+          'Balanced',
+          'Very Tidy'
       )
     },
     {
       key: 'noise',
-      label: 'Quiet vs. noise',
+      label: 'Noise Tolerance',
       emoji: '🔈',
       value: noise,
       caption: describe(
           noise,
-          'Okay with some background noise.',
-          'Prefers a balanced noise level.',
-          'Really values a quiet, calm home.'
+          'Easygoing',
+          'Moderate',
+          'Quiet Preferred'
       )
     },
     {
       key: 'social',
-      label: 'Social energy',
+      label: 'Social Energy',
       emoji: '🧑‍🤝‍🧑',
       value: social,
       caption: describe(
           social,
-          'More on the low-key, introverted side at home.',
-          'Balanced – social sometimes, solo sometimes.',
-          'Enjoys a lively, social home environment.'
+          'Low-key',
+          'Balanced',
+          'High Energy'
       )
     },
     {
       key: 'guests',
-      label: 'Guests & hosting',
+      label: 'Guest Frequency',
       emoji: '🎉',
       value: guests,
       caption: describe(
           guests,
-          'Prefers guests to be rare and low-key.',
-          'Okay with friends over now and then.',
-          'Comfortable with frequent hangouts at home.'
+          'Rarely',
+          'Occasionally',
+          'Often'
       )
     },
     {
       key: 'wfh',
-      label: 'Time spent at home',
+      label: 'Time at Home',
       emoji: '🏡',
       value: wfh,
       caption: describe(
           wfh,
-          'Out of the house a lot.',
-          'At home a fair bit depending on the day.',
-          'Home most of the time (WFH/study).'
+          'Out Often',
+          'Half & Half',
+          'Always Home'
       )
     }
   ]
@@ -559,59 +561,59 @@ const vibeBadges = computed(() => {
   const sleep = t.sleep_schedule as string | undefined
   const homeVibe = t.home_vibe as string | undefined
 
-  if (cleanliness >= 8) badges.push({ emoji: '🧽', label: 'Very tidy' })
-  else if (cleanliness <= 3) badges.push({ emoji: '😌', label: 'Laid-back about mess' })
+  if (cleanliness >= 8) badges.push({emoji: '🧽', label: 'Tidy'})
+  else if (cleanliness <= 3) badges.push({emoji: '😌', label: 'Relaxed'})
 
-  if (noise >= 8) badges.push({ emoji: '🔇', label: 'Loves quiet evenings' })
-  else if (noise <= 3) badges.push({ emoji: '🔊', label: 'Okay with noise' })
+  if (noise >= 8) badges.push({emoji: '🔇', label: 'Quiet'})
+  else if (noise <= 3) badges.push({emoji: '🔊', label: 'Loud OK'})
 
-  if (social >= 7) badges.push({ emoji: '🕺', label: 'Social roommate' })
-  else if (social <= 3) badges.push({ emoji: '📚', label: 'Low-key homebody' })
+  if (social >= 7) badges.push({emoji: '🕺', label: 'Social'})
+  else if (social <= 3) badges.push({emoji: '📚', label: 'Homebody'})
 
-  if (pets) badges.push({ emoji: '🐾', label: 'Pet-friendly' })
-  if (!smokingOk) badges.push({ emoji: '🚭', label: 'Non-smoker preferred' })
+  if (pets) badges.push({emoji: '🐾', label: 'Pet-friendly'})
+  if (!smokingOk) badges.push({emoji: '🚭', label: 'No Smoking'})
 
-  if (sleep === 'early_bird') badges.push({ emoji: '🌅', label: 'Early bird' })
-  else if (sleep === 'night_owl') badges.push({ emoji: '🌙', label: 'Night owl' })
+  if (sleep === 'early_bird') badges.push({emoji: '🌅', label: 'Early Bird'})
+  else if (sleep === 'night_owl') badges.push({emoji: '🌙', label: 'Night Owl'})
 
-  if (homeVibe === 'chill') badges.push({ emoji: '😌', label: 'Chill vibe' })
-  else if (homeVibe === 'lively') badges.push({ emoji: '🎉', label: 'Lively home' })
-  else if (homeVibe === 'cozy') badges.push({ emoji: '🕯️', label: 'Cozy home' })
-  else if (homeVibe === 'minimal') badges.push({ emoji: '📦', label: 'Minimalist' })
+  if (homeVibe === 'chill') badges.push({emoji: '😌', label: 'Chill'})
+  else if (homeVibe === 'lively') badges.push({emoji: '🎉', label: 'Lively'})
+  else if (homeVibe === 'cozy') badges.push({emoji: '🕯️', label: 'Cozy'})
+  else if (homeVibe === 'minimal') badges.push({emoji: '📦', label: 'Minimal'})
 
   return badges.slice(0, 6)
 })
 
 const petsLabel = computed(() => {
   const t = (traits.value as any) || {}
-  if (t.pet_friendly === true) return 'Comfortable living with pets.'
-  if (t.pet_friendly === false) return 'Prefers not to live with pets.'
-  return 'No pet preference shared yet.'
+  if (t.pet_friendly === true) return 'Ok with pets'
+  if (t.pet_friendly === false) return 'No pets'
+  return '—'
 })
 
 const smokingLabel = computed(() => {
   const t = (traits.value as any) || {}
-  if (t.smoking_ok === true) return 'Okay with smokers.'
-  if (t.smoking_ok === false) return 'Prefers a non-smoking home.'
-  return 'No smoking preference shared yet.'
+  if (t.smoking_ok === true) return 'Smoker ok'
+  if (t.smoking_ok === false) return 'Non-smoking'
+  return '—'
 })
 
 const sleepLabel = computed(() => {
   const t = (traits.value as any) || {}
   const sleep = t.sleep_schedule as string | undefined
-  if (sleep === 'early_bird') return 'Early bird – up early, sleeps early.'
-  if (sleep === 'night_owl') return 'Night owl – active later in the day.'
-  if (sleep === 'flexible') return 'Flexible sleep schedule.'
+  if (sleep === 'early_bird') return 'Early bird'
+  if (sleep === 'night_owl') return 'Night owl'
+  if (sleep === 'flexible') return 'Flexible'
   return ''
 })
 
 const homeVibeLabel = computed(() => {
   const t = (traits.value as any) || {}
   const hv = t.home_vibe as string | undefined
-  if (hv === 'chill') return 'Prefers a relaxed, low-pressure home vibe.'
-  if (hv === 'lively') return 'Enjoys a lively, social home atmosphere.'
-  if (hv === 'cozy') return 'Likes a warm, cozy, homey space.'
-  if (hv === 'minimal') return 'Prefers a minimal, clutter-free home.'
+  if (hv === 'chill') return 'Chill & Calm'
+  if (hv === 'lively') return 'Lively'
+  if (hv === 'cozy') return 'Cozy'
+  if (hv === 'minimal') return 'Minimal'
   return ''
 })
 
@@ -619,9 +621,9 @@ const wfhLabel = computed(() => {
   const t = (traits.value as any) || {}
   const wfh = safe(t.works_from_home, 0)
   if (!traits.value) return ''
-  if (wfh >= 8) return 'Home most of the time (WFH/study).'
-  if (wfh <= 3) return 'Out of the house a lot.'
-  return 'At home a fair bit depending on the day.'
+  if (wfh >= 8) return 'Always home'
+  if (wfh <= 3) return 'Rarely home'
+  return 'Mixed schedule'
 })
 
 const goToChat = () => {

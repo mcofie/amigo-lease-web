@@ -1,34 +1,36 @@
-<!-- src/components/MatchCard.vue -->
 <template>
   <div
-      class="p-5 rounded-3xl bg-white shadow-[0_12px_28px_rgba(0,0,0,0.06)] border border-gray-100
-           flex flex-col gap-4 hover:shadow-[0_20px_40px_rgba(0,0,0,0.08)] transition"
+      class="group p-5 rounded-3xl bg-white border border-slate-200 shadow-sm hover:shadow-md hover:border-slate-300 transition-all duration-200 flex flex-col gap-5 dark:bg-gray-900 dark:border-slate-800 dark:hover:border-slate-700"
   >
     <!-- Header -->
-    <div class="flex items-center justify-between gap-3">
-      <div class="flex items-center gap-3">
+    <div class="flex items-start justify-between gap-3">
+      <div class="flex items-center gap-4">
         <!-- Avatar / initials -->
         <div class="relative">
-          <img
-              v-if="profile.avatar_url"
-              :src="profile.avatar_url"
-              alt=""
-              class="h-12 w-12 rounded-full object-cover bg-gray-100"
-          />
           <div
-              v-else
-              class="h-12 w-12 rounded-full bg-gray-900 text-white flex items-center justify-center
-                   text-xs font-semibold tracking-wide"
+              class="h-14 w-14 rounded-2xl overflow-hidden bg-slate-100 flex items-center justify-center text-slate-900 text-sm font-bold border border-slate-200 dark:bg-slate-800 dark:text-white dark:border-slate-700"
           >
-            {{ initials }}
+            <img
+                v-if="profile.avatar_url"
+                :src="profile.avatar_url"
+                alt=""
+                class="h-full w-full object-cover"
+            />
+            <span v-else>{{ initials }}</span>
+          </div>
+          <!-- Online indicator (optional) -->
+          <div
+              class="absolute -bottom-1 -right-1 h-4 w-4 bg-white rounded-full flex items-center justify-center dark:bg-gray-900">
+            <div class="h-2.5 w-2.5 bg-emerald-500 rounded-full border border-white dark:border-gray-900"></div>
           </div>
         </div>
 
         <div class="space-y-0.5">
-          <p class="font-medium text-gray-900">
+          <h3 class="text-base font-bold text-slate-900 dark:text-white">
             {{ profile.full_name || 'Roommate' }}
-          </p>
-          <p class="text-xs text-gray-500">
+          </h3>
+          <p class="text-xs font-medium text-slate-500 flex items-center gap-1 dark:text-slate-400">
+            <span class="text-base">📍</span>
             <span v-if="profile.area">
               {{ profile.area }}, {{ profile.city || '—' }}
             </span>
@@ -36,94 +38,90 @@
               {{ profile.city || 'Location not set' }}
             </span>
           </p>
-
-          <!-- Tiny meta row -->
-          <div class="flex flex-wrap gap-1.5 text-[10px] text-gray-500">
-            <span
-                class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-gray-50 border border-gray-200"
-            >
-              <span class="h-1.5 w-1.5 rounded-full bg-emerald-400" />
-              Good vibe potential
-            </span>
-
-            <!-- Archetype pill -->
-            <span
-                v-if="archetypeMeta"
-                class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full"
-                :class="archetypeMeta.chipClass"
-            >
-              <span>{{ archetypeMeta.emoji }}</span>
-              <span class="font-medium">
-                {{ archetypeMeta.shortTag }}
-              </span>
-            </span>
-
-            <span
-                v-if="summary.pets && summary.pets !== 'unknown'"
-                class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-orange-50 border border-orange-100"
-            >
-              <span>🐾</span>
-              <span>
-                {{ summary.pets === 'match' ? 'Pet-friendly match' : 'Pets might be tricky' }}
-              </span>
-            </span>
-            <span
-                v-if="summary.smoking && summary.smoking !== 'unknown'"
-                class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-rose-50 border border-rose-100"
-            >
-              <span>🚭</span>
-              <span>
-                {{ summary.smoking === 'match' ? 'Aligned on smoking' : 'Different smoking habits' }}
-              </span>
-            </span>
-          </div>
         </div>
       </div>
 
       <!-- Score -->
-      <div
-          class="px-3 py-1.5 rounded-xl bg-gradient-to-r from-orange-500 to-pink-500
-               text-white text-sm font-semibold text-right"
-      >
-        <div>{{ props.match.score }}%</div>
-        <div class="text-[10px] opacity-90">compatibility</div>
+      <div class="flex flex-col items-end">
+        <div
+            class="px-3 py-1 rounded-lg bg-slate-900 text-white text-sm font-bold shadow-md shadow-slate-900/10 dark:bg-white dark:text-slate-900"
+        >
+          {{ props.match.score }}%
+        </div>
+        <span class="text-[10px] font-semibold text-slate-400 mt-1 uppercase tracking-wide dark:text-slate-500">
+          Match
+        </span>
       </div>
     </div>
 
-    <!-- Tags -->
-    <div v-if="tags.length" class="flex flex-wrap gap-2 text-[11px] pt-1">
-      <span
-          v-for="tag in tags"
-          :key="tag"
-          class="px-2.5 py-1 rounded-full bg-gray-900 text-white"
-      >
-        {{ tag }}
-      </span>
+    <!-- Meta Tags / Summary -->
+    <div class="space-y-3">
+      <!-- Compatibility Pills -->
+      <div class="flex flex-wrap gap-2">
+        <span
+            class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-emerald-50 border border-emerald-100 text-[10px] font-bold text-emerald-700 uppercase tracking-wide dark:bg-emerald-900/20 dark:border-emerald-800 dark:text-emerald-400"
+        >
+          <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"/>
+          Good vibe
+        </span>
+
+        <span
+            v-if="archetypeMeta"
+            class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md border text-[10px] font-bold uppercase tracking-wide"
+            :class="archetypeMeta.chipClass || 'bg-slate-50 border-slate-100 text-slate-600 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-300'"
+        >
+          <span>{{ archetypeMeta.emoji }}</span>
+          <span>{{ archetypeMeta.shortTag }}</span>
+        </span>
+
+        <span
+            v-if="summary.pets && summary.pets !== 'unknown'"
+            class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md border text-[10px] font-bold uppercase tracking-wide"
+            :class="summary.pets === 'match'
+              ? 'bg-slate-50 border-slate-100 text-slate-600 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-300'
+              : 'bg-orange-50 border-orange-100 text-orange-700 dark:bg-orange-900/20 dark:border-orange-800 dark:text-orange-400'"
+        >
+          <span>🐾</span>
+          <span>{{ summary.pets === 'match' ? 'Pet Friendly' : 'No Pets' }}</span>
+        </span>
+      </div>
+
+      <!-- Descriptive Tags -->
+      <div v-if="tags.length" class="flex flex-wrap gap-2 text-xs font-medium text-slate-600 dark:text-slate-300">
+        <span
+            v-for="tag in tags"
+            :key="tag"
+            class="px-2 py-1 rounded bg-slate-100 dark:bg-slate-800"
+        >
+          {{ tag }}
+        </span>
+      </div>
     </div>
 
     <!-- CTAs -->
-    <div class="flex gap-3 pt-3">
+    <div class="flex gap-3 pt-2 border-t border-slate-50 mt-auto dark:border-slate-800">
       <button
-          class="px-4 py-2 rounded-xl bg-gray-900 text-white text-sm hover:bg-black flex-1"
+          class="flex-1 inline-flex items-center justify-center px-4 py-2.5 rounded-xl bg-slate-900 text-white text-xs font-bold hover:bg-slate-800 hover:-translate-y-0.5 transition-all shadow-sm dark:bg-white dark:text-slate-900 dark:hover:bg-slate-200"
           @click="$emit('view-profile')"
       >
-        View profile
+        View Profile
       </button>
 
       <button
-          class="px-4 py-2 rounded-xl border border-gray-300 text-sm text-gray-700 hover:bg-gray-100 flex-1"
+          class="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border border-slate-200 bg-white text-slate-700 text-xs font-bold hover:bg-slate-50 hover:border-slate-300 transition-all dark:bg-gray-900 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-gray-800"
           @click="$emit('start-chat')"
       >
-        Say hi 👋
+        <span>Say Hi</span>
+        <span>👋</span>
       </button>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
-import type { MatchRow, CompatibilitySummary } from '~/composables/useMatches'
-import { getArchetypeMeta } from '~/types/archetypes'
+import {computed} from 'vue'
+import type {MatchRow, CompatibilitySummary} from '~/composables/useMatches'
+import {getArchetypeMeta} from '~/types/archetypes'
 
 // Accept exactly what useMatches returns
 const props = defineProps<{
@@ -165,13 +163,15 @@ const tags = computed(() => {
   const s = summary.value
   const out: string[] = []
 
-  if (s.cleanliness) out.push(`🧽 Cleanliness: ${s.cleanliness}`)
-  if (s.noise) out.push(`🔈 Noise: ${s.noise}`)
-  if (s.sleep) out.push(`🌙 Sleep: ${s.sleep}`)
-  if (s.vibe) out.push(`✨ Vibe: ${s.vibe}`)
-  if (!out.length) out.push('✨ Good overall vibe')
+  if (s.cleanliness) out.push(`Cleanliness: ${s.cleanliness}`)
+  if (s.noise) out.push(`Noise: ${s.noise}`)
+  if (s.sleep) out.push(`Sleep: ${s.sleep}`)
+  if (s.vibe) out.push(`Vibe: ${s.vibe}`)
 
-  return out
+  // Fallback if empty
+  if (!out.length) out.push('Good overall match')
+
+  return out.slice(0, 3) // Limit to 3 tags to keep card clean
 })
 
 const initials = computed(() => {

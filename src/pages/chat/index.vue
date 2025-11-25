@@ -1,163 +1,159 @@
-<!-- src/pages/chat/index.vue -->
 <template>
-  <div class="min-h-screen bg-gradient-to-b from-orange-50 via-rose-50 to-white px-4 py-8">
+  <div
+      class="min-h-screen bg-slate-50 text-slate-900 selection:bg-orange-100 selection:text-orange-900 dark:bg-gray-950 dark:text-white px-4 py-8">
     <div class="max-w-4xl mx-auto space-y-8">
+
       <!-- HEADER -->
-      <header class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div class="space-y-1.5">
+      <header class="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
+        <div class="space-y-2">
           <div
-              class="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-white/80 border border-orange-100 text-[11px] text-gray-600 shadow-sm"
-          >
-            <span class="h-1.5 w-1.5 rounded-full bg-emerald-400" />
-            <span>Inbox</span>
+              class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-slate-200 shadow-sm dark:bg-white/10 dark:border-white/10">
+            <span class="relative flex h-2 w-2">
+              <span
+                  class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+            </span>
+            <span class="text-xs font-bold tracking-wide text-slate-700 uppercase dark:text-slate-200">
+              Inbox
+            </span>
           </div>
-          <h1 class="text-2xl md:text-3xl font-semibold text-gray-900">
+          <h1 class="text-3xl md:text-4xl font-bold tracking-tight text-slate-900 dark:text-white">
             Messages
           </h1>
-          <p class="text-sm text-gray-500">
+          <p class="text-slate-500 dark:text-slate-400 max-w-lg text-sm md:text-base">
             All your conversations with potential roommates and hosts in one place.
           </p>
         </div>
 
-        <div class="flex flex-col items-end gap-2">
-          <p
-              v-if="threadsWithMeta.length > 0 && !loading"
-              class="text-[11px] text-gray-500"
-          >
-            {{ threadsWithMeta.length }} conversation{{ threadsWithMeta.length === 1 ? '' : 's' }}
-          </p>
-
+        <div class="flex flex-col items-end gap-3">
           <button
               type="button"
-              class="inline-flex items-center justify-center px-4 py-2.5 rounded-xl bg-gray-900 text-white text-sm font-medium hover:bg-black shadow-sm self-start sm:self-auto disabled:opacity-60"
+              class="inline-flex items-center justify-center px-4 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-700 text-sm font-semibold hover:bg-slate-50 hover:border-slate-300 transition-all shadow-sm disabled:opacity-60 dark:bg-gray-800 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-gray-750"
               :disabled="loading"
               @click="refresh"
           >
             <span
                 class="mr-2 h-1.5 w-1.5 rounded-full"
-                :class="loading ? 'bg-emerald-400 animate-pulse' : 'bg-gray-300'"
+                :class="loading ? 'bg-emerald-400 animate-pulse' : 'bg-slate-400 dark:bg-slate-500'"
             />
-            <span>{{ loading ? 'Refreshing…' : 'Refresh inbox' }}</span>
+            <span>{{ loading ? 'Refreshing...' : 'Refresh Inbox' }}</span>
           </button>
+          <p v-if="threadsWithMeta.length > 0" class="text-xs font-medium text-slate-400 dark:text-slate-500">
+            {{ threadsWithMeta.length }} active {{ threadsWithMeta.length === 1 ? 'conversation' : 'conversations' }}
+          </p>
         </div>
       </header>
 
       <!-- ERROR -->
       <div
           v-if="errorMessage"
-          class="rounded-3xl bg-white/95 border border-red-100 px-6 py-4 text-xs text-red-600 shadow-[0_18px_40px_rgba(15,23,42,0.06)]"
+          class="rounded-2xl bg-rose-50 border border-rose-100 px-6 py-4 text-sm font-medium text-rose-700 flex items-center gap-3 dark:bg-rose-900/20 dark:border-rose-800 dark:text-rose-400"
       >
-        {{ errorMessage }}
+        <span class="text-lg">⚠️</span>
+        <span>{{ errorMessage }}</span>
       </div>
 
       <!-- LOADING -->
-      <section
-          v-else-if="loading"
-          class="py-16 flex flex-col items-center justify-center gap-3"
-      >
-        <div class="h-10 w-10 rounded-full border-2 border-dashed border-gray-400 animate-spin" />
-        <p class="text-sm text-gray-500">
-          Loading your conversations…
-        </p>
-      </section>
+      <div v-else-if="loading" class="py-24 flex flex-col items-center justify-center gap-4">
+        <div
+            class="w-10 h-10 border-4 border-slate-200 border-t-slate-900 rounded-full animate-spin dark:border-slate-700 dark:border-t-white"/>
+        <p class="text-xs font-bold text-slate-400 uppercase tracking-wider animate-pulse">Loading chats...</p>
+      </div>
 
       <!-- EMPTY STATE -->
-      <section v-else-if="threadsWithMeta.length === 0" class="py-14">
+      <div
+          v-else-if="threadsWithMeta.length === 0"
+          class="rounded-3xl border-2 border-dashed border-slate-200 bg-slate-50/50 py-20 px-6 text-center dark:border-slate-800 dark:bg-gray-900/50"
+      >
         <div
-            class="rounded-3xl bg-white/95 border border-dashed border-gray-200 px-6 py-14 text-center space-y-3 shadow-[0_18px_40px_rgba(15,23,42,0.05)] text-sm"
-        >
-          <div class="text-3xl">💬</div>
-          <p class="text-gray-900 font-medium">
-            You don’t have any conversations yet.
-          </p>
-          <p class="text-gray-500 text-xs max-w-sm mx-auto">
-            Check your matches, find someone whose vibe fits yours, and say hi to start a chat.
-          </p>
-          <button
-              type="button"
-              class="mt-3 inline-flex items-center justify-center px-4 py-2.5 rounded-xl bg-gray-900 text-white text-sm hover:bg-black shadow-sm"
-              @click="goToMatches"
-          >
-            Browse matches
-          </button>
+            class="w-16 h-16 bg-white rounded-2xl shadow-sm border border-slate-100 flex items-center justify-center mx-auto mb-4 dark:bg-gray-800 dark:border-slate-700">
+          <span class="text-3xl">💬</span>
         </div>
-      </section>
+        <h3 class="text-slate-900 font-bold text-lg mb-2 dark:text-white">
+          No conversations yet
+        </h3>
+        <p class="text-slate-500 text-sm max-w-xs mx-auto mb-8 dark:text-slate-400">
+          Check your matches, find someone whose vibe fits yours, and say hi to start a chat.
+        </p>
+        <button
+            type="button"
+            class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-slate-900 text-white text-sm font-bold shadow-lg shadow-slate-900/20 hover:bg-slate-800 hover:-translate-y-0.5 transition-all dark:bg-white dark:text-slate-900 dark:hover:bg-slate-200"
+            @click="goToMatches"
+        >
+          Browse Matches →
+        </button>
+      </div>
 
       <!-- THREAD LIST -->
-      <section v-else class="space-y-3">
-        <p class="text-[11px] text-gray-500 px-1">
-          Latest conversations first.
-        </p>
+      <section v-else class="space-y-4">
+        <div class="flex items-center justify-between px-2">
+          <h2 class="text-xs font-bold text-slate-500 uppercase tracking-wider dark:text-slate-400">Recent Messages</h2>
+        </div>
 
         <article
             v-for="item in threadsWithMeta"
             :key="item.thread.id"
-            class="rounded-3xl bg-white/95 border border-gray-200 px-4 py-4 md:px-5 md:py-5 shadow-sm hover:shadow-md hover:border-gray-300 transition cursor-pointer"
+            class="group relative bg-white rounded-2xl border border-slate-200 p-4 hover:border-slate-300 hover:shadow-md transition-all duration-200 cursor-pointer flex items-center gap-4 dark:bg-gray-900 dark:border-slate-800 dark:hover:border-slate-700"
             @click="openChat(item.otherProfileId)"
         >
-          <div class="flex items-center gap-3 md:gap-4">
-            <!-- AVATAR / INITIALS -->
-            <div class="flex-shrink-0">
+          <!-- Avatar -->
+          <div class="flex-shrink-0 relative">
+            <div
+                class="w-12 h-12 rounded-xl bg-slate-100 border border-slate-200 overflow-hidden flex items-center justify-center text-slate-900 text-xs font-bold dark:bg-slate-800 dark:border-slate-700 dark:text-white">
               <img
                   v-if="item.avatar_url"
                   :src="item.avatar_url"
                   alt=""
-                  class="w-11 h-11 rounded-full object-cover bg-gray-100 border border-gray-200"
+                  class="w-full h-full object-cover"
               />
-              <div
-                  v-else
-                  class="w-11 h-11 rounded-full bg-gradient-to-tr from-orange-500 to-rose-500 flex items-center justify-center text-[11px] font-semibold text-white shadow-sm"
-              >
-                {{ initials(item.otherName) }}
-              </div>
+              <span v-else>{{ initials(item.otherName) }}</span>
             </div>
+            <!-- Online dot placeholder if needed -->
+          </div>
 
-            <!-- MAIN CONTENT -->
-            <div class="flex-1 min-w-0 space-y-1">
-              <!-- Name + match -->
-              <div class="flex items-center justify-between gap-2">
-                <p class="text-sm font-semibold text-gray-900 truncate">
+          <!-- Content -->
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center justify-between mb-1">
+              <div class="flex items-center gap-2">
+                <h4 class="font-bold text-slate-900 truncate dark:text-white">
                   {{ item.otherName }}
-                </p>
-
-                <div
+                </h4>
+                <span
                     v-if="item.score != null"
-                    class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-orange-50 text-[11px] text-orange-700 border border-orange-100"
+                    class="inline-flex items-center px-1.5 py-0.5 rounded-md bg-orange-50 border border-orange-100 text-[10px] font-bold text-orange-700 dark:bg-orange-900/20 dark:border-orange-800 dark:text-orange-400"
                 >
-                  <span class="text-[12px]">⚡</span>
-                  <span>Match {{ item.score }}%</span>
-                </div>
-              </div>
-
-              <!-- Last message -->
-              <p class="text-[12px] text-gray-600 line-clamp-1 flex items-center gap-1.5">
-                <span class="text-gray-300 text-xs">“</span>
-                <span>
-                  {{ item.thread.last_message_preview || 'Tap to start chatting' }}
+                  {{ item.score }}% Match
                 </span>
-              </p>
-
-              <!-- Meta row -->
-              <div class="flex items-center justify-between gap-3 pt-1">
-                <div class="flex items-center gap-2 text-[11px] text-gray-400">
-                  <span v-if="item.location" class="flex items-center gap-1">
-                    <span>📍</span>
-                    <span class="truncate max-w-[150px] sm:max-w-[200px]">
-                      {{ item.location }}
-                    </span>
-                  </span>
-                </div>
-
-                <p class="text-[11px] text-gray-400">
-                  {{ formatTime(item.thread.last_message_at || item.thread.created_at) }}
-                </p>
               </div>
+              <span class="text-[10px] font-medium text-slate-400 dark:text-slate-500">
+                {{ formatTime(item.thread.last_message_at || item.thread.created_at) }}
+              </span>
             </div>
 
-            <!-- CHEVRON -->
-            <div class="hidden sm:flex items-center justify-center flex-shrink-0 text-gray-300">
-              <span class="text-lg leading-none">›</span>
+            <p class="text-xs text-slate-500 font-medium truncate pr-8 dark:text-slate-400">
+              <span class="text-slate-300 mr-1 dark:text-slate-600">↪</span>
+              {{ item.thread.last_message_preview || 'Start the conversation...' }}
+            </p>
+
+            <!-- Location hint -->
+            <div v-if="item.location"
+                 class="mt-2 flex items-center gap-1 text-[10px] font-medium text-slate-400 dark:text-slate-500">
+              <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+              </svg>
+              <span class="truncate max-w-[200px]">{{ item.location }}</span>
             </div>
+          </div>
+
+          <!-- Chevron -->
+          <div
+              class="text-slate-300 group-hover:text-slate-400 transition-colors pr-2 dark:text-slate-700 dark:group-hover:text-slate-500">
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+            </svg>
           </div>
         </article>
       </section>
@@ -166,8 +162,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
-import { useRouter, useNuxtApp } from '#imports'
+import {ref, computed, onMounted} from 'vue'
+import {useRouter, useNuxtApp} from '#imports'
 
 interface ChatThread {
   id: string
@@ -188,7 +184,7 @@ interface ThreadWithMeta {
 }
 
 const router = useRouter()
-const { $supabase } = useNuxtApp()
+const {$supabase} = useNuxtApp()
 
 const loading = ref(true)
 const errorMessage = ref<string | null>(null)
@@ -217,7 +213,7 @@ const loadData = async () => {
   errorMessage.value = null
 
   const {
-    data: { user },
+    data: {user},
     error: authError
   } = await $supabase.auth.getUser()
 
@@ -228,7 +224,7 @@ const loadData = async () => {
   currentUserId.value = user.id
 
   // 1) Load threads where I'm either side
-  const { data: threadsData, error: threadsErr } = await $supabase
+  const {data: threadsData, error: threadsErr} = await $supabase
       .schema('amigo')
       .from('chat_threads')
       .select('*')
@@ -262,7 +258,7 @@ const loadData = async () => {
   }
 
   // 3) Load those profiles (include avatar_url)
-  const { data: profilesData, error: profilesErr } = await $supabase
+  const {data: profilesData, error: profilesErr} = await $supabase
       .schema('amigo')
       .from('profiles')
       .select('id, full_name, city, area, avatar_url')
@@ -297,7 +293,7 @@ const loadData = async () => {
   profilesById.value = mapProfiles
 
   // 4) Load match scores (if any)
-  const { data: matchesData, error: matchesErr } = await $supabase
+  const {data: matchesData, error: matchesErr} = await $supabase
       .schema('amigo')
       .from('matches')
       .select('other_profile_id, score')
@@ -312,7 +308,7 @@ const loadData = async () => {
       other_profile_id: string
       score: number | null
     }[]) {
-      mapMatches[m.other_profile_id] = { score: m.score }
+      mapMatches[m.other_profile_id] = {score: m.score}
     }
     matchesByOtherId.value = mapMatches
   }
@@ -330,11 +326,11 @@ const threadsWithMeta = computed<ThreadWithMeta[]>(() => {
         t.profile_one_id === currentUserId.value ? t.profile_two_id : t.profile_one_id
 
     const profile = profilesById.value[otherId] || {}
-    const matchInfo = matchesByOtherId.value[otherId] || { score: null }
+    const matchInfo = matchesByOtherId.value[otherId] || {score: null}
 
     const location =
         profile.city && profile.area
-            ? `${profile.area} · ${profile.city}`
+            ? `${profile.area}, ${profile.city}`
             : profile.city || profile.area || null
 
     result.push({
@@ -380,15 +376,14 @@ const formatTime = (iso: string) => {
       d.getFullYear() === now.getFullYear()
 
   if (isToday) {
-    return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    return d.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})
   }
 
-  return d.toLocaleDateString([], { month: 'short', day: 'numeric' })
+  return d.toLocaleDateString([], {month: 'short', day: 'numeric'})
 }
 
 // Actions
 const openChat = (otherProfileId: string) => {
-  // profile-based chat route; inside that page you call ensureThreadWithProfile(otherProfileId)
   router.push(`/chat/${otherProfileId}`)
 }
 

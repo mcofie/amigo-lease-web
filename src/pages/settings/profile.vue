@@ -1,285 +1,215 @@
 <template>
-  <div class="min-h-screen bg-gradient-to-b from-orange-50 via-rose-50 to-white px-4 py-10">
-    <div class="w-full max-w-4xl mx-auto space-y-8">
+  <div class="min-h-screen bg-slate-50 text-slate-900 selection:bg-orange-100 selection:text-orange-900 dark:bg-gray-950 dark:text-white px-4 py-8">
+    <div class="max-w-5xl mx-auto space-y-8">
+
       <!-- Header -->
-      <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div class="space-y-1">
-          <p class="inline-flex items-center gap-1 text-[11px] font-medium tracking-wide text-gray-500 uppercase">
-            <span class="h-1.5 w-1.5 rounded-full bg-emerald-400"/>
-            Profile
-          </p>
-          <h1 class="text-2xl md:text-3xl font-semibold text-gray-900">
-            Your profile
+      <header class="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
+        <div class="space-y-2">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-slate-200 shadow-sm dark:bg-white/10 dark:border-white/10">
+            <span class="relative flex h-2 w-2">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+            </span>
+            <span class="text-xs font-bold tracking-wide text-slate-700 uppercase dark:text-slate-200">
+              Your Profile
+            </span>
+          </div>
+          <h1 class="text-3xl md:text-4xl font-bold tracking-tight text-slate-900 dark:text-white">
+            Profile Settings
           </h1>
-          <p class="text-sm text-gray-500">
-            This is what potential roommates and hosts will see.
+          <p class="text-slate-500 dark:text-slate-400 max-w-lg text-sm md:text-base">
+            This is what potential roommates and hosts will see. Keep it fresh!
           </p>
         </div>
 
-        <!-- Right side: avatar + back to quiz -->
-        <div class="flex items-center gap-3">
+        <div class="flex items-center gap-3 self-start md:self-auto">
           <button
               type="button"
-              class="inline-flex items-center gap-1.5 text-[11px] px-3 py-1.5 rounded-full border border-gray-200 bg-white/80 text-gray-700 hover:bg-gray-100 hover:border-gray-300 shadow-sm"
+              class="inline-flex items-center justify-center px-4 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-700 text-sm font-semibold hover:bg-slate-50 hover:border-slate-300 transition-all shadow-sm dark:bg-gray-800 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-gray-750"
               @click="goToQuiz"
           >
-            <span>←</span>
-            <span>Back to vibe quiz</span>
+            <span>← Back to Quiz</span>
           </button>
 
-          <!-- Simple avatar placeholder -->
-          <div
-              class="hidden sm:flex h-12 w-12 rounded-full bg-gray-900 text-white items-center justify-center text-sm font-semibold shadow-md"
-          >
+          <div class="h-10 w-10 rounded-full bg-slate-900 text-white flex items-center justify-center text-sm font-bold shadow-md border-2 border-white dark:border-slate-800">
             {{ form.full_name ? form.full_name.charAt(0).toUpperCase() : '👤' }}
           </div>
         </div>
-      </div>
+      </header>
 
       <!-- PROFILE CARD -->
-      <div
-          class="bg-white/90 border border-orange-100 rounded-3xl shadow-[0_18px_40px_rgba(0,0,0,0.06)] p-5 md:p-7 space-y-5"
-      >
-        <form class="space-y-5" @submit.prevent="handleSave">
-          <!-- Top row: name + role -->
-          <div class="grid gap-4 md:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] items-start">
-            <!-- Name -->
-            <div class="space-y-1.5">
-              <label class="block text-sm font-medium text-gray-800">Full name</label>
-              <input
-                  v-model="form.full_name"
-                  type="text"
-                  class="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm bg-white focus:outline-none focus:ring-1 focus:ring-gray-900 focus:border-gray-900 placeholder:text-gray-400"
-                  placeholder="e.g. Ama Tetteh"
-              />
-              <p class="text-[11px] text-gray-400">
-                Use the name you’re comfortable sharing with potential roommates.
-              </p>
+      <div class="rounded-3xl bg-white border border-slate-200 shadow-xl p-6 md:p-8 space-y-8 dark:bg-gray-900 dark:border-slate-800">
+        <div class="flex items-center justify-between border-b border-slate-100 pb-6 dark:border-slate-800">
+          <div>
+            <h2 class="text-lg font-bold text-slate-900 dark:text-white">Basic Details</h2>
+            <p class="text-sm text-slate-500 dark:text-slate-400">Name, role, and bio</p>
+          </div>
+          <span class="h-8 w-8 rounded-lg bg-slate-100 flex items-center justify-center text-slate-500 text-sm font-bold dark:bg-slate-800">1</span>
+        </div>
+
+        <form class="space-y-6" @submit.prevent="handleSave">
+          <div class="grid gap-8 md:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] items-start">
+
+            <!-- Left Column: Inputs -->
+            <div class="space-y-5">
+              <div class="space-y-1.5">
+                <label class="block text-xs font-bold text-slate-700 uppercase tracking-wide dark:text-slate-300">Full Name</label>
+                <input
+                    v-model="form.full_name"
+                    type="text"
+                    class="w-full rounded-xl bg-slate-50 border-0 px-4 py-3 text-sm font-medium text-slate-900 placeholder:text-slate-400 focus:ring-2 focus:ring-slate-900 dark:bg-slate-800 dark:text-white dark:focus:ring-white transition-shadow"
+                    placeholder="e.g. Ama Tetteh"
+                />
+                <p class="text-[10px] text-slate-400 font-medium">Use the name you’re comfortable sharing.</p>
+              </div>
+
+              <div class="space-y-1.5">
+                <label class="block text-xs font-bold text-slate-700 uppercase tracking-wide dark:text-slate-300">Short Bio</label>
+                <textarea
+                    v-model="form.bio"
+                    rows="4"
+                    class="w-full rounded-xl bg-slate-50 border-0 px-4 py-3 text-sm font-medium text-slate-900 placeholder:text-slate-400 focus:ring-2 focus:ring-slate-900 resize-none dark:bg-slate-800 dark:text-white dark:focus:ring-white transition-shadow"
+                    placeholder="Tell people a bit about who you are outside of the house."
+                ></textarea>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="space-y-1.5">
+                  <label class="block text-xs font-bold text-slate-700 uppercase tracking-wide dark:text-slate-300">City</label>
+                  <input
+                      v-model="form.city"
+                      type="text"
+                      class="w-full rounded-xl bg-slate-50 border-0 px-4 py-3 text-sm font-medium text-slate-900 placeholder:text-slate-400 focus:ring-2 focus:ring-slate-900 dark:bg-slate-800 dark:text-white dark:focus:ring-white transition-shadow"
+                      placeholder="Accra"
+                  />
+                </div>
+                <div class="space-y-1.5">
+                  <label class="block text-xs font-bold text-slate-700 uppercase tracking-wide dark:text-slate-300">Area</label>
+                  <input
+                      v-model="form.area"
+                      type="text"
+                      class="w-full rounded-xl bg-slate-50 border-0 px-4 py-3 text-sm font-medium text-slate-900 placeholder:text-slate-400 focus:ring-2 focus:ring-slate-900 dark:bg-slate-800 dark:text-white dark:focus:ring-white transition-shadow"
+                      placeholder="East Legon"
+                  />
+                </div>
+              </div>
             </div>
 
-            <!-- Role -->
-            <div class="space-y-2">
-              <label class="block text-sm font-medium text-gray-800">
-                I’m here as
+            <!-- Right Column: Role Selector -->
+            <div class="space-y-3">
+              <label class="block text-xs font-bold text-slate-700 uppercase tracking-wide dark:text-slate-300">
+                I’m here as...
               </label>
 
-              <div class="flex flex-col gap-2">
+              <div class="flex flex-col gap-3">
                 <button
                     v-for="option in roleOptions"
                     :key="option.value"
                     type="button"
-                    class="w-full flex items-center justify-start gap-2 px-4 py-2.5 rounded-xl text-xs border transition-all shadow-sm active:scale-[0.98]"
+                    class="w-full flex items-center justify-start gap-3 px-4 py-3 rounded-xl text-sm font-medium border transition-all duration-200"
                     :class="form.role === option.value
-        ? 'bg-gray-900 text-white border-gray-900 shadow'
-        : 'bg-white text-gray-700 border-gray-200 hover:bg-gray-100'"
+                      ? 'bg-slate-900 text-white border-slate-900 shadow-md dark:bg-white dark:text-slate-900'
+                      : 'bg-white text-slate-600 border-slate-200 hover:border-slate-300 hover:bg-slate-50 dark:bg-gray-800 dark:text-slate-300 dark:border-slate-700 dark:hover:bg-slate-700'"
                     @click="form.role = option.value"
                 >
-                  <span v-if="option.value === 'seeker'" class="text-base">🔎</span>
-                  <span v-if="option.value === 'host'" class="text-base">🏡</span>
-                  <span v-if="option.value === 'both'" class="text-base">✨</span>
-
-                  <span class="font-medium">{{ option.label }}</span>
+                  <span class="text-xl">{{ option.emoji }}</span>
+                  <span>{{ option.label }}</span>
                 </button>
               </div>
 
-              <p class="text-[11px] text-gray-400">
-                This helps us know whether to show you rooms, roommates, or both.
-              </p>
+              <div class="bg-slate-50 rounded-xl p-3 text-[11px] text-slate-500 leading-relaxed dark:bg-slate-800 dark:text-slate-400">
+                <strong class="text-slate-900 dark:text-white">Note:</strong> This helps us filter matches. 'Both' shows you everything.
+              </div>
             </div>
           </div>
 
-          <!-- Divider -->
-          <div class="h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent"/>
-
-          <!-- Short bio -->
-          <div class="space-y-1.5">
-            <label class="block text-sm font-medium text-gray-800">
-              Short bio
-            </label>
-            <textarea
-                v-model="form.bio"
-                rows="3"
-                class="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm bg-white focus:outline-none focus:ring-1 focus:ring-gray-900 focus:border-gray-900 resize-none placeholder:text-gray-400"
-                placeholder="Tell people a bit about who you are outside of the house."
-            ></textarea>
-            <p class="text-[11px] text-gray-400">
-              A couple of sentences about your lifestyle, work, or hobbies is perfect.
-            </p>
-          </div>
-
-          <!-- City / Area -->
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div class="space-y-1.5">
-              <label class="block text-sm font-medium text-gray-800">City</label>
-              <input
-                  v-model="form.city"
-                  type="text"
-                  class="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm bg-white focus:outline-none focus:ring-1 focus:ring-gray-900 focus:border-gray-900 placeholder:text-gray-400"
-                  placeholder="e.g. Accra"
-              />
+          <!-- Action Bar -->
+          <div class="flex items-center justify-between pt-6 border-t border-slate-100 dark:border-slate-800">
+            <div class="flex items-center gap-3">
+               <span v-if="saved" class="text-xs font-bold text-emerald-600 bg-emerald-50 px-3 py-1.5 rounded-full border border-emerald-100 animate-fade-in dark:bg-emerald-900/20 dark:text-emerald-400 dark:border-emerald-800">
+                 ✓ Changes Saved
+               </span>
+              <span v-if="error" class="text-xs font-bold text-rose-600 bg-rose-50 px-3 py-1.5 rounded-full border border-rose-100 dark:bg-rose-900/20 dark:text-rose-400 dark:border-rose-800">
+                 ⚠️ {{ error }}
+               </span>
             </div>
-            <div class="space-y-1.5">
-              <label class="block text-sm font-medium text-gray-800">Area / Neighbourhood</label>
-              <input
-                  v-model="form.area"
-                  type="text"
-                  class="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm bg-white focus:outline-none focus:ring-1 focus:ring-gray-900 focus:border-gray-900 placeholder:text-gray-400"
-                  placeholder="e.g. East Legon"
-              />
-            </div>
-          </div>
-
-          <!-- Error / saved state -->
-          <div class="flex items-center justify-between pt-1">
-            <div class="min-h-[1.25rem]">
-              <p v-if="error" class="text-xs text-red-500">
-                {{ error }}
-              </p>
-              <p
-                  v-else-if="saved"
-                  class="inline-flex items-center gap-1 text-[11px] text-emerald-700 bg-emerald-50 border border-emerald-100 px-2.5 py-1 rounded-full"
-              >
-                <span>✅</span>
-                <span>Profile updated</span>
-              </p>
-            </div>
-          </div>
-
-          <!-- Actions -->
-          <div class="flex items-center justify-between pt-2">
-            <button
-                type="button"
-                class="text-xs text-gray-500 hover:text-gray-800 inline-flex items-center gap-1"
-                @click="goBack"
-            >
-              ← Back
-            </button>
 
             <button
                 type="submit"
-                class="inline-flex items-center justify-center text-sm px-4 py-2.5 rounded-xl bg-gray-900 text-white hover:bg-black disabled:opacity-60 shadow-sm"
+                class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-slate-900 text-white text-sm font-bold shadow-lg shadow-slate-900/20 hover:bg-slate-800 hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed dark:bg-white dark:text-slate-900 dark:hover:bg-slate-200"
                 :disabled="saving"
             >
-              {{ saving ? 'Saving…' : 'Save changes' }}
+              <span v-if="saving" class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
+              <span v-else>Save Changes</span>
             </button>
           </div>
         </form>
       </div>
 
-      <!-- Subtle hint -->
-      <p class="text-[11px] text-gray-400">
-        You can update your profile anytime. A strong profile helps you stand out in matches.
-      </p>
-
-      <!-- FAVOURITES / SAVED PLACES -->
-      <section class="space-y-3">
+      <!-- FAVOURITES SECTION -->
+      <section class="space-y-6">
         <div class="flex items-center justify-between">
           <div class="space-y-1">
-            <p class="inline-flex items-center gap-1 text-[11px] font-medium tracking-wide text-gray-500 uppercase">
-              <span class="h-1.5 w-1.5 rounded-full bg-orange-400"/>
-              Saved places
-            </p>
-            <h2 class="text-lg font-semibold text-gray-900">
-              Your favourites
-            </h2>
-            <p class="text-xs text-gray-500">
-              Rooms and homes you’ve starred while browsing.
-            </p>
+            <div class="flex items-center gap-2">
+              <span class="text-xl">❤️</span>
+              <h2 class="text-xl font-bold text-slate-900 dark:text-white">Saved Places</h2>
+            </div>
+            <p class="text-sm text-slate-500 dark:text-slate-400">Rooms you've starred for later.</p>
           </div>
-          <p class="text-[11px] text-gray-400">
-            {{ favorites.length }} saved
-          </p>
+          <span class="text-xs font-bold bg-white border border-slate-200 px-3 py-1.5 rounded-lg text-slate-600 shadow-sm dark:bg-gray-800 dark:border-slate-700 dark:text-slate-300">
+            {{ favorites.length }} Saved
+          </span>
         </div>
 
-        <!-- Loading favourites -->
-        <div
-            v-if="favLoading"
-            class="rounded-2xl bg-white/80 border border-gray-200 py-8 flex items-center justify-center"
-        >
-          <div class="flex flex-col items-center gap-2 text-xs text-gray-500">
-            <div class="h-8 w-8 rounded-full border-2 border-dashed border-gray-300 animate-spin"/>
-            <span>Loading your saved places…</span>
-          </div>
+        <!-- Loading -->
+        <div v-if="favLoading" class="py-12 flex justify-center">
+          <div class="w-8 h-8 border-4 border-slate-200 border-t-slate-900 rounded-full animate-spin dark:border-slate-700 dark:border-t-white" />
         </div>
 
-        <!-- Error favourites -->
-        <div
-            v-else-if="favError"
-            class="rounded-2xl bg-white border border-red-100 py-6 px-4 text-xs text-red-600"
-        >
-          {{ favError }}
-        </div>
-
-        <!-- Empty -->
+        <!-- Empty State -->
         <div
             v-else-if="favorites.length === 0"
-            class="rounded-2xl bg-white/80 border border-dashed border-gray-200 py-8 px-4 text-center space-y-2"
+            class="rounded-3xl border-2 border-dashed border-slate-200 bg-slate-50/50 p-10 text-center dark:border-slate-800 dark:bg-gray-900/50"
         >
-          <p class="text-sm text-gray-700 font-medium">
-            You haven’t saved any places yet.
-          </p>
-          <p class="text-xs text-gray-500">
-            When you tap the ♥ icon on a listing, it will appear here for quick access.
-          </p>
+          <div class="w-12 h-12 bg-white rounded-xl shadow-sm border border-slate-100 flex items-center justify-center mx-auto mb-3 dark:bg-gray-800 dark:border-slate-700">
+            <span class="text-xl opacity-50">⭐</span>
+          </div>
+          <p class="text-slate-500 text-sm font-medium dark:text-slate-400">No favorites yet. Start exploring!</p>
         </div>
 
-        <!-- List -->
-        <div v-else class="grid gap-3">
+        <!-- Favorites Grid -->
+        <div v-else class="grid md:grid-cols-2 gap-4">
           <article
               v-for="fav in favorites"
               :key="fav.id"
-              class="rounded-2xl bg-white border border-gray-200 p-4 flex items-center justify-between gap-3 hover:shadow-sm transition cursor-pointer"
+              class="group bg-white rounded-2xl border border-slate-200 p-4 hover:border-slate-300 hover:shadow-md transition-all duration-200 cursor-pointer flex items-center justify-between dark:bg-gray-900 dark:border-slate-800 dark:hover:border-slate-700"
               @click="goToListing(fav.listing?.id)"
           >
-            <div class="flex items-start gap-3">
-              <!-- Tiny thumbnail placeholder -->
-              <div
-                  class="hidden sm:flex h-10 w-10 rounded-xl bg-orange-50 items-center justify-center text-base"
-              >
-                ❤️
+            <div class="flex items-center gap-4">
+              <div class="h-12 w-12 rounded-xl bg-slate-100 border border-slate-200 flex items-center justify-center text-lg shadow-sm dark:bg-slate-800 dark:border-slate-700">
+                🏠
               </div>
-              <div class="space-y-1">
-                <p class="text-sm font-medium text-gray-900">
-                  {{ fav.listing?.title || 'Listing unavailable' }}
-                </p>
-                <p class="text-[11px] text-gray-500">
-                  <span v-if="fav.listing?.area || fav.listing?.city">
-                    <span v-if="fav.listing?.area">{{ fav.listing?.area }}</span>
-                    <span v-if="fav.listing?.area && fav.listing?.city"> · </span>
-                    <span v-if="fav.listing?.city">{{ fav.listing?.city }}</span>
-                  </span>
-                  <span v-else>
-                    Location not set
-                  </span>
-                </p>
-                <p class="text-[11px] text-gray-400">
-                  Saved on {{ formatDate(fav.created_at) }}
+              <div>
+                <h4 class="font-bold text-slate-900 text-sm group-hover:text-blue-600 transition-colors dark:text-white dark:group-hover:text-blue-400">
+                  {{ fav.listing?.title || 'Listing Unavailable' }}
+                </h4>
+                <p class="text-xs text-slate-500 dark:text-slate-400">
+                  <span v-if="fav.listing?.area">{{ fav.listing?.area }}, </span>{{ fav.listing?.city || 'Location pending' }}
                 </p>
               </div>
             </div>
 
-            <div class="text-right space-y-1 text-[11px]">
-              <p class="text-sm font-semibold text-gray-900">
-                <span v-if="fav.listing?.monthly_rent != null">
-                  {{ fav.listing?.currency === 'USD' ? '$' : '₵' }}{{ formatRent(fav.listing?.monthly_rent) }}
-                  <span class="text-[10px] text-gray-500">/ month</span>
-                </span>
-                <span v-else class="text-gray-400">
-                  Rent not set
-                </span>
+            <div class="text-right">
+              <p class="text-sm font-bold text-slate-900 dark:text-white">
+                <span v-if="fav.listing?.monthly_rent">₵{{ formatRent(fav.listing?.monthly_rent) }}</span>
+                <span v-else class="text-slate-400">--</span>
               </p>
-              <p class="text-gray-500">
-                <span v-if="fav.listing?.bedrooms != null">
-                  {{ fav.listing?.bedrooms }} bed{{ fav.listing?.bedrooms === 1 ? '' : 's' }}
-                </span>
-                <span v-if="fav.listing?.bathrooms != null">
-                  · {{ fav.listing?.bathrooms }} bath{{ fav.listing?.bathrooms === 1 ? '' : 's' }}
-                </span>
-              </p>
+              <p class="text-[10px] font-medium text-slate-400 uppercase tracking-wide">/mo</p>
             </div>
           </article>
         </div>
       </section>
+
     </div>
   </div>
 </template>
@@ -297,10 +227,11 @@ const {profile, fetchProfile, upsertProfile, error} = useProfile()
 const saving = ref(false)
 const saved = ref(false)
 
-const roleOptions: { value: ProfileRole; label: string }[] = [
-  {value: 'seeker', label: 'Looking for a place / roommate'},
-  {value: 'host', label: 'I have a place, need a roommate'},
-  {value: 'both', label: 'I’m open to both'}
+// Added explicit typing for the roleOptions array to fix TypeScript error
+const roleOptions: { value: ProfileRole; label: string; emoji: string }[] = [
+  {value: 'seeker', label: 'Looking for a place', emoji: '🔎'},
+  {value: 'host', label: 'I have a place', emoji: '🏡'},
+  {value: 'both', label: 'Open to both', emoji: '✨'}
 ]
 
 const form = reactive({
@@ -406,25 +337,13 @@ const handleSave = async () => {
 
   if (!error.value) {
     saved.value = true
+    // Hide success message after 3s
+    setTimeout(() => { saved.value = false }, 3000)
   }
-}
-
-const goBack = () => {
-  router.back()
 }
 
 const goToQuiz = () => {
   router.push('/onboarding/quiz')
-}
-
-// helpers for favourites
-const formatDate = (iso: string) => {
-  const d = new Date(iso)
-  return d.toLocaleDateString(undefined, {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric'
-  })
 }
 
 const formatRent = (rent: number | null) => {
@@ -441,3 +360,14 @@ const goToListing = (listingId?: string) => {
   router.push(`/listing/${listingId}`)
 }
 </script>
+
+<style scoped>
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(2px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+</style>
