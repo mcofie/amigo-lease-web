@@ -188,6 +188,10 @@
 </template>
 
 <script setup lang="ts">
+useSeoMeta({
+  title: 'Privacy Policy - Amigo Lease',
+  description: 'Read our Privacy Policy to understand how we collect, use, and protect your data.',
+})
 const lastUpdated = '{{ insert date }}' // e.g. '19 November 2025'
 
 definePageMeta({

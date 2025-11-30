@@ -194,6 +194,10 @@
 </template>
 
 <script setup lang="ts">
+useSeoMeta({
+  title: 'Terms of Service - Amigo Lease',
+  description: 'Read our Terms of Service to understand the rules and regulations for using Amigo Lease.',
+})
 const lastUpdated = '{{ insert date }}' // e.g. '19 November 2025'
 
 definePageMeta({

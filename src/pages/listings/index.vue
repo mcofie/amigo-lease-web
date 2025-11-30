@@ -162,10 +162,12 @@
                     {{ l.is_active ? 'Active' : 'Draft' }}
                  </span>
 
-                <span
-                    class="text-xs font-bold text-slate-400 group-hover:text-slate-900 transition-colors flex items-center gap-1 dark:group-hover:text-white">
-                    Manage <span class="text-lg leading-none">→</span>
-                 </span>
+                <button
+                    @click.stop="goToEditListing(l.id)"
+                    class="text-xs font-bold text-slate-400 group-hover:text-slate-900 transition-colors flex items-center gap-1 dark:group-hover:text-white hover:underline"
+                >
+                    Edit <span class="text-lg leading-none">→</span>
+                </button>
               </div>
             </article>
           </div>
@@ -315,6 +317,11 @@ import {useListings, type ListingInput} from '~/composables/useListings'
 const router = useRouter()
 const {listings, loading, error, loadMyListings, createListing} = useListings()
 
+useSeoMeta({
+  title: 'My Listings - Amigo Lease',
+  description: 'Manage your property listings on Amigo Lease.',
+})
+
 const submitting = ref(false)
 
 const form = reactive<ListingInput>({
@@ -375,6 +382,10 @@ const goToListing = (id: string) => {
 
 const goToNewListingPage = () => {
   router.push(`/listings/new`)
+}
+
+const goToEditListing = (id: string) => {
+  router.push(`/listings/${id}/edit`)
 }
 
 const goToNewListing = () => {

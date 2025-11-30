@@ -12,6 +12,7 @@ export interface ListingInput {
     bedrooms: number | null
     bathrooms: number | null
     available_from: string | null // 'YYYY-MM-DD'
+    is_active?: boolean
 }
 
 export const useListings = () => {
@@ -102,7 +103,7 @@ export const useListings = () => {
                 bedrooms: payload.bedrooms,
                 bathrooms: payload.bathrooms,
                 available_from: payload.available_from,
-                is_active: true
+                is_active: payload.is_active ?? true
             } as any)
             .select('*')
             .maybeSingle()
@@ -117,12 +118,63 @@ export const useListings = () => {
         return data
     }
 
+    const updateListing = async (id: string, payload: Partial<ListingInput>) => {
+        error.value = null
+        loading.value = true
+
+        const {
+            data: { user },
+            error: authError
+        } = await $supabase.auth.getUser()
+
+        if (authError || !user) {
+            error.value = authError?.message ?? 'Not authenticated'
+            loading.value = false
+            return null
+        }
+
+        const updatePayload: any = {
+            title: payload.title,
+            description: payload.description,
+            city: payload.city,
+            area: payload.area,
+            monthly_rent: payload.monthly_rent,
+            currency: payload.currency,
+            bedrooms: payload.bedrooms,
+            bathrooms: payload.bathrooms,
+            available_from: payload.available_from
+        }
+
+        if (payload.is_active !== undefined) {
+            updatePayload.is_active = payload.is_active
+        }
+
+        const { data, error: updateError } = await ($supabase as any)
+            .schema('amigo')
+            .from('listings')
+            .update(updatePayload)
+            .eq('id', id)
+            .eq('host_profile_id', user.id) // Security: ensure ownership
+            .select('*')
+            .maybeSingle()
+
+        if (updateError) {
+            error.value = updateError.message
+            loading.value = false
+            return null
+        }
+
+        loading.value = false
+        return data
+    }
+
     return {
         listings,
         loading,
         error,
         loadListings,
         loadMyListings,
-        createListing
+        createListing,
+        updateListing
     }
 }

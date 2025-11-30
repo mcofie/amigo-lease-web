@@ -174,6 +174,12 @@ const route = useRoute()
 const router = useRouter()
 const otherProfileId = route.params.id as string
 
+useSeoMeta({
+  title: computed(() => thread.value?.other_profile ? `Chat with ${thread.value.other_profile.full_name} - Amigo Lease` : 'Chat - Amigo Lease'),
+  description: 'Private conversation on Amigo Lease.',
+})
+
+
 // Use the new unified useChat composable
 const {
   thread,

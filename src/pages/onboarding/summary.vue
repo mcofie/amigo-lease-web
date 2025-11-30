@@ -160,6 +160,11 @@ import {computed, onMounted} from 'vue'
 import {useRouter} from '#imports'
 import {useQuiz} from '~/composables/useQuiz'
 
+useSeoMeta({
+  title: 'Review Profile - Amigo Lease Onboarding',
+  description: 'Review your profile before finishing onboarding.',
+})
+
 const router = useRouter()
 const {answers, loading, error, loadExistingTraits} = useQuiz()
 

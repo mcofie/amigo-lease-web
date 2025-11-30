@@ -126,6 +126,11 @@ const loading = ref(false)
 const errorMessage = ref<string | null>(null)
 const infoMessage = ref<string | null>(null)
 
+useSeoMeta({
+  title: 'Login or Sign Up - Amigo Lease',
+  description: 'Access your Amigo Lease account to find roommates and listings.',
+})
+
 const submitLabel = computed(() =>
     mode.value === 'signin' ? 'Sign In' : 'Create Account'
 )

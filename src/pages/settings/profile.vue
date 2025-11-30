@@ -220,6 +220,11 @@ import {useRouter, useNuxtApp} from '#imports'
 import {useProfile} from '~/composables/useProfile'
 import type {ProfileRole} from '~/types/amigo'
 
+useSeoMeta({
+  title: 'Profile Settings - Amigo Lease',
+  description: 'Manage your profile and saved listings on Amigo Lease.',
+})
+
 const router = useRouter()
 const {$supabase} = useNuxtApp()
 const {profile, fetchProfile, upsertProfile, error} = useProfile()

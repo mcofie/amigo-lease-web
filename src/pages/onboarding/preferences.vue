@@ -238,6 +238,11 @@ import { onMounted, ref } from 'vue'
 import { useRouter, useNuxtApp } from '#imports'
 import { usePreferences } from '~/composables/usePreferences'
 
+useSeoMeta({
+  title: 'Preferences - Amigo Lease Onboarding',
+  description: 'Set your preferences for your ideal roommate or place.',
+})
+
 const router = useRouter()
 const { $supabase } = useNuxtApp()
 const { form, loading, error, loadPreferences, savePreferences } = usePreferences()

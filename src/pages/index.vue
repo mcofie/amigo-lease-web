@@ -14,4 +14,11 @@ import HeroSection from '~/components/landing/HeroSection.vue'
 import ArchetypesSection from '~/components/landing/ArchetypesSection.vue'
 import MatchesSection from '~/components/landing/MatchesSection.vue'
 import CtaSection from '~/components/landing/CtaSection.vue'
+
+useSeoMeta({
+  title: 'Amigo Lease - Find Your Perfect Roommate',
+  description: 'Connect with compatible roommates in Accra. Match by vibe, lifestyle, and budget.',
+  ogTitle: 'Amigo Lease - Find Your Perfect Roommate',
+  ogDescription: 'Connect with compatible roommates in Accra. Match by vibe, lifestyle, and budget.',
+})
 </script>

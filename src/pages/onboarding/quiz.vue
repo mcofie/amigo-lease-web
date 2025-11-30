@@ -199,8 +199,13 @@
 
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
-import { useRouter } from '#imports'
+import { useRouter, useSeoMeta } from '#imports'
 import { useQuiz } from '~/composables/useQuiz'
+
+useSeoMeta({
+  title: 'Lifestyle Quiz - Amigo Lease Onboarding',
+  description: 'Take our lifestyle quiz to find your perfect match.',
+})
 
 const router = useRouter()
 const {

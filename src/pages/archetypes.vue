@@ -163,6 +163,11 @@
 </template>
 
 <script setup lang="ts">
+useSeoMeta({
+  title: 'Roommate Archetypes - Amigo Lease',
+  description: 'Discover the different roommate personalities on Amigo Lease. Which one are you?',
+})
+
 interface Archetype {
   key: string
   name: string

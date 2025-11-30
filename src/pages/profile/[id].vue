@@ -310,6 +310,7 @@
                 v-for="listing in listings"
                 :key="listing.id"
                 class="group rounded-2xl bg-white border border-slate-200 p-5 hover:border-slate-300 hover:shadow-md transition-all duration-200 cursor-pointer dark:bg-gray-900 dark:border-slate-800 dark:hover:border-slate-700"
+                @click="goToListing(listing.id)"
             >
               <div class="flex justify-between items-start mb-2">
                 <h4 class="font-bold text-slate-900 group-hover:text-blue-600 transition-colors dark:text-white dark:group-hover:text-blue-400">
@@ -317,7 +318,7 @@
                 </h4>
                 <span
                     class="text-xs font-bold bg-slate-100 px-2 py-1 rounded text-slate-600 dark:bg-slate-800 dark:text-slate-300">
-                  ₵{{ listing.rent_amount ?? '—' }}<span class="text-[10px] font-normal text-slate-400">/mo</span>
+                  {{ listing.currency === 'USD' ? '$' : '₵' }}{{ listing.monthly_rent?.toLocaleString() ?? '—' }}<span class="text-[10px] font-normal text-slate-400">/mo</span>
                 </span>
               </div>
 
@@ -334,7 +335,7 @@
               <div
                   class="flex items-center gap-2 text-[10px] font-medium text-slate-400 border-t border-slate-50 pt-3 dark:border-slate-800">
                 <span class="bg-green-50 text-green-700 px-1.5 py-0.5 rounded dark:bg-green-900/20 dark:text-green-400">Available</span>
-                <span>From: {{ listing.available_from || 'Now' }}</span>
+                <span>From: {{ formatDate(listing.available_from) }}</span>
               </div>
             </article>
           </div>
@@ -366,6 +367,14 @@ import {computed, onMounted} from 'vue'
 import {useRoute, useRouter} from '#imports'
 import {usePublicProfile} from '~/composables/usePublicProfile'
 import {getArchetypeMeta} from '~/types/archetypes'
+
+useSeoMeta({
+  title: computed(() => profile.value ? `${profile.value.full_name} - Amigo Lease` : 'Roommate Profile - Amigo Lease'),
+  description: computed(() => profile.value?.bio || 'View roommate profile on Amigo Lease.'),
+  ogTitle: computed(() => profile.value ? `${profile.value.full_name} - Amigo Lease` : 'Roommate Profile - Amigo Lease'),
+  ogDescription: computed(() => profile.value?.bio || 'View roommate profile on Amigo Lease.'),
+  ogImage: computed(() => profile.value?.avatar_url || ''),
+})
 
 const props = defineProps<{
   archetype: string | null
@@ -629,5 +638,20 @@ const wfhLabel = computed(() => {
 const goToChat = () => {
   const id = route.params.id as string
   router.push(`/chat/${id}`)
+}
+
+const goToListing = (id: string) => {
+  router.push(`/listings/${id}`)
+}
+
+const formatDate = (dateStr: string | null) => {
+  if (!dateStr) return 'Now'
+  const date = new Date(dateStr)
+  if (Number.isNaN(date.getTime())) return dateStr
+  return new Intl.DateTimeFormat('en-GB', {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric'
+  }).format(date)
 }
 </script>

@@ -1,7 +1,7 @@
 // src/composables/usePublicProfile.ts
-import {ref} from 'vue'
-import {useNuxtApp} from '#app'
-import type {RoommateTraits} from '~/types/amigo'
+import { ref } from 'vue'
+import { useNuxtApp } from '#app'
+import type { RoommateTraits } from '~/types/amigo'
 
 export interface PublicProfile {
     id: string
@@ -21,7 +21,7 @@ export interface PublicListing {
     title: string
     city: string | null
     area: string | null
-    rent_amount: number | null
+    monthly_rent: number | null
     currency: string | null
     available_from: string | null
     room_type: string | null
@@ -30,7 +30,7 @@ export interface PublicListing {
 }
 
 export const usePublicProfile = () => {
-    const {$supabase} = useNuxtApp()
+    const { $supabase } = useNuxtApp()
 
     const profile = ref<PublicProfile | null>(null)
     const traits = ref<RoommateTraits | null>(null)
@@ -42,7 +42,7 @@ export const usePublicProfile = () => {
         loading.value = true
         error.value = null
 
-        const {data: profileData, error: profileError} = await $supabase
+        const { data: profileData, error: profileError } = await $supabase
             .schema('amigo')
             .from('profiles')
             .select('*')
@@ -57,7 +57,7 @@ export const usePublicProfile = () => {
 
         profile.value = profileData as PublicProfile
 
-        const {data: traitsData, error: traitsError} = await $supabase
+        const { data: traitsData, error: traitsError } = await $supabase
             .schema('amigo')
             .from('roommate_traits')
             .select('*')
@@ -68,13 +68,13 @@ export const usePublicProfile = () => {
             traits.value = traitsData as RoommateTraits
         }
 
-        const {data: listingsData, error: listingsError} = await $supabase
+        const { data: listingsData, error: listingsError } = await $supabase
             .schema('amigo')
             .from('listings')
             .select('*')
             .eq('host_profile_id', profileId)
             .eq('is_active', true)
-            .order('created_at', {ascending: false})
+            .order('created_at', { ascending: false })
 
         if (!listingsError && listingsData) {
             listings.value = listingsData as PublicListing[]

@@ -147,6 +147,11 @@ import type { ProfileRole } from '~/types/amigo'
 import { useRouter, useNuxtApp } from '#imports'
 import { useProfile } from '~/composables/useProfile'
 
+useSeoMeta({
+  title: 'Choose Your Role - Amigo Lease Onboarding',
+  description: 'Select your role to get started with Amigo Lease.',
+})
+
 const router = useRouter()
 const { $supabase } = useNuxtApp()
 const { setRole, error } = useProfile()

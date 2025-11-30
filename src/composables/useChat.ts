@@ -144,13 +144,28 @@ export const useChat = () => {
                     filter: `thread_id=eq.${threadId}`
                 },
                 payload => {
+                    console.log('[Chat] Received realtime event:', payload)
                     const newMsg = payload.new as ChatMessage
                     if (!messages.value.find(m => m.id === newMsg.id)) {
+                        console.log('[Chat] Adding new message from realtime:', newMsg)
                         messages.value = [...messages.value, newMsg]
+                    } else {
+                        console.log('[Chat] Message already exists, skipping:', newMsg.id)
                     }
                 }
             )
-            .subscribe()
+            .subscribe((status) => {
+                console.log(`[Chat] Subscription status for thread ${threadId}:`, status)
+                if (status === 'SUBSCRIBED') {
+                    console.log('[Chat] Successfully subscribed to realtime events')
+                }
+                if (status === 'CHANNEL_ERROR') {
+                    console.error('[Chat] Realtime channel error')
+                }
+                if (status === 'TIMED_OUT') {
+                    console.error('[Chat] Realtime subscription timed out')
+                }
+            })
     }
 
     /**

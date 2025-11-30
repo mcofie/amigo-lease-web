@@ -193,6 +193,11 @@ import {useRouter, useNuxtApp} from '#imports'
 import MatchCard from '~/components/MatchCard.vue'
 import {useMatches, type MatchRow} from '~/composables/useMatches'
 
+useSeoMeta({
+  title: 'My Matches - Amigo Lease',
+  description: 'View your roommate matches based on lifestyle compatibility.',
+})
+
 const router = useRouter()
 const {$supabase} = useNuxtApp()
 const {matches, loading, error, loadMatches} = useMatches()

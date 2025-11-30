@@ -174,6 +174,12 @@ interface ChatThread {
   created_at: string
 }
 
+useSeoMeta({
+  title: 'Messages - Amigo Lease',
+  description: 'Chat with potential roommates and hosts on Amigo Lease.',
+})
+
+
 interface ThreadWithMeta {
   thread: ChatThread
   otherProfileId: string

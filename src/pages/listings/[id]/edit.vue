@@ -14,24 +14,41 @@
           </div>
 
           <div>
-            <h1 class="text-xl font-bold text-slate-900 dark:text-white">Create Listing</h1>
-            <p class="text-xs font-medium text-slate-500 dark:text-slate-400">Host Dashboard · New Place</p>
+            <h1 class="text-xl font-bold text-slate-900 dark:text-white">Edit Listing</h1>
+            <p class="text-xs font-medium text-slate-500 dark:text-slate-400">Host Dashboard · Update Details</p>
           </div>
         </div>
 
-        <div
-            class="hidden sm:inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-slate-200 shadow-sm dark:bg-white/10 dark:border-white/10">
-          <span class="relative flex h-2 w-2">
-            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-            <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-          </span>
-          <span class="text-xs font-bold tracking-wide text-slate-700 uppercase dark:text-slate-200">
-            Drafting
-          </span>
+        <div class="flex items-center gap-4">
+          <div class="flex items-center gap-3">
+            <label class="inline-flex items-center cursor-pointer">
+              <input type="checkbox" v-model="form.is_active" class="sr-only peer">
+              <div class="relative w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-emerald-300 dark:peer-focus:ring-emerald-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-emerald-500"></div>
+              <span class="ms-3 text-sm font-medium text-slate-900 dark:text-slate-300 hidden sm:inline-block">{{ form.is_active ? 'Active' : 'Paused' }}</span>
+            </label>
+          </div>
+
+          <div
+              class="hidden sm:inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-slate-200 shadow-sm dark:bg-white/10 dark:border-white/10">
+            <span class="relative flex h-2 w-2">
+              <span class="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
+            </span>
+            <span class="text-xs font-bold tracking-wide text-slate-700 uppercase dark:text-slate-200">
+              Editing
+            </span>
+          </div>
         </div>
       </header>
 
-      <div class="grid gap-8 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] items-start">
+      <div v-if="loading" class="flex justify-center py-20">
+        <div class="flex flex-col items-center gap-4">
+          <div
+              class="w-10 h-10 border-4 border-slate-200 border-t-slate-900 rounded-full animate-spin dark:border-slate-700 dark:border-t-white"/>
+          <p class="text-xs font-bold text-slate-400 uppercase tracking-wider animate-pulse">Loading Listing...</p>
+        </div>
+      </div>
+
+      <div v-else class="grid gap-8 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] items-start">
 
         <!-- LEFT: Form -->
         <div
@@ -39,7 +56,7 @@
           <div class="flex items-center justify-between border-b border-slate-100 pb-6 dark:border-slate-800">
             <div>
               <h2 class="text-lg font-bold text-slate-900 dark:text-white">Listing Details</h2>
-              <p class="text-sm text-slate-500 dark:text-slate-400">Basics, price, and amenities</p>
+              <p class="text-sm text-slate-500 dark:text-slate-400">Update basics, price, and amenities</p>
             </div>
             <span
                 class="h-8 w-8 rounded-lg bg-slate-100 flex items-center justify-center text-slate-500 text-sm font-bold dark:bg-slate-800">1</span>
@@ -229,7 +246,7 @@
               >
                 <span v-if="submitting"
                       class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
-                <span v-else>Publish Listing</span>
+                <span v-else>Save Changes</span>
               </button>
             </div>
           </form>
@@ -306,22 +323,16 @@
                 </p>
               </div>
             </div>
-
-            <div
-                class="bg-slate-100 rounded-2xl p-4 text-xs text-slate-500 leading-relaxed dark:bg-slate-800 dark:text-slate-400">
-              <strong class="text-slate-900 dark:text-white">Tip:</strong> High-quality photos and a detailed
-              description increase your chances of finding a great roommate by 3x.
-            </div>
           </div>
         </div>
 
       </div>
 
       <!-- Success Toast (Simple) -->
-      <div v-if="justCreated"
+      <div v-if="justUpdated"
            class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-slate-900 text-white px-6 py-3 rounded-full shadow-2xl flex items-center gap-3 z-50 animate-bounce-in dark:bg-white dark:text-slate-900">
         <span class="text-emerald-400">✓</span>
-        <span class="text-sm font-bold">Listing Created Successfully!</span>
+        <span class="text-sm font-bold">Listing Updated Successfully!</span>
       </div>
     </div>
   </div>
@@ -329,20 +340,23 @@
 
 <script setup lang="ts">
 import {reactive, ref, onMounted, computed} from 'vue'
-import {useRouter, useNuxtApp} from '#imports'
+import {useRouter, useRoute, useNuxtApp} from '#imports'
 import {useListings} from '~/composables/useListings'
 
-const router = useRouter()
-const {$supabase} = useNuxtApp()
-const {createListing, error} = useListings()
-
 useSeoMeta({
-  title: 'Create New Listing - Amigo Lease',
-  description: 'List your room or apartment on Amigo Lease to find the perfect roommate.',
+  title: 'Edit Listing - Amigo Lease',
+  description: 'Edit your listing details on Amigo Lease.',
 })
 
+const router = useRouter()
+const route = useRoute()
+const {$supabase} = useNuxtApp()
+const {updateListing, error: updateError} = useListings()
+
+const loading = ref(true)
 const submitting = ref(false)
-const justCreated = ref(false)
+const justUpdated = ref(false)
+const error = ref<string | null>(null)
 
 const form = reactive({
   title: '',
@@ -353,7 +367,8 @@ const form = reactive({
   currency: 'GHS',
   bedrooms: null as number | null,
   bathrooms: null as number | null,
-  available_from: ''
+  available_from: '',
+  is_active: true
 })
 
 const amenityOptions = [
@@ -376,8 +391,76 @@ onMounted(async () => {
   } = await $supabase.auth.getUser()
   if (!user) {
     router.push('/auth')
+    return
   }
+
+  await loadListingData()
 })
+
+const loadListingData = async () => {
+  loading.value = true
+  error.value = null
+  
+  try {
+    const id = route.params.id as string
+    if (!id) {
+      error.value = 'Invalid listing ID'
+      return
+    }
+
+    // 1) Fetch listing
+    const {data: listingData, error: listingErr} = await ($supabase as any)
+        .schema('amigo')
+        .from('listings')
+        .select('*')
+        .eq('id', id)
+        .maybeSingle()
+
+    if (listingErr || !listingData) {
+      error.value = listingErr?.message ?? 'Listing not found'
+      return
+    }
+
+    // Populate form
+    form.title = listingData.title
+    form.description = listingData.description || ''
+    form.city = listingData.city || ''
+    form.area = listingData.area || ''
+    form.monthly_rent = listingData.monthly_rent
+    form.currency = listingData.currency || 'GHS'
+    form.bedrooms = listingData.bedrooms
+    form.bathrooms = listingData.bathrooms
+    form.available_from = listingData.available_from || ''
+    form.is_active = listingData.is_active
+
+    // 2) Fetch amenities
+    const {data: amenData} = await ($supabase as any)
+        .schema('amigo')
+        .from('listing_amenities')
+        .select('amenity_key')
+        .eq('listing_id', id)
+
+    selectedAmenities.value = (amenData || []).map((a: any) => a.amenity_key)
+
+    // 3) Fetch photos
+    const {data: photoData} = await ($supabase as any)
+        .schema('amigo')
+        .from('listing_photos')
+        .select('url, sort_order')
+        .eq('listing_id', id)
+        .order('sort_order', {ascending: true})
+
+    const urls = (photoData || []).map((p: any) => p.url)
+    // Ensure we have at least 3 inputs
+    while (urls.length < 3) urls.push('')
+    photoInputs.value = urls
+  } catch (e: any) {
+    console.error('Error loading listing:', e)
+    error.value = e.message || 'Failed to load listing'
+  } finally {
+    loading.value = false
+  }
+}
 
 const currencySymbol = computed(() => {
   if (form.currency === 'USD') return '$'
@@ -409,10 +492,13 @@ const toggleAmenity = (key: string) => {
 const handleSubmit = async () => {
   if (submitting.value) return
   submitting.value = true
-  justCreated.value = false
+  justUpdated.value = false
+  error.value = null
 
-  // 1) Create main listing
-  const created = await createListing({
+  const id = route.params.id as string
+
+  // 1) Update main listing
+  const updated = await updateListing(id, {
     title: form.title,
     description: form.description || null,
     city: form.city || null,
@@ -421,29 +507,46 @@ const handleSubmit = async () => {
     currency: form.currency,
     bedrooms: form.bedrooms,
     bathrooms: form.bathrooms,
-    available_from: form.available_from || null
+    available_from: form.available_from || null,
+    is_active: form.is_active
   })
 
-  if (!created || error.value) {
+  if (!updated || updateError.value) {
+    error.value = updateError.value || 'Failed to update listing'
     submitting.value = false
     return
   }
 
-  const listingId = (created as any).id
-  if (!listingId) {
-    console.warn('Listing created but no id returned')
-    submitting.value = false
-    return
-  }
-
-  // 2) Save amenities & photos logic (same as before)
+  // 2) Update amenities (Delete all & re-insert)
   try {
-    // ... (Insert amenities logic here if you have the mapping)
+    await ($supabase as any)
+        .schema('amigo')
+        .from('listing_amenities')
+        .delete()
+        .eq('listing_id', id)
+
+    if (selectedAmenities.value.length) {
+      const amenPayload = selectedAmenities.value.map(key => ({
+        listing_id: id,
+        amenity_key: key
+      }))
+      await ($supabase as any)
+          .schema('amigo')
+          .from('listing_amenities')
+          .insert(amenPayload)
+    }
+
+    // 3) Update photos (Delete all & re-insert)
+    await ($supabase as any)
+        .schema('amigo')
+        .from('listing_photos')
+        .delete()
+        .eq('listing_id', id)
 
     const urls = photoInputs.value.map(u => u.trim()).filter(Boolean)
     if (urls.length) {
       const photoPayload = urls.map((url, index) => ({
-        listing_id: listingId,
+        listing_id: id,
         image_url: url,
         sort_order: index
       }))
@@ -451,18 +554,19 @@ const handleSubmit = async () => {
       await ($supabase as any)
           .schema('amigo')
           .from('listing_photos')
-          .insert(photoPayload as any[])
+          .insert(photoPayload)
     }
-  } catch (e) {
+  } catch (e: any) {
     console.error('Failed to save extras', e)
+    error.value = 'Saved details, but failed to update photos/amenities.'
   }
 
   submitting.value = false
-  justCreated.value = true
+  justUpdated.value = true
 
   // Delay navigation to show success toast
   setTimeout(() => {
-    router.push('/listings')
+    router.push(`/listings/${id}`)
   }, 1500)
 }
 </script>

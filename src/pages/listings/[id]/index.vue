@@ -461,4 +461,12 @@ const goToChat = () => {
   if (!listing.value?.host_profile_id) return
   router.push(`/chat/${listing.value.host_profile_id}`)
 }
+
+useSeoMeta({
+  title: computed(() => listing.value ? `${listing.value.title} - Amigo Lease` : 'Listing Details - Amigo Lease'),
+  description: computed(() => listing.value?.description || 'View listing details on Amigo Lease.'),
+  ogTitle: computed(() => listing.value ? `${listing.value.title} - Amigo Lease` : 'Listing Details - Amigo Lease'),
+  ogDescription: computed(() => listing.value?.description || 'View listing details on Amigo Lease.'),
+  ogImage: computed(() => photos.value[0]?.url || ''),
+})
 </script>

@@ -195,6 +195,11 @@ import { ref, reactive, onMounted } from 'vue'
 import { useRouter, useNuxtApp } from '#imports'
 import { useProfile } from '~/composables/useProfile'
 
+useSeoMeta({
+  title: 'Basic Details - Amigo Lease Onboarding',
+  description: 'Tell us a bit about yourself.',
+})
+
 const router = useRouter()
 const { $supabase } = useNuxtApp()
 const { profile, upsertProfile, fetchProfile, error } = useProfile()
