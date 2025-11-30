@@ -1,13 +1,16 @@
 <template>
-  <div class="min-h-screen bg-slate-50 text-slate-900 selection:bg-orange-100 selection:text-orange-900 dark:bg-gray-950 dark:text-white px-4 py-8">
+  <div
+      class="min-h-screen bg-slate-50 text-slate-900 selection:bg-orange-100 selection:text-orange-900 dark:bg-gray-950 dark:text-white px-4 py-8">
     <div class="max-w-6xl mx-auto space-y-8">
 
       <!-- Header -->
       <header class="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
         <div class="space-y-2">
-          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-slate-200 shadow-sm dark:bg-white/10 dark:border-white/10">
+          <div
+              class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-slate-200 shadow-sm dark:bg-white/10 dark:border-white/10">
             <span class="relative flex h-2 w-2">
-              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span
+                  class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
               <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
             </span>
             <span class="text-xs font-bold tracking-wide text-slate-700 uppercase dark:text-slate-200">
@@ -40,7 +43,7 @@
             <button
                 type="button"
                 class="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-slate-900 text-white text-sm font-bold shadow-lg shadow-slate-900/20 hover:bg-slate-800 hover:-translate-y-0.5 transition-all disabled:opacity-60 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-200"
-                @click="goToNewListing"
+                @click="goToNewListingPage"
             >
               <span class="text-lg leading-none">+</span>
               <span>New Listing</span>
@@ -75,7 +78,8 @@
 
           <!-- Loading -->
           <div v-if="loading && listings.length === 0" class="py-12 flex justify-center">
-            <div class="w-10 h-10 border-4 border-slate-200 border-t-slate-900 rounded-full animate-spin dark:border-slate-700 dark:border-t-white" />
+            <div
+                class="w-10 h-10 border-4 border-slate-200 border-t-slate-900 rounded-full animate-spin dark:border-slate-700 dark:border-t-white"/>
           </div>
 
           <!-- Empty State -->
@@ -83,7 +87,8 @@
               v-else-if="listings.length === 0"
               class="rounded-3xl border-2 border-dashed border-slate-200 bg-slate-50/50 p-10 text-center dark:border-slate-800 dark:bg-gray-900/50"
           >
-            <div class="w-16 h-16 bg-white rounded-2xl shadow-sm border border-slate-100 flex items-center justify-center mx-auto mb-4 dark:bg-gray-800 dark:border-slate-700">
+            <div
+                class="w-16 h-16 bg-white rounded-2xl shadow-sm border border-slate-100 flex items-center justify-center mx-auto mb-4 dark:bg-gray-800 dark:border-slate-700">
               <span class="text-3xl">📦</span>
             </div>
             <h3 class="text-slate-900 font-bold text-lg mb-1 dark:text-white">No listings yet</h3>
@@ -123,7 +128,8 @@
                     <span v-else class="text-slate-400 italic">Set rent</span>
                     <span class="text-xs font-normal text-slate-500 dark:text-slate-400">/mo</span>
                   </p>
-                  <p v-if="l.available_from" class="text-[10px] font-medium text-emerald-600 mt-0.5 dark:text-emerald-400">
+                  <p v-if="l.available_from"
+                     class="text-[10px] font-medium text-emerald-600 mt-0.5 dark:text-emerald-400">
                     Avail: {{ formatDate(l.available_from) }}
                   </p>
                 </div>
@@ -131,13 +137,16 @@
 
               <!-- Details Grid -->
               <div class="flex flex-wrap gap-2 mb-4">
-                <span class="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-slate-50 text-xs font-semibold text-slate-700 border border-slate-100 dark:bg-gray-800 dark:text-slate-300 dark:border-slate-700">
+                <span
+                    class="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-slate-50 text-xs font-semibold text-slate-700 border border-slate-100 dark:bg-gray-800 dark:text-slate-300 dark:border-slate-700">
                   🛏️ {{ l.bedrooms ?? l.total_bedrooms ?? '-' }} Beds
                 </span>
-                <span class="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-slate-50 text-xs font-semibold text-slate-700 border border-slate-100 dark:bg-gray-800 dark:text-slate-300 dark:border-slate-700">
+                <span
+                    class="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-slate-50 text-xs font-semibold text-slate-700 border border-slate-100 dark:bg-gray-800 dark:text-slate-300 dark:border-slate-700">
                   🛁 {{ l.bathrooms ?? '-' }} Baths
                 </span>
-                <span class="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-slate-50 text-xs font-semibold text-slate-700 border border-slate-100 dark:bg-gray-800 dark:text-slate-300 dark:border-slate-700">
+                <span
+                    class="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-slate-50 text-xs font-semibold text-slate-700 border border-slate-100 dark:bg-gray-800 dark:text-slate-300 dark:border-slate-700">
                   🚿 {{ l.bathroom_type === 'private' ? 'Private' : 'Shared' }}
                 </span>
               </div>
@@ -148,11 +157,13 @@
                      class="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded"
                      :class="l.is_active ? 'bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400' : 'bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400'"
                  >
-                    <span class="w-1.5 h-1.5 rounded-full" :class="l.is_active ? 'bg-green-500' : 'bg-slate-400'"></span>
+                    <span class="w-1.5 h-1.5 rounded-full"
+                          :class="l.is_active ? 'bg-green-500' : 'bg-slate-400'"></span>
                     {{ l.is_active ? 'Active' : 'Draft' }}
                  </span>
 
-                <span class="text-xs font-bold text-slate-400 group-hover:text-slate-900 transition-colors flex items-center gap-1 dark:group-hover:text-white">
+                <span
+                    class="text-xs font-bold text-slate-400 group-hover:text-slate-900 transition-colors flex items-center gap-1 dark:group-hover:text-white">
                     Manage <span class="text-lg leading-none">→</span>
                  </span>
               </div>
@@ -162,7 +173,8 @@
 
         <!-- RIGHT: Quick Create Form -->
         <aside class="relative">
-          <div class="sticky top-24 rounded-3xl bg-white border border-slate-200 shadow-xl p-6 md:p-8 dark:bg-gray-900 dark:border-slate-800">
+          <div
+              class="sticky top-24 rounded-3xl bg-white border border-slate-200 shadow-xl p-6 md:p-8 dark:bg-gray-900 dark:border-slate-800">
             <div class="mb-6">
               <div class="flex items-center gap-2 mb-1">
                 <div class="w-8 h-8 rounded-lg bg-slate-900 flex items-center justify-center text-white text-sm">⚡</div>
@@ -175,7 +187,8 @@
 
             <form class="space-y-4" @submit.prevent="handleCreate">
               <div class="space-y-1.5">
-                <label class="block text-xs font-bold text-slate-700 uppercase tracking-wide dark:text-slate-300">Listing Title</label>
+                <label class="block text-xs font-bold text-slate-700 uppercase tracking-wide dark:text-slate-300">Listing
+                  Title</label>
                 <input
                     v-model="form.title"
                     type="text"
@@ -187,7 +200,8 @@
 
               <div class="grid grid-cols-2 gap-3">
                 <div class="space-y-1.5">
-                  <label class="block text-xs font-bold text-slate-700 uppercase tracking-wide dark:text-slate-300">City</label>
+                  <label
+                      class="block text-xs font-bold text-slate-700 uppercase tracking-wide dark:text-slate-300">City</label>
                   <input
                       v-model="form.city"
                       type="text"
@@ -196,7 +210,8 @@
                   />
                 </div>
                 <div class="space-y-1.5">
-                  <label class="block text-xs font-bold text-slate-700 uppercase tracking-wide dark:text-slate-300">Area</label>
+                  <label
+                      class="block text-xs font-bold text-slate-700 uppercase tracking-wide dark:text-slate-300">Area</label>
                   <input
                       v-model="form.area"
                       type="text"
@@ -207,7 +222,8 @@
               </div>
 
               <div class="space-y-1.5">
-                <label class="block text-xs font-bold text-slate-700 uppercase tracking-wide dark:text-slate-300">Monthly Rent</label>
+                <label class="block text-xs font-bold text-slate-700 uppercase tracking-wide dark:text-slate-300">Monthly
+                  Rent</label>
                 <div class="flex gap-2">
                   <select
                       v-model="form.currency"
@@ -250,7 +266,8 @@
               </div>
 
               <div class="space-y-1.5">
-                <label class="block text-xs font-bold text-slate-700 uppercase tracking-wide dark:text-slate-300">Available From</label>
+                <label class="block text-xs font-bold text-slate-700 uppercase tracking-wide dark:text-slate-300">Available
+                  From</label>
                 <input
                     v-model="form.available_from"
                     type="date"
@@ -259,7 +276,8 @@
               </div>
 
               <div class="space-y-1.5">
-                <label class="block text-xs font-bold text-slate-700 uppercase tracking-wide dark:text-slate-300">Quick Description</label>
+                <label class="block text-xs font-bold text-slate-700 uppercase tracking-wide dark:text-slate-300">Quick
+                  Description</label>
                 <textarea
                     v-model="form.description"
                     rows="3"
@@ -290,12 +308,12 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, onMounted, ref } from 'vue'
-import { useRouter } from '#imports'
-import { useListings, type ListingInput } from '~/composables/useListings'
+import {reactive, onMounted, ref} from 'vue'
+import {useRouter} from '#imports'
+import {useListings, type ListingInput} from '~/composables/useListings'
 
 const router = useRouter()
-const { listings, loading, error, loadMyListings, createListing } = useListings()
+const {listings, loading, error, loadMyListings, createListing} = useListings()
 
 const submitting = ref(false)
 
@@ -323,7 +341,7 @@ const handleCreate = async () => {
   if (!form.title.trim()) return
   submitting.value = true
 
-  const created = await createListing({ ...form })
+  const created = await createListing({...form})
 
   if (created) {
     // simple reset
@@ -355,6 +373,10 @@ const goToListing = (id: string) => {
   router.push(`/listings/${id}`)
 }
 
+const goToNewListingPage = () => {
+  router.push(`/listings/new`)
+}
+
 const goToNewListing = () => {
   // Focus the form instead of routing if on desktop, or route if mobile?
   // For now, let's just route to a dedicated page if you prefer,
@@ -363,6 +385,6 @@ const goToNewListing = () => {
 
   // Since form is inline, maybe scroll to it on mobile?
   const formEl = document.querySelector('aside form')
-  formEl?.scrollIntoView({ behavior: 'smooth' })
+  formEl?.scrollIntoView({behavior: 'smooth'})
 }
 </script>

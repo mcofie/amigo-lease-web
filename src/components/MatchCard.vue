@@ -11,9 +11,10 @@
               class="h-14 w-14 rounded-2xl overflow-hidden bg-slate-100 flex items-center justify-center text-slate-900 text-sm font-bold border border-slate-200 dark:bg-slate-800 dark:text-white dark:border-slate-700"
           >
             <img
-                v-if="profile.avatar_url"
-                :src="profile.avatar_url"
+                v-if="props.match.avatar_url"
+                :src="props.match.avatar_url"
                 alt=""
+                loading="lazy"
                 class="h-full w-full object-cover"
             />
             <span v-else>{{ initials }}</span>
@@ -27,15 +28,15 @@
 
         <div class="space-y-0.5">
           <h3 class="text-base font-bold text-slate-900 dark:text-white">
-            {{ profile.full_name || 'Roommate' }}
+            {{ props.match.full_name || 'Roommate' }}
           </h3>
           <p class="text-xs font-medium text-slate-500 flex items-center gap-1 dark:text-slate-400">
             <span class="text-base">📍</span>
-            <span v-if="profile.area">
-              {{ profile.area }}, {{ profile.city || '—' }}
+            <span v-if="props.match.area">
+              {{ props.match.area }}, {{ props.match.city || '—' }}
             </span>
             <span v-else>
-              {{ profile.city || 'Location not set' }}
+              {{ props.match.city || 'Location not set' }}
             </span>
           </p>
         </div>
@@ -128,35 +129,12 @@ const props = defineProps<{
   match: MatchRow
 }>()
 
-// Locally shape the profile with the fields we use + optional archetype
-type MatchProfile = {
-  id: string
-  full_name: string | null
-  city: string | null
-  area: string | null
-  avatar_url: string | null
-  archetype?: string | null
-}
-
-const profile = computed<MatchProfile>(() => {
-  // ⬇️ bridge through `any` because MatchRow type doesn't declare `matched_profile`
-  const raw = props.match as any
-  return (raw.matched_profile as MatchProfile) || {
-    id: '',
-    full_name: null,
-    city: null,
-    area: null,
-    avatar_url: null,
-    archetype: null
-  }
-})
-
 const summary = computed<CompatibilitySummary>(() => {
   return (props.match.compatibility_summary as CompatibilitySummary) || ({} as CompatibilitySummary)
 })
 
 const archetypeMeta = computed(() =>
-    getArchetypeMeta(profile.value.archetype ?? null)
+    getArchetypeMeta(props.match.archetype ?? null)
 )
 
 const tags = computed(() => {
@@ -175,7 +153,7 @@ const tags = computed(() => {
 })
 
 const initials = computed(() => {
-  const name = profile.value.full_name?.trim() || ''
+  const name = props.match.full_name?.trim() || ''
   if (!name) return 'RM'
   const parts = name.split(/\s+/).filter(Boolean)
 
