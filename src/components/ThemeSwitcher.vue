@@ -6,9 +6,14 @@
         @click="toggleMenu"
         title="Change theme"
     >
-      <span v-if="colorMode.preference === 'system'" class="text-lg">💻</span>
-      <span v-else-if="colorMode.value === 'dark'" class="text-lg">🌙</span>
-      <span v-else class="text-lg">☀️</span>
+      <ClientOnly>
+        <span v-if="colorMode.preference === 'system'" class="text-lg">💻</span>
+        <span v-else-if="colorMode.value === 'dark'" class="text-lg">🌙</span>
+        <span v-else class="text-lg">☀️</span>
+        <template #fallback>
+          <span class="text-lg opacity-50">💻</span>
+        </template>
+      </ClientOnly>
     </button>
 
     <!-- Dropdown -->

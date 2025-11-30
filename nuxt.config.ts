@@ -21,5 +21,13 @@ export default defineNuxtConfig({
                 { rel: 'icon', type: 'image/png', href: '/favicon.png' }
             ]
         }
+    },
+
+    vite: {
+        server: {
+            fs: {
+                allow: ['..']
+            }
+        }
     }
 })
