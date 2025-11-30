@@ -363,30 +363,43 @@
 </template>
 
 <script setup lang="ts">
-import {computed, onMounted} from 'vue'
-import {useRoute, useRouter} from '#imports'
+import {computed, onMounted, ref} from 'vue'
+import {useRoute, useRouter, useNuxtApp} from '#imports'
 import {usePublicProfile} from '~/composables/usePublicProfile'
 import {getArchetypeMeta} from '~/types/archetypes'
 
-useSeoMeta({
-  title: computed(() => profile.value ? `${profile.value.full_name} - Amigo Lease` : 'Roommate Profile - Amigo Lease'),
-  description: computed(() => profile.value?.bio || 'View roommate profile on Amigo Lease.'),
-  ogTitle: computed(() => profile.value ? `${profile.value.full_name} - Amigo Lease` : 'Roommate Profile - Amigo Lease'),
-  ogDescription: computed(() => profile.value?.bio || 'View roommate profile on Amigo Lease.'),
-  ogImage: computed(() => profile.value?.avatar_url || ''),
-})
-
-const props = defineProps<{
-  archetype: string | null
-}>()
-
-const meta = computed(() => getArchetypeMeta(props.archetype))
+try {
+  useSeoMeta({
+    title: computed(() => profile.value ? `${profile.value.full_name} - Amigo Lease` : 'Roommate Profile - Amigo Lease'),
+    description: computed(() => profile.value?.bio || 'View roommate profile on Amigo Lease.'),
+    ogTitle: computed(() => profile.value ? `${profile.value.full_name} - Amigo Lease` : 'Roommate Profile - Amigo Lease'),
+    ogDescription: computed(() => profile.value?.bio || 'View roommate profile on Amigo Lease.'),
+    ogImage: computed(() => profile.value?.avatar_url || ''),
+  })
+} catch (e) {
+  console.error('SEO Meta error:', e)
+}
 
 const route = useRoute()
 const router = useRouter()
+const {$supabase} = useNuxtApp()
 const {profile, traits, listings, loading, error, loadPublicProfile} = usePublicProfile()
 
+const currentUserId = ref<string | null>(null)
+const archetypeMeta = computed(() => {
+  try {
+    return getArchetypeMeta(traits.value?.archetype)
+  } catch (e) {
+    console.error('Archetype meta error:', e)
+    return null
+  }
+})
+const isOwnProfile = computed(() => currentUserId.value === profile.value?.id)
+
 onMounted(async () => {
+  const {data: {user}} = await $supabase.auth.getUser()
+  currentUserId.value = user?.id || null
+
   const id = route.params.id as string
   await loadPublicProfile(id)
 })

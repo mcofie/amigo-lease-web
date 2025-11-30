@@ -72,7 +72,7 @@
             :class="archetypeMeta.chipClass || 'bg-slate-50 border-slate-100 text-slate-600 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-300'"
         >
           <span>{{ archetypeMeta.emoji }}</span>
-          <span>{{ archetypeMeta.shortTag }}</span>
+          <span>{{ archetypeMeta.shortLabel }}</span>
         </span>
 
         <span

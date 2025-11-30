@@ -174,10 +174,23 @@ const route = useRoute()
 const router = useRouter()
 const otherProfileId = route.params.id as string
 
-useSeoMeta({
-  title: computed(() => thread.value?.other_profile ? `Chat with ${thread.value.other_profile.full_name} - Amigo Lease` : 'Chat - Amigo Lease'),
-  description: 'Private conversation on Amigo Lease.',
-})
+console.log('[Chat] Setup started for ID:', otherProfileId)
+
+try {
+  useSeoMeta({
+    title: computed(() => {
+      try {
+        return thread.value?.other_profile ? `Chat with ${thread.value.other_profile.full_name} - Amigo Lease` : 'Chat - Amigo Lease'
+      } catch (e) {
+        console.error('[Chat] Error in title computed:', e)
+        return 'Chat - Amigo Lease'
+      }
+    }),
+    description: 'Private conversation on Amigo Lease.',
+  })
+} catch (e) {
+  console.error('[Chat] Error in useSeoMeta:', e)
+}
 
 
 // Use the new unified useChat composable
