@@ -145,7 +145,77 @@
           </div>
         </form>
       </div>
+      <!-- ARCHETYPE CARD -->
+      <section class="space-y-6">
+        <div class="flex items-center justify-between">
+          <div class="space-y-1">
+            <div class="flex items-center gap-2">
+              <span class="text-xl">✨</span>
+              <h2 class="text-xl font-bold text-slate-900 dark:text-white">Your Vibe</h2>
+            </div>
+            <p class="text-sm text-slate-500 dark:text-slate-400">Your roommate personality type.</p>
+          </div>
+          <button
+              type="button"
+              class="text-xs font-bold text-slate-600 hover:text-slate-900 transition-colors bg-white border border-slate-200 px-3 py-1.5 rounded-lg shadow-sm dark:bg-gray-800 dark:border-slate-700 dark:text-slate-300 dark:hover:text-white"
+              @click="goToQuiz"
+          >
+            Retake Quiz
+          </button>
+        </div>
 
+        <div
+            v-if="archetypeMeta"
+            class="group relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-900 to-slate-800 p-6 sm:p-8 text-white shadow-xl transition-all hover:shadow-2xl dark:from-slate-800 dark:to-slate-900"
+            @click="goToQuiz"
+        >
+          <!-- Background decoration -->
+          <div class="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-white/5 blur-3xl transition-all group-hover:bg-white/10"></div>
+          <div class="absolute -bottom-10 -left-10 h-40 w-40 rounded-full bg-white/5 blur-3xl transition-all group-hover:bg-white/10"></div>
+
+          <div class="relative flex flex-col sm:flex-row gap-6 items-start sm:items-center">
+            <div class="flex-shrink-0 h-20 w-20 rounded-2xl bg-white/10 flex items-center justify-center text-4xl shadow-inner border border-white/10 backdrop-blur-sm">
+              {{ archetypeMeta.emoji }}
+            </div>
+
+            <div class="space-y-2 flex-1">
+              <div class="flex items-center gap-3">
+                <h3 class="text-2xl font-bold tracking-tight text-white">
+                  {{ archetypeMeta.name }}
+                </h3>
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wide bg-white/20 text-white border border-white/10 backdrop-blur-md">
+                  {{ archetypeMeta.shortLabel }}
+                </span>
+              </div>
+              <p class="text-slate-300 text-sm leading-relaxed max-w-xl">
+                {{ archetypeMeta.description }}
+              </p>
+            </div>
+
+            <div class="self-start sm:self-center">
+              <div class="h-10 w-10 rounded-full bg-white text-slate-900 flex items-center justify-center transition-transform group-hover:scale-110 group-hover:rotate-12">
+                <span class="text-xl leading-none">→</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Empty State (No Archetype) -->
+        <div
+            v-else
+            class="rounded-3xl border-2 border-dashed border-slate-200 bg-slate-50/50 p-8 text-center cursor-pointer hover:bg-slate-50 transition-colors dark:border-slate-800 dark:bg-gray-900/50 dark:hover:bg-gray-900"
+            @click="goToQuiz"
+        >
+          <div class="w-12 h-12 bg-white rounded-xl shadow-sm border border-slate-100 flex items-center justify-center mx-auto mb-3 dark:bg-gray-800 dark:border-slate-700">
+            <span class="text-xl">📝</span>
+          </div>
+          <h3 class="text-slate-900 font-bold text-lg mb-1 dark:text-white">Discover your archetype</h3>
+          <p class="text-slate-500 text-sm mb-4 dark:text-slate-400">
+            Take the 2-minute quiz to find out your roommate personality.
+          </p>
+          <span class="text-sm font-bold text-slate-900 underline dark:text-white">Take the Quiz →</span>
+        </div>
+      </section>
       <!-- FAVOURITES SECTION -->
       <section class="space-y-6">
         <div class="flex items-center justify-between">
@@ -219,6 +289,7 @@ import {reactive, ref, onMounted} from 'vue'
 import {useRouter, useNuxtApp} from '#imports'
 import {useProfile} from '~/composables/useProfile'
 import type {ProfileRole} from '~/types/amigo'
+import {getArchetypeMeta} from '~/types/archetypes'
 
 useSeoMeta({
   title: 'Profile Settings - Amigo Lease',
@@ -266,6 +337,9 @@ interface FavoriteWithListing {
 const favorites = ref<FavoriteWithListing[]>([])
 const favLoading = ref(true)
 const favError = ref<string | null>(null)
+const archetypeKey = ref<string | null>(null)
+
+const archetypeMeta = computed(() => getArchetypeMeta(archetypeKey.value))
 
 onMounted(async () => {
   const {
@@ -277,8 +351,8 @@ onMounted(async () => {
     return
   }
 
-  // Load profile + favourites in parallel
-  await Promise.all([fetchProfile(), loadFavorites(user.id)])
+  // Load profile + favourites + traits in parallel
+  await Promise.all([fetchProfile(), loadFavorites(user.id), loadTraits(user.id)])
 
   if (profile.value) {
     form.full_name = (profile.value.full_name as string) ?? ''
@@ -325,6 +399,19 @@ const loadFavorites = async (profileId: string) => {
   favLoading.value = false
 }
 
+const loadTraits = async (profileId: string) => {
+  const {data} = await ($supabase as any)
+      .schema('amigo')
+      .from('roommate_traits')
+      .select('archetype')
+      .eq('profile_id', profileId)
+      .maybeSingle()
+
+  if (data) {
+    archetypeKey.value = data.archetype
+  }
+}
+
 const handleSave = async () => {
   if (saving.value) return
   saving.value = true
@@ -362,7 +449,7 @@ const formatRent = (rent: number | null) => {
 
 const goToListing = (listingId?: string) => {
   if (!listingId) return
-  router.push(`/listing/${listingId}`)
+  router.push(`/listings/${listingId}`)
 }
 </script>
 

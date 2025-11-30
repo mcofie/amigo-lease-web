@@ -24,12 +24,29 @@
           </div>
         </div>
 
-        <p
-            v-if="listing"
-            class="hidden sm:block text-[10px] font-medium text-slate-400 uppercase tracking-wide dark:text-slate-500"
-        >
-          Viewed as Seeker
-        </p>
+          <div class="flex items-center gap-3">
+            <button
+                v-if="listing"
+                type="button"
+                class="inline-flex items-center justify-center w-10 h-10 rounded-full border transition-all duration-200"
+                :class="isFavorited
+                  ? 'bg-rose-50 border-rose-200 text-rose-500 hover:bg-rose-100 dark:bg-rose-900/20 dark:border-rose-800 dark:text-rose-400'
+                  : 'bg-white border-slate-200 text-slate-400 hover:text-rose-500 hover:border-rose-200 hover:bg-rose-50 dark:bg-white/10 dark:border-white/10 dark:text-slate-400 dark:hover:text-rose-400'"
+                :disabled="favLoading"
+                @click="toggleFavorite"
+            >
+              <span class="text-xl leading-none" :class="{ 'scale-110': isFavorited }">
+                {{ isFavorited ? '❤️' : '🤍' }}
+              </span>
+            </button>
+
+            <p
+                v-if="listing"
+                class="hidden sm:block text-[10px] font-medium text-slate-400 uppercase tracking-wide dark:text-slate-500"
+            >
+              Viewed as Seeker
+            </p>
+          </div>
       </header>
 
       <!-- Loading -->
@@ -332,6 +349,10 @@ const amenityKeys = ref<string[]>([])
 const loading = ref(false)
 const error = ref<string | null>(null)
 
+// Favorites
+const isFavorited = ref(false)
+const favLoading = ref(false)
+
 const amenityOptions = [
   {key: 'wifi', label: 'Wi-Fi', emoji: '📶'},
   {key: 'parking', label: 'Parking', emoji: '🅿️'},
@@ -347,10 +368,15 @@ const loadListing = async () => {
   loading.value = true
   error.value = null
 
-  const id = route.params.id as string
+  const id = Array.isArray(route.params.id) ? route.params.id[0] : route.params.id
+  if (!id) {
+    error.value = 'Invalid listing ID'
+    loading.value = false
+    return
+  }
 
   // 1) Listing
-  const {data: listingData, error: listingErr} = await $supabase
+  const {data: listingData, error: listingErr} = await ($supabase as any)
       .schema('amigo')
       .from('listings')
       .select('*')
@@ -368,7 +394,7 @@ const loadListing = async () => {
 
   // 2) Host profile
   if (listingRow.host_profile_id) {
-    const {data: hostData} = await $supabase
+    const {data: hostData} = await ($supabase as any)
         .schema('amigo')
         .from('profiles')
         .select('id, full_name, avatar_url, city, area')
@@ -379,7 +405,7 @@ const loadListing = async () => {
   }
 
   // 3) Amenities
-  const {data: amenData} = await $supabase
+  const {data: amenData} = await ($supabase as any)
       .schema('amigo')
       .from('listing_amenities')
       .select('amenity_key')
@@ -388,7 +414,7 @@ const loadListing = async () => {
   amenityKeys.value = (amenData || []).map((a: { amenity_key: string }) => a.amenity_key)
 
   // 4) Photos
-  const {data: photoData} = await $supabase
+  const {data: photoData} = await ($supabase as any)
       .schema('amigo')
       .from('listing_photos')
       .select('url, sort_order')
@@ -398,6 +424,69 @@ const loadListing = async () => {
   photos.value = (photoData as ListingPhoto[]) ?? []
 
   loading.value = false
+
+  // 5) Check favorite status
+  await checkFavoriteStatus()
+}
+
+const checkFavoriteStatus = async () => {
+  const {data: {user}} = await $supabase.auth.getUser()
+  if (!user) return
+
+  const listingId = Array.isArray(route.params.id) ? route.params.id[0] : route.params.id
+  if (!listingId) return
+
+  const {data} = await ($supabase as any)
+      .schema('amigo')
+      .from('favorites')
+      .select('id')
+      .eq('profile_id', user.id)
+      .eq('listing_id', listingId)
+      .maybeSingle()
+
+  isFavorited.value = !!data
+}
+
+const toggleFavorite = async () => {
+  if (favLoading.value) return
+  favLoading.value = true
+
+  const {data: {user}} = await $supabase.auth.getUser()
+  if (!user) {
+    router.push('/auth')
+    return
+  }
+
+  const listingId = Array.isArray(route.params.id) ? route.params.id[0] : route.params.id
+  if (!listingId) {
+    favLoading.value = false
+    return
+  }
+
+  if (isFavorited.value) {
+    // Remove
+    const {error} = await ($supabase as any)
+        .schema('amigo')
+        .from('favorites')
+        .delete()
+        .eq('profile_id', user.id)
+        .eq('listing_id', listingId)
+
+    if (!error) isFavorited.value = false
+  } else {
+    // Add
+    const {error} = await ($supabase as any)
+        .schema('amigo')
+        .from('favorites')
+        .insert({
+          profile_id: user.id,
+          listing_id: listingId
+        })
+
+    if (!error) isFavorited.value = true
+  }
+
+  favLoading.value = false
 }
 
 onMounted(async () => {

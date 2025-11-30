@@ -174,8 +174,28 @@ const handleSubmit = async () => {
 
       if (data?.user) {
         infoMessage.value = 'Signed in. Redirecting…'
+        
+        // Check for profile completeness
+        const userId = data.user.id
+        
+        const { data: traits } = await $supabase
+          .schema('amigo')
+          .from('roommate_traits')
+          .select('profile_id')
+          .eq('profile_id', userId)
+          .maybeSingle()
+          
+        const { data: prefs } = await $supabase
+          .schema('amigo')
+          .from('roommate_preferences')
+          .select('profile_id')
+          .eq('profile_id', userId)
+          .maybeSingle()
+          
+        const target = (traits && prefs) ? '/matches' : redirectTo.value
+
         setTimeout(async () => {
-          await router.push(redirectTo.value)
+          await router.push(target)
         }, 500)
       }
     }
