@@ -11,7 +11,10 @@ export default defineNuxtConfig({
     runtimeConfig: {
         public: {
             supabaseUrl: process.env.SUPABASE_URL,
-            supabaseAnonKey: process.env.SUPABASE_ANON_KEY
+            supabaseAnonKey: process.env.SUPABASE_ANON_KEY,
+            posthogPublicKey: 'phc_is230XlvYV94NtCaEofDBRdKjMypkmAi1xi1Cu7gcQ',
+            posthogHost: 'https://us.i.posthog.com',
+            posthogDefaults: '2025-11-30'
         }
     },
 
