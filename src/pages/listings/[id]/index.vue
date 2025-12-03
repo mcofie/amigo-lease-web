@@ -79,7 +79,7 @@
             class="rounded-3xl bg-white border border-slate-200 shadow-xl overflow-hidden dark:bg-gray-900 dark:border-slate-800">
 
           <!-- Cover Image Area -->
-          <div class="relative h-64 sm:h-72 w-full bg-slate-100 dark:bg-slate-800">
+          <div class="relative h-64 sm:h-80 w-full bg-slate-100 dark:bg-slate-800">
             <img
                 v-if="coverPhotoUrl"
                 :src="coverPhotoUrl"
@@ -137,13 +137,13 @@
                       class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-50 border border-slate-100 text-xs font-semibold text-slate-700 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-300">
                     🛁 {{ listing.bathrooms ?? '-' }} Bath
                   </span>
+                  <span v-if="listing.room_type"
+                        class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-50 border border-slate-100 text-xs font-semibold text-slate-700 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-300">
+                    🏠 {{ listing.room_type === 'entire' ? 'Entire Place' : listing.room_type === 'shared' ? 'Shared Room' : 'Private Room' }}
+                  </span>
                   <span v-if="listing.bathroom_type"
                         class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-50 border border-slate-100 text-xs font-semibold text-slate-700 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-300">
-                    🚿 {{ listing.bathroom_type === 'private' ? 'Private' : 'Shared' }}
-                  </span>
-                  <span v-if="listing.available_from"
-                        class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-50 border border-emerald-100 text-xs font-semibold text-emerald-700 dark:bg-emerald-900/20 dark:border-emerald-800 dark:text-emerald-400">
-                    📅 {{ formattedAvailableFrom }}
+                    🚿 {{ listing.bathroom_type === 'private' ? 'Ensuite' : 'Shared Bath' }}
                   </span>
                 </div>
               </div>
@@ -158,6 +158,16 @@
                      <span v-else class="text-slate-400 text-lg italic">Not set</span>
                   </span>
                   <span class="text-xs font-medium text-slate-500 dark:text-slate-400">/mo</span>
+                </div>
+                
+                <!-- Utilities & Deposit -->
+                <div class="mt-2 space-y-1 text-right">
+                  <p v-if="listing.utilities_estimate" class="text-[10px] font-medium text-slate-500 dark:text-slate-400">
+                    + {{ currencySymbol }}{{ listing.utilities_estimate }} utilities (est.)
+                  </p>
+                  <p v-if="listing.deposit_amount" class="text-[10px] font-medium text-slate-500 dark:text-slate-400">
+                    {{ currencySymbol }}{{ listing.deposit_amount }} deposit
+                  </p>
                 </div>
               </div>
             </div>
@@ -209,27 +219,89 @@
         <!-- Content Grid: Description + Sidebar -->
         <div class="grid md:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)] gap-6 items-start">
 
-          <!-- Left: Description -->
-          <section
-              class="rounded-3xl bg-white border border-slate-200 p-6 sm:p-8 shadow-sm dark:bg-gray-900 dark:border-slate-800">
-            <h2 class="text-sm font-bold text-slate-900 flex items-center gap-2 mb-4 dark:text-white">
-              <span class="text-lg">🏡</span>
-              <span>About this place</span>
-            </h2>
-
-            <div
-                class="prose prose-slate prose-sm max-w-none text-slate-600 leading-relaxed dark:prose-invert dark:text-slate-300">
-              <p v-if="listing.description" class="whitespace-pre-line">
-                {{ listing.description }}
-              </p>
-              <p v-else class="italic text-slate-400">
-                The host hasn’t added a detailed description yet.
-              </p>
-            </div>
-          </section>
-
-          <!-- Right: Amenities & Photos -->
+          <!-- Left: Description & Details -->
           <div class="space-y-6">
+            <!-- About -->
+            <section
+                class="rounded-3xl bg-white border border-slate-200 p-6 sm:p-8 shadow-sm dark:bg-gray-900 dark:border-slate-800">
+              <h2 class="text-sm font-bold text-slate-900 flex items-center gap-2 mb-4 dark:text-white">
+                <span class="text-lg">🏡</span>
+                <span>About this place</span>
+              </h2>
+
+              <div
+                  class="prose prose-slate prose-sm max-w-none text-slate-600 leading-relaxed dark:prose-invert dark:text-slate-300">
+                <p v-if="listing.description" class="whitespace-pre-line">
+                  {{ listing.description }}
+                </p>
+                <p v-else class="italic text-slate-400">
+                  The host hasn’t added a detailed description yet.
+                </p>
+              </div>
+            </section>
+
+            <!-- House Rules & Preferences -->
+            <section
+                class="rounded-3xl bg-white border border-slate-200 p-6 sm:p-8 shadow-sm dark:bg-gray-900 dark:border-slate-800">
+              <h2 class="text-sm font-bold text-slate-900 flex items-center gap-2 mb-4 dark:text-white">
+                <span class="text-lg">📋</span>
+                <span>House Rules & Preferences</span>
+              </h2>
+
+              <div class="grid sm:grid-cols-2 gap-4 mb-6">
+                <div class="flex items-center gap-3 p-3 rounded-xl bg-slate-50 border border-slate-100 dark:bg-slate-800 dark:border-slate-700">
+                  <span class="text-xl">{{ listing.has_pets ? '🐾' : '🚫' }}</span>
+                  <div>
+                    <p class="text-xs font-bold text-slate-900 dark:text-white">Pets</p>
+                    <p class="text-[10px] text-slate-500 dark:text-slate-400">{{ listing.has_pets ? 'Allowed' : 'Not allowed' }}</p>
+                  </div>
+                </div>
+                <div class="flex items-center gap-3 p-3 rounded-xl bg-slate-50 border border-slate-100 dark:bg-slate-800 dark:border-slate-700">
+                  <span class="text-xl">{{ listing.smoking_allowed ? '🚬' : '🚭' }}</span>
+                  <div>
+                    <p class="text-xs font-bold text-slate-900 dark:text-white">Smoking</p>
+                    <p class="text-[10px] text-slate-500 dark:text-slate-400">{{ listing.smoking_allowed ? 'Allowed' : 'Not allowed' }}</p>
+                  </div>
+                </div>
+              </div>
+
+              <div v-if="listing.house_rules">
+                <h3 class="text-xs font-bold text-slate-900 mb-2 dark:text-white">Additional Rules</h3>
+                <p class="text-sm text-slate-600 whitespace-pre-line dark:text-slate-300">
+                  {{ listing.house_rules }}
+                </p>
+              </div>
+            </section>
+          </div>
+
+          <!-- Right: Amenities, Availability & Photos -->
+          <div class="space-y-6">
+            
+            <!-- Availability Card -->
+            <div
+                class="rounded-3xl bg-white border border-slate-200 p-6 shadow-sm dark:bg-gray-900 dark:border-slate-800">
+              <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2 mb-4 dark:text-white">
+                <span class="text-lg">📅</span>
+                <span>Availability</span>
+              </h3>
+              
+              <div class="space-y-3">
+                <div class="flex justify-between items-center">
+                  <span class="text-xs font-medium text-slate-500 dark:text-slate-400">Available From</span>
+                  <span class="text-sm font-bold text-slate-900 dark:text-white">{{ formattedAvailableFrom || 'Now' }}</span>
+                </div>
+                <div v-if="listing.available_to" class="flex justify-between items-center">
+                  <span class="text-xs font-medium text-slate-500 dark:text-slate-400">Available To</span>
+                  <span class="text-sm font-bold text-slate-900 dark:text-white">{{ formattedAvailableTo }}</span>
+                </div>
+                <div class="h-px bg-slate-100 dark:bg-slate-800 my-2"></div>
+                <div class="flex justify-between items-center">
+                  <span class="text-xs font-medium text-slate-500 dark:text-slate-400">Min. Stay</span>
+                  <span class="text-sm font-bold text-slate-900 dark:text-white">1 Month</span>
+                </div>
+              </div>
+            </div>
+
             <!-- Amenities -->
             <div
                 class="rounded-3xl bg-white border border-slate-200 p-6 shadow-sm dark:bg-gray-900 dark:border-slate-800">
@@ -307,10 +379,15 @@
 <script setup lang="ts">
 import {ref, computed, onMounted} from 'vue'
 import {useRoute, useRouter, useNuxtApp} from '#imports'
+import {useListings} from '~/composables/useListings'
+
+
 
 const route = useRoute()
 const router = useRouter()
 const {$supabase} = useNuxtApp()
+
+const {loadAmenities} = useListings()
 
 interface Listing {
   id: string
@@ -321,12 +398,21 @@ interface Listing {
   area: string | null
   is_active: boolean
   available_from: string | null
+  available_to: string | null
   monthly_rent: number | null
+  deposit_amount: number | null
+  utilities_estimate: number | null
   currency: string | null
   bedrooms: number | null
   total_bedrooms: number | null
   bathrooms: number | null
   bathroom_type: 'private' | 'shared' | null
+  room_type: 'private' | 'shared' | 'entire' | null
+  total_occupants: number | null
+  max_additional_roommates: number | null
+  has_pets: boolean
+  smoking_allowed: boolean
+  house_rules: string | null
 }
 
 interface ListingPhoto {
@@ -353,7 +439,10 @@ const error = ref<string | null>(null)
 const isFavorited = ref(false)
 const favLoading = ref(false)
 
-const amenityOptions = [
+const amenityOptions = ref<any[]>([])
+
+// Fallback amenities in case DB is empty or fails
+const fallbackAmenities = [
   {key: 'wifi', label: 'Wi-Fi', emoji: '📶'},
   {key: 'parking', label: 'Parking', emoji: '🅿️'},
   {key: 'ensuite', label: 'Ensuite bathroom', emoji: '🚿'},
@@ -363,6 +452,8 @@ const amenityOptions = [
   {key: 'generator', label: 'Backup power', emoji: '⚡'},
   {key: 'pets_allowed', label: 'Pets allowed', emoji: '🐾'}
 ]
+
+
 
 const loadListing = async () => {
   loading.value = true
@@ -408,10 +499,10 @@ const loadListing = async () => {
   const {data: amenData} = await ($supabase as any)
       .schema('amigo')
       .from('listing_amenities')
-      .select('amenity_key')
+      .select('amenity_id')
       .eq('listing_id', id)
 
-  amenityKeys.value = (amenData || []).map((a: { amenity_key: string }) => a.amenity_key)
+  amenityKeys.value = (amenData || []).map((a: { amenity_id: string }) => a.amenity_id)
 
   // 4) Photos
   const {data: photoData} = await ($supabase as any)
@@ -518,12 +609,23 @@ const formattedAvailableFrom = computed(() => {
   })
 })
 
+const formattedAvailableTo = computed(() => {
+  if (!listing.value?.available_to) return ''
+  const d = new Date(listing.value.available_to)
+  if (Number.isNaN(d.getTime())) return listing.value.available_to
+  return d.toLocaleDateString(undefined, {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric'
+  })
+})
+
 const coverPhotoUrl = computed(() => {
   return photos.value[0]?.url ?? ''
 })
 
 const amenityObjects = computed(() =>
-    amenityOptions.filter((a) => amenityKeys.value.includes(a.key))
+    amenityOptions.value.filter((a) => amenityKeys.value.includes(a.key || a.code || a.id))
 )
 
 const hostLocation = computed(() => {

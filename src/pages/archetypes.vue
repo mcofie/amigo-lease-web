@@ -158,29 +158,8 @@ useSeoMeta({
 
 const getColors = (key: string) => {
   switch (key) {
-    case 'quiet_nest_builder':
-      return {
-        border: 'border-emerald-100 dark:border-emerald-900/30 hover:border-emerald-300 dark:hover:border-emerald-700',
-        shadow: 'hover:shadow-emerald-500/10',
-        gradientFrom: 'from-emerald-500',
-        glow: 'bg-emerald-400',
-        iconBorder: 'border-emerald-100 dark:border-emerald-900',
-        badge: 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-300',
-        dot: 'bg-emerald-500',
-        bottomGradient: 'from-emerald-300 via-emerald-500 to-emerald-300'
-      }
-    case 'social_sunbeam':
-      return {
-        border: 'border-amber-100 dark:border-amber-900/30 hover:border-amber-300 dark:hover:border-amber-700',
-        shadow: 'hover:shadow-amber-500/10',
-        gradientFrom: 'from-amber-500',
-        glow: 'bg-amber-400',
-        iconBorder: 'border-amber-100 dark:border-amber-900',
-        badge: 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300',
-        dot: 'bg-amber-500',
-        bottomGradient: 'from-amber-300 via-amber-500 to-amber-300'
-      }
-    case 'structured_planner':
+    case 'neat_planner':
+    case 'structured_planner': // fallback
       return {
         border: 'border-blue-100 dark:border-blue-900/30 hover:border-blue-300 dark:hover:border-blue-700',
         shadow: 'hover:shadow-blue-500/10',
@@ -191,18 +170,76 @@ const getColors = (key: string) => {
         dot: 'bg-blue-500',
         bottomGradient: 'from-blue-300 via-blue-500 to-blue-300'
       }
-    case 'easygoing_chameleon':
+    case 'calm_minimalist':
       return {
-        border: 'border-teal-100 dark:border-teal-900/30 hover:border-teal-300 dark:hover:border-teal-700',
-        shadow: 'hover:shadow-teal-500/10',
-        gradientFrom: 'from-teal-500',
-        glow: 'bg-teal-400',
-        iconBorder: 'border-teal-100 dark:border-teal-900',
-        badge: 'bg-teal-100 text-teal-800 dark:bg-teal-900/30 dark:text-teal-300',
-        dot: 'bg-teal-500',
-        bottomGradient: 'from-teal-300 via-teal-500 to-teal-300'
+        border: 'border-slate-200 dark:border-slate-800 hover:border-slate-400 dark:hover:border-slate-600',
+        shadow: 'hover:shadow-slate-500/10',
+        gradientFrom: 'from-slate-500',
+        glow: 'bg-slate-400',
+        iconBorder: 'border-slate-100 dark:border-slate-800',
+        badge: 'bg-slate-100 text-slate-800 dark:bg-slate-800 dark:text-slate-300',
+        dot: 'bg-slate-500',
+        bottomGradient: 'from-slate-300 via-slate-500 to-slate-300'
       }
-    case 'party_pulse':
+    case 'quiet_professional':
+      return {
+        border: 'border-indigo-100 dark:border-indigo-900/30 hover:border-indigo-300 dark:hover:border-indigo-700',
+        shadow: 'hover:shadow-indigo-500/10',
+        gradientFrom: 'from-indigo-500',
+        glow: 'bg-indigo-400',
+        iconBorder: 'border-indigo-100 dark:border-indigo-900',
+        badge: 'bg-indigo-100 text-indigo-800 dark:bg-indigo-900/30 dark:text-indigo-300',
+        dot: 'bg-indigo-500',
+        bottomGradient: 'from-indigo-300 via-indigo-500 to-indigo-300'
+      }
+    case 'soft_spoken_academic':
+    case 'quiet_nest_builder': // fallback
+      return {
+        border: 'border-emerald-100 dark:border-emerald-900/30 hover:border-emerald-300 dark:hover:border-emerald-700',
+        shadow: 'hover:shadow-emerald-500/10',
+        gradientFrom: 'from-emerald-500',
+        glow: 'bg-emerald-400',
+        iconBorder: 'border-emerald-100 dark:border-emerald-900',
+        badge: 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-300',
+        dot: 'bg-emerald-500',
+        bottomGradient: 'from-emerald-300 via-emerald-500 to-emerald-300'
+      }
+    case 'chill_creative':
+      return {
+        border: 'border-violet-100 dark:border-violet-900/30 hover:border-violet-300 dark:hover:border-violet-700',
+        shadow: 'hover:shadow-violet-500/10',
+        gradientFrom: 'from-violet-500',
+        glow: 'bg-violet-400',
+        iconBorder: 'border-violet-100 dark:border-violet-900',
+        badge: 'bg-violet-100 text-violet-800 dark:bg-violet-900/30 dark:text-violet-300',
+        dot: 'bg-violet-500',
+        bottomGradient: 'from-violet-300 via-violet-500 to-violet-300'
+      }
+    case 'night_owl_thinker':
+      return {
+        border: 'border-purple-100 dark:border-purple-900/30 hover:border-purple-300 dark:hover:border-purple-700',
+        shadow: 'hover:shadow-purple-500/10',
+        gradientFrom: 'from-purple-500',
+        glow: 'bg-purple-400',
+        iconBorder: 'border-purple-100 dark:border-purple-900',
+        badge: 'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300',
+        dot: 'bg-purple-500',
+        bottomGradient: 'from-purple-300 via-purple-500 to-purple-300'
+      }
+    case 'easygoing_socialite':
+    case 'social_sunbeam': // fallback
+      return {
+        border: 'border-amber-100 dark:border-amber-900/30 hover:border-amber-300 dark:hover:border-amber-700',
+        shadow: 'hover:shadow-amber-500/10',
+        gradientFrom: 'from-amber-500',
+        glow: 'bg-amber-400',
+        iconBorder: 'border-amber-100 dark:border-amber-900',
+        badge: 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300',
+        dot: 'bg-amber-500',
+        bottomGradient: 'from-amber-300 via-amber-500 to-amber-300'
+      }
+    case 'warm_host':
+    case 'party_pulse': // fallback
       return {
         border: 'border-rose-100 dark:border-rose-900/30 hover:border-rose-300 dark:hover:border-rose-700',
         shadow: 'hover:shadow-rose-500/10',
@@ -213,16 +250,28 @@ const getColors = (key: string) => {
         dot: 'bg-rose-500',
         bottomGradient: 'from-rose-300 via-rose-500 to-rose-300'
       }
-    case 'cozy_homebody':
+    case 'pet_loving_softie':
       return {
-        border: 'border-indigo-100 dark:border-indigo-900/30 hover:border-indigo-300 dark:hover:border-indigo-700',
-        shadow: 'hover:shadow-indigo-500/10',
-        gradientFrom: 'from-indigo-500',
-        glow: 'bg-indigo-400',
-        iconBorder: 'border-indigo-100 dark:border-indigo-900',
-        badge: 'bg-indigo-100 text-indigo-800 dark:bg-indigo-900/30 dark:text-indigo-300',
-        dot: 'bg-indigo-500',
-        bottomGradient: 'from-indigo-300 via-indigo-500 to-indigo-300'
+        border: 'border-pink-100 dark:border-pink-900/30 hover:border-pink-300 dark:hover:border-pink-700',
+        shadow: 'hover:shadow-pink-500/10',
+        gradientFrom: 'from-pink-500',
+        glow: 'bg-pink-400',
+        iconBorder: 'border-pink-100 dark:border-pink-900',
+        badge: 'bg-pink-100 text-pink-800 dark:bg-pink-900/30 dark:text-pink-300',
+        dot: 'bg-pink-500',
+        bottomGradient: 'from-pink-300 via-pink-500 to-pink-300'
+      }
+    case 'cool_independent':
+    case 'easygoing_chameleon': // fallback
+      return {
+        border: 'border-cyan-100 dark:border-cyan-900/30 hover:border-cyan-300 dark:hover:border-cyan-700',
+        shadow: 'hover:shadow-cyan-500/10',
+        gradientFrom: 'from-cyan-500',
+        glow: 'bg-cyan-400',
+        iconBorder: 'border-cyan-100 dark:border-cyan-900',
+        badge: 'bg-cyan-100 text-cyan-800 dark:bg-cyan-900/30 dark:text-cyan-300',
+        dot: 'bg-cyan-500',
+        bottomGradient: 'from-cyan-300 via-cyan-500 to-cyan-300'
       }
     default:
       return {

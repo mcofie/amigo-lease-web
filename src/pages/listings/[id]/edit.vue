@@ -62,7 +62,7 @@
                 class="h-8 w-8 rounded-lg bg-slate-100 flex items-center justify-center text-slate-500 text-sm font-bold dark:bg-slate-800">1</span>
           </div>
 
-          <form class="space-y-6" @submit.prevent="handleSubmit">
+          <form class="space-y-8" @submit.prevent="handleSubmit">
             <!-- Title & Description -->
             <div class="space-y-5">
               <div class="space-y-1.5">
@@ -121,62 +121,135 @@
             <div class="space-y-3">
               <p class="text-xs font-bold text-slate-400 uppercase tracking-wider border-b border-slate-100 pb-2 mb-2 dark:border-slate-800">
                 Pricing</p>
-              <div class="grid grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)] gap-4">
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div class="space-y-1.5">
                   <label class="block text-xs font-bold text-slate-700 uppercase tracking-wide dark:text-slate-300">Monthly
                     Rent</label>
+                  <div class="relative">
+                    <input
+                        v-model.number="form.monthly_rent"
+                        type="number"
+                        min="0"
+                        class="w-full rounded-xl bg-slate-50 border-0 px-4 py-3 text-sm font-medium text-slate-900 placeholder:text-slate-400 focus:ring-2 focus:ring-slate-900 dark:bg-slate-800 dark:text-white dark:focus:ring-white transition-shadow"
+                        placeholder="2300"
+                    />
+                    <div class="absolute inset-y-0 right-0 flex items-center pr-3">
+                      <select v-model="form.currency" class="bg-transparent border-none text-xs font-bold text-slate-500 focus:ring-0 cursor-pointer">
+                        <option value="GHS">GHS</option>
+                        <option value="USD">USD</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="space-y-1.5">
+                  <label class="block text-xs font-bold text-slate-700 uppercase tracking-wide dark:text-slate-300">Deposit (Optional)</label>
                   <input
-                      v-model.number="form.monthly_rent"
+                      v-model.number="form.deposit_amount"
                       type="number"
                       min="0"
                       class="w-full rounded-xl bg-slate-50 border-0 px-4 py-3 text-sm font-medium text-slate-900 placeholder:text-slate-400 focus:ring-2 focus:ring-slate-900 dark:bg-slate-800 dark:text-white dark:focus:ring-white transition-shadow"
-                      placeholder="2300"
+                      placeholder="0"
                   />
                 </div>
                 <div class="space-y-1.5">
-                  <label class="block text-xs font-bold text-slate-700 uppercase tracking-wide dark:text-slate-300">Currency</label>
-                  <select
-                      v-model="form.currency"
-                      class="w-full rounded-xl bg-slate-50 border-0 px-4 py-3 text-sm font-medium text-slate-900 focus:ring-2 focus:ring-slate-900 cursor-pointer dark:bg-slate-800 dark:text-white dark:focus:ring-white transition-shadow"
-                  >
-                    <option value="GHS">₵ GHS</option>
-                    <option value="USD">$ USD</option>
-                  </select>
+                  <label class="block text-xs font-bold text-slate-700 uppercase tracking-wide dark:text-slate-300">Utilities Estimate</label>
+                  <input
+                      v-model.number="form.utilities_estimate"
+                      type="number"
+                      min="0"
+                      class="w-full rounded-xl bg-slate-50 border-0 px-4 py-3 text-sm font-medium text-slate-900 placeholder:text-slate-400 focus:ring-2 focus:ring-slate-900 dark:bg-slate-800 dark:text-white dark:focus:ring-white transition-shadow"
+                      placeholder="e.g. 200"
+                  />
                 </div>
               </div>
             </div>
 
-            <!-- Details -->
+            <!-- Property Details -->
             <div class="space-y-3">
               <p class="text-xs font-bold text-slate-400 uppercase tracking-wider border-b border-slate-100 pb-2 mb-2 dark:border-slate-800">
-                Details</p>
-              <div class="grid grid-cols-3 gap-4">
+                Property Details</p>
+              
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="space-y-1.5">
+                  <label class="block text-xs font-bold text-slate-700 uppercase tracking-wide dark:text-slate-300">Room Type</label>
+                  <select v-model="form.room_type" class="w-full rounded-xl bg-slate-50 border-0 px-4 py-3 text-sm font-medium text-slate-900 focus:ring-2 focus:ring-slate-900 cursor-pointer dark:bg-slate-800 dark:text-white dark:focus:ring-white transition-shadow">
+                    <option value="private">Private Room</option>
+                    <option value="shared">Shared Room</option>
+                    <option value="entire">Entire Place</option>
+                  </select>
+                </div>
+                <div class="space-y-1.5">
+                  <label class="block text-xs font-bold text-slate-700 uppercase tracking-wide dark:text-slate-300">Bathroom Type</label>
+                  <select v-model="form.bathroom_type" class="w-full rounded-xl bg-slate-50 border-0 px-4 py-3 text-sm font-medium text-slate-900 focus:ring-2 focus:ring-slate-900 cursor-pointer dark:bg-slate-800 dark:text-white dark:focus:ring-white transition-shadow">
+                    <option value="private">Private (Ensuite)</option>
+                    <option value="shared">Shared</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-4">
                 <div class="space-y-1.5">
                   <label class="block text-xs font-bold text-slate-700 uppercase tracking-wide dark:text-slate-300">Bedrooms</label>
-                  <input
-                      v-model.number="form.bedrooms"
-                      type="number"
-                      min="0"
-                      class="w-full rounded-xl bg-slate-50 border-0 px-4 py-3 text-sm font-medium text-slate-900 placeholder:text-slate-400 focus:ring-2 focus:ring-slate-900 dark:bg-slate-800 dark:text-white dark:focus:ring-white transition-shadow"
-                  />
+                  <input v-model.number="form.bedrooms" type="number" min="0" class="w-full rounded-xl bg-slate-50 border-0 px-4 py-3 text-sm font-medium text-slate-900 placeholder:text-slate-400 focus:ring-2 focus:ring-slate-900 dark:bg-slate-800 dark:text-white dark:focus:ring-white transition-shadow" />
                 </div>
                 <div class="space-y-1.5">
                   <label class="block text-xs font-bold text-slate-700 uppercase tracking-wide dark:text-slate-300">Bathrooms</label>
-                  <input
-                      v-model.number="form.bathrooms"
-                      type="number"
-                      min="0"
-                      class="w-full rounded-xl bg-slate-50 border-0 px-4 py-3 text-sm font-medium text-slate-900 placeholder:text-slate-400 focus:ring-2 focus:ring-slate-900 dark:bg-slate-800 dark:text-white dark:focus:ring-white transition-shadow"
-                  />
+                  <input v-model.number="form.bathrooms" type="number" min="0" class="w-full rounded-xl bg-slate-50 border-0 px-4 py-3 text-sm font-medium text-slate-900 placeholder:text-slate-400 focus:ring-2 focus:ring-slate-900 dark:bg-slate-800 dark:text-white dark:focus:ring-white transition-shadow" />
                 </div>
                 <div class="space-y-1.5">
-                  <label class="block text-xs font-bold text-slate-700 uppercase tracking-wide dark:text-slate-300">Available</label>
-                  <input
-                      v-model="form.available_from"
-                      type="date"
-                      class="w-full rounded-xl bg-slate-50 border-0 px-4 py-3 text-sm font-medium text-slate-900 focus:ring-2 focus:ring-slate-900 cursor-pointer dark:bg-slate-800 dark:text-white dark:focus:ring-white transition-shadow"
-                  />
+                  <label class="block text-xs font-bold text-slate-700 uppercase tracking-wide dark:text-slate-300">Total Bedrooms</label>
+                  <input v-model.number="form.total_bedrooms" type="number" min="0" class="w-full rounded-xl bg-slate-50 border-0 px-4 py-3 text-sm font-medium text-slate-900 placeholder:text-slate-400 focus:ring-2 focus:ring-slate-900 dark:bg-slate-800 dark:text-white dark:focus:ring-white transition-shadow" />
                 </div>
+                <div class="space-y-1.5">
+                  <label class="block text-xs font-bold text-slate-700 uppercase tracking-wide dark:text-slate-300">Occupants</label>
+                  <input v-model.number="form.total_occupants" type="number" min="0" class="w-full rounded-xl bg-slate-50 border-0 px-4 py-3 text-sm font-medium text-slate-900 placeholder:text-slate-400 focus:ring-2 focus:ring-slate-900 dark:bg-slate-800 dark:text-white dark:focus:ring-white transition-shadow" />
+                </div>
+              </div>
+            </div>
+
+            <!-- Availability & Preferences -->
+            <div class="space-y-3">
+              <p class="text-xs font-bold text-slate-400 uppercase tracking-wider border-b border-slate-100 pb-2 mb-2 dark:border-slate-800">
+                Availability & Rules</p>
+              
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="space-y-1.5">
+                  <label class="block text-xs font-bold text-slate-700 uppercase tracking-wide dark:text-slate-300">Available From</label>
+                  <input v-model="form.available_from" type="date" class="w-full rounded-xl bg-slate-50 border-0 px-4 py-3 text-sm font-medium text-slate-900 focus:ring-2 focus:ring-slate-900 cursor-pointer dark:bg-slate-800 dark:text-white dark:focus:ring-white transition-shadow" />
+                </div>
+                <div class="space-y-1.5">
+                  <label class="block text-xs font-bold text-slate-700 uppercase tracking-wide dark:text-slate-300">Available To (Optional)</label>
+                  <input v-model="form.available_to" type="date" class="w-full rounded-xl bg-slate-50 border-0 px-4 py-3 text-sm font-medium text-slate-900 focus:ring-2 focus:ring-slate-900 cursor-pointer dark:bg-slate-800 dark:text-white dark:focus:ring-white transition-shadow" />
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+                <div class="space-y-1.5">
+                  <label class="block text-xs font-bold text-slate-700 uppercase tracking-wide dark:text-slate-300">Max Additional Roommates</label>
+                  <input v-model.number="form.max_additional_roommates" type="number" min="0" class="w-full rounded-xl bg-slate-50 border-0 px-4 py-3 text-sm font-medium text-slate-900 placeholder:text-slate-400 focus:ring-2 focus:ring-slate-900 dark:bg-slate-800 dark:text-white dark:focus:ring-white transition-shadow" />
+                </div>
+                <div class="flex items-center gap-6 pt-6">
+                  <label class="inline-flex items-center cursor-pointer">
+                    <input type="checkbox" v-model="form.has_pets" class="sr-only peer">
+                    <div class="relative w-9 h-5 bg-slate-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-slate-300 dark:peer-focus:ring-slate-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-slate-900"></div>
+                    <span class="ms-3 text-sm font-medium text-slate-700 dark:text-slate-300">Has Pets</span>
+                  </label>
+                  <label class="inline-flex items-center cursor-pointer">
+                    <input type="checkbox" v-model="form.smoking_allowed" class="sr-only peer">
+                    <div class="relative w-9 h-5 bg-slate-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-slate-300 dark:peer-focus:ring-slate-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-slate-900"></div>
+                    <span class="ms-3 text-sm font-medium text-slate-700 dark:text-slate-300">Smoking Allowed</span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="space-y-1.5 mt-4">
+                <label class="block text-xs font-bold text-slate-700 uppercase tracking-wide dark:text-slate-300">House Rules</label>
+                <textarea
+                    v-model="form.house_rules"
+                    rows="3"
+                    class="w-full rounded-xl bg-slate-50 border-0 px-4 py-3 text-sm font-medium text-slate-900 placeholder:text-slate-400 focus:ring-2 focus:ring-slate-900 resize-none dark:bg-slate-800 dark:text-white dark:focus:ring-white transition-shadow"
+                    placeholder="Any specific rules? e.g. No overnight guests, quiet hours after 10pm..."
+                />
               </div>
             </div>
 
@@ -184,22 +257,25 @@
             <div class="space-y-3">
               <p class="text-xs font-bold text-slate-400 uppercase tracking-wider border-b border-slate-100 pb-2 mb-2 dark:border-slate-800">
                 Amenities</p>
-              <div class="flex flex-wrap gap-2">
+              <div v-if="amenityOptions.length" class="flex flex-wrap gap-2">
                 <button
                     v-for="amenity in amenityOptions"
-                    :key="amenity.key"
+                    :key="amenity.key || amenity.code || amenity.id"
                     type="button"
                     class="px-3 py-2 rounded-lg text-xs font-bold border transition-all duration-200 flex items-center gap-1.5"
                     :class="
-                    selectedAmenities.includes(amenity.key)
+                    selectedAmenities.includes(amenity.key || amenity.code || amenity.id)
                       ? 'bg-slate-900 text-white border-slate-900 shadow-md dark:bg-white dark:text-slate-900'
                       : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50 hover:border-slate-300 dark:bg-gray-800 dark:text-slate-300 dark:border-slate-700 dark:hover:bg-slate-700'
                   "
-                    @click="toggleAmenity(amenity.key)"
+                    @click="toggleAmenity(amenity.key || amenity.code || amenity.id)"
                 >
                   <span class="text-sm">{{ amenity.emoji }}</span>
                   <span>{{ amenity.label }}</span>
                 </button>
+              </div>
+              <div v-else class="text-sm text-slate-500 italic">
+                Loading amenities...
               </div>
             </div>
 
@@ -234,20 +310,29 @@
             <div class="flex items-center justify-between pt-4 border-t border-slate-100 dark:border-slate-800">
               <button
                   type="button"
-                  class="text-xs font-bold text-slate-500 hover:text-slate-900 transition-colors px-2 py-2 rounded-lg hover:bg-slate-50 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800"
-                  @click="router.back()"
+                  class="text-xs font-bold text-rose-500 hover:text-rose-700 transition-colors px-2 py-2 rounded-lg hover:bg-rose-50 dark:text-rose-400 dark:hover:text-rose-300 dark:hover:bg-rose-900/20"
+                  @click="handleDelete"
               >
-                Cancel
+                Delete Listing
               </button>
-              <button
-                  type="submit"
-                  class="inline-flex items-center justify-center gap-2 px-8 py-3 rounded-xl bg-slate-900 text-white text-sm font-bold shadow-lg shadow-slate-900/20 hover:bg-slate-800 hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed dark:bg-white dark:text-slate-900 dark:hover:bg-slate-200"
-                  :disabled="submitting || !form.title.trim()"
-              >
-                <span v-if="submitting"
-                      class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
-                <span v-else>Save Changes</span>
-              </button>
+              <div class="flex items-center gap-3">
+                <button
+                    type="button"
+                    class="text-xs font-bold text-slate-500 hover:text-slate-900 transition-colors px-2 py-2 rounded-lg hover:bg-slate-50 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800"
+                    @click="router.back()"
+                >
+                  Cancel
+                </button>
+                <button
+                    type="submit"
+                    class="inline-flex items-center justify-center gap-2 px-8 py-3 rounded-xl bg-slate-900 text-white text-sm font-bold shadow-lg shadow-slate-900/20 hover:bg-slate-800 hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed dark:bg-white dark:text-slate-900 dark:hover:bg-slate-200"
+                    :disabled="submitting || !form.title.trim()"
+                >
+                  <span v-if="submitting"
+                        class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
+                  <span v-else>Save Changes</span>
+                </button>
+              </div>
             </div>
           </form>
         </div>
@@ -315,6 +400,10 @@
                       class="px-2 py-1 rounded bg-slate-50 border border-slate-100 text-[10px] font-bold text-slate-600 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-300">
                      🛁 {{ form.bathrooms || '-' }} Bath
                    </span>
+                   <span v-if="form.room_type"
+                      class="px-2 py-1 rounded bg-slate-50 border border-slate-100 text-[10px] font-bold text-slate-600 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-300">
+                     🏠 {{ form.room_type.replace('_', ' ') }}
+                   </span>
                 </div>
 
                 <!-- Description snippet -->
@@ -351,7 +440,7 @@ useSeoMeta({
 const router = useRouter()
 const route = useRoute()
 const {$supabase} = useNuxtApp()
-const {updateListing, error: updateError} = useListings()
+const {updateListing, loadAmenities, saveAmenities, deleteListing, error: updateError} = useListings()
 
 const loading = ref(true)
 const submitting = ref(false)
@@ -364,14 +453,30 @@ const form = reactive({
   city: '',
   area: '',
   monthly_rent: null as number | null,
+  deposit_amount: null as number | null,
+  utilities_estimate: null as number | null,
   currency: 'GHS',
   bedrooms: null as number | null,
   bathrooms: null as number | null,
   available_from: '',
+  available_to: '',
+  room_type: 'private',
+  bathroom_type: 'shared',
+  total_bedrooms: null as number | null,
+  total_occupants: null as number | null,
+  max_additional_roommates: null as number | null,
+  has_pets: false,
+  smoking_allowed: false,
+  house_rules: '',
   is_active: true
 })
 
-const amenityOptions = [
+const amenityOptions = ref<any[]>([])
+const selectedAmenities = ref<string[]>([])
+const photoInputs = ref<string[]>(['', '', ''])
+
+// Fallback amenities
+const fallbackAmenities = [
   {key: 'wifi', label: 'Wi-Fi', emoji: '📶'},
   {key: 'parking', label: 'Parking', emoji: '🅿️'},
   {key: 'ensuite', label: 'Ensuite', emoji: '🚿'},
@@ -382,9 +487,6 @@ const amenityOptions = [
   {key: 'pets_allowed', label: 'Pets OK', emoji: '🐾'}
 ]
 
-const selectedAmenities = ref<string[]>([])
-const photoInputs = ref<string[]>(['', '', ''])
-
 onMounted(async () => {
   const {
     data: {user}
@@ -392,6 +494,14 @@ onMounted(async () => {
   if (!user) {
     router.push('/auth')
     return
+  }
+
+  // Load amenities options
+  const loaded = await loadAmenities()
+  if (loaded && loaded.length > 0) {
+    amenityOptions.value = loaded
+  } else {
+    amenityOptions.value = fallbackAmenities
   }
 
   await loadListingData()
@@ -427,10 +537,21 @@ const loadListingData = async () => {
     form.city = listingData.city || ''
     form.area = listingData.area || ''
     form.monthly_rent = listingData.monthly_rent
+    form.deposit_amount = listingData.deposit_amount
+    form.utilities_estimate = listingData.utilities_estimate
     form.currency = listingData.currency || 'GHS'
     form.bedrooms = listingData.bedrooms
     form.bathrooms = listingData.bathrooms
     form.available_from = listingData.available_from || ''
+    form.available_to = listingData.available_to || ''
+    form.room_type = listingData.room_type || 'private'
+    form.bathroom_type = listingData.bathroom_type || 'shared'
+    form.total_bedrooms = listingData.total_bedrooms
+    form.total_occupants = listingData.total_occupants
+    form.max_additional_roommates = listingData.max_additional_roommates
+    form.has_pets = listingData.has_pets || false
+    form.smoking_allowed = listingData.smoking_allowed || false
+    form.house_rules = listingData.house_rules || ''
     form.is_active = listingData.is_active
 
     // 2) Fetch amenities
@@ -489,6 +610,21 @@ const toggleAmenity = (key: string) => {
   }
 }
 
+const handleDelete = async () => {
+  if (!confirm('Are you sure you want to delete this listing? This action cannot be undone.')) {
+    return
+  }
+  
+  const id = route.params.id as string
+  const success = await deleteListing(id)
+  
+  if (success) {
+    router.push('/listings')
+  } else {
+    error.value = updateError.value || 'Failed to delete listing'
+  }
+}
+
 const handleSubmit = async () => {
   if (submitting.value) return
   submitting.value = true
@@ -504,10 +640,21 @@ const handleSubmit = async () => {
     city: form.city || null,
     area: form.area || null,
     monthly_rent: form.monthly_rent,
+    deposit_amount: form.deposit_amount,
+    utilities_estimate: form.utilities_estimate,
     currency: form.currency,
     bedrooms: form.bedrooms,
     bathrooms: form.bathrooms,
     available_from: form.available_from || null,
+    available_to: form.available_to || null,
+    room_type: form.room_type || null,
+    bathroom_type: form.bathroom_type || null,
+    total_bedrooms: form.total_bedrooms,
+    total_occupants: form.total_occupants,
+    max_additional_roommates: form.max_additional_roommates,
+    has_pets: form.has_pets,
+    smoking_allowed: form.smoking_allowed,
+    house_rules: form.house_rules || null,
     is_active: form.is_active
   })
 
@@ -517,26 +664,11 @@ const handleSubmit = async () => {
     return
   }
 
-  // 2) Update amenities (Delete all & re-insert)
+  // 2) Update amenities & photos
   try {
-    await ($supabase as any)
-        .schema('amigo')
-        .from('listing_amenities')
-        .delete()
-        .eq('listing_id', id)
+    await saveAmenities(id, selectedAmenities.value)
 
-    if (selectedAmenities.value.length) {
-      const amenPayload = selectedAmenities.value.map(key => ({
-        listing_id: id,
-        amenity_key: key
-      }))
-      await ($supabase as any)
-          .schema('amigo')
-          .from('listing_amenities')
-          .insert(amenPayload)
-    }
-
-    // 3) Update photos (Delete all & re-insert)
+    // Update photos (Delete all & re-insert)
     await ($supabase as any)
         .schema('amigo')
         .from('listing_photos')
@@ -547,7 +679,7 @@ const handleSubmit = async () => {
     if (urls.length) {
       const photoPayload = urls.map((url, index) => ({
         listing_id: id,
-        image_url: url,
+        url: url,
         sort_order: index
       }))
 

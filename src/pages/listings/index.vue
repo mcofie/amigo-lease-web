@@ -330,10 +330,21 @@ const form = reactive<ListingInput>({
   city: null,
   area: null,
   monthly_rent: null,
+  deposit_amount: null,
+  utilities_estimate: null,
   currency: 'GHS',
   bedrooms: null,
   bathrooms: null,
-  available_from: null
+  available_from: null,
+  available_to: null,
+  room_type: null,
+  bathroom_type: null,
+  total_bedrooms: null,
+  total_occupants: null,
+  max_additional_roommates: null,
+  has_pets: false,
+  smoking_allowed: false,
+  house_rules: null
 })
 
 const reload = async () => {

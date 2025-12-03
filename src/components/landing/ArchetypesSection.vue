@@ -17,31 +17,17 @@
       </div>
 
       <div class="grid md:grid-cols-3 gap-6">
-        <!-- Arch Card 1 -->
-        <div class="group relative bg-slate-50 rounded-3xl p-8 border border-slate-100 hover:border-orange-200 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 dark:bg-slate-800 dark:border-slate-700 dark:hover:border-orange-500/30">
-          <div class="text-4xl mb-4 transform group-hover:scale-110 transition-transform duration-300">🕯️</div>
-          <h3 class="text-xl font-bold text-slate-900 mb-2 dark:text-white">The Quiet Nest-Builder</h3>
+        <div
+            v-for="arch in displayedArchetypes"
+            :key="arch.key"
+            class="group relative bg-slate-50 rounded-3xl p-8 border border-slate-100 hover:border-orange-200 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 dark:bg-slate-800 dark:border-slate-700 dark:hover:border-orange-500/30"
+            :class="{ 'bg-white border-2 border-orange-100 shadow-lg hover:shadow-2xl dark:border-orange-500/30': arch.key === 'easygoing_socialite' }"
+        >
+          <div v-if="arch.key === 'easygoing_socialite'" class="absolute top-4 right-4 bg-orange-100 text-orange-700 text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wide dark:bg-orange-900/50 dark:text-orange-300">Popular</div>
+          <div class="text-4xl mb-4 transform group-hover:scale-110 transition-transform duration-300">{{ arch.emoji }}</div>
+          <h3 class="text-xl font-bold text-slate-900 mb-2 dark:text-white">{{ arch.name }}</h3>
           <p class="text-sm text-slate-600 leading-relaxed dark:text-slate-400">
-            Home is a sanctuary. You value peace, cozy evenings, and a tidy space to recharge.
-          </p>
-        </div>
-
-        <!-- Arch Card 2 -->
-        <div class="group relative bg-white rounded-3xl p-8 border-2 border-orange-100 shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 dark:bg-slate-800 dark:border-orange-500/30">
-          <div class="absolute top-4 right-4 bg-orange-100 text-orange-700 text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wide dark:bg-orange-900/50 dark:text-orange-300">Popular</div>
-          <div class="text-4xl mb-4 transform group-hover:scale-110 transition-transform duration-300">🦎</div>
-          <h3 class="text-xl font-bold text-slate-900 mb-2 dark:text-white">The Easygoing Chameleon</h3>
-          <p class="text-sm text-slate-600 leading-relaxed dark:text-slate-400">
-            Flexible and chill. You can vibe with almost anyone as long as there's mutual respect.
-          </p>
-        </div>
-
-        <!-- Arch Card 3 -->
-        <div class="group relative bg-slate-50 rounded-3xl p-8 border border-slate-100 hover:border-orange-200 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 dark:bg-slate-800 dark:border-slate-700 dark:hover:border-orange-500/30">
-          <div class="text-4xl mb-4 transform group-hover:scale-110 transition-transform duration-300">🎉</div>
-          <h3 class="text-xl font-bold text-slate-900 mb-2 dark:text-white">The Party Pulse</h3>
-          <p class="text-sm text-slate-600 leading-relaxed dark:text-slate-400">
-            Home is a hub. You love hosting dinners, game nights, and keeping the energy high.
+            {{ arch.description }}
           </p>
         </div>
       </div>
@@ -51,7 +37,7 @@
             @click="goToArchetypes"
             class="inline-flex items-center gap-2 text-sm font-bold text-slate-900 border-b-2 border-slate-900 hover:text-orange-600 hover:border-orange-600 transition-colors pb-0.5 dark:text-white dark:border-white dark:hover:text-orange-400 dark:hover:border-orange-400"
         >
-          Explore all 6 archetypes
+          Explore all 10 archetypes
           <span class="text-lg">→</span>
         </button>
       </div>
@@ -61,8 +47,16 @@
 
 <script setup lang="ts">
 import { useRouter } from '#imports'
+import { ARCHETYPES } from '~/types/archetypes'
 
 const router = useRouter()
+
+// Select 3 representative archetypes to display
+const displayedArchetypes = [
+  ARCHETYPES.find(a => a.key === 'neat_planner'),
+  ARCHETYPES.find(a => a.key === 'easygoing_socialite'),
+  ARCHETYPES.find(a => a.key === 'chill_creative')
+].filter(Boolean) as typeof ARCHETYPES
 
 const goToArchetypes = () => {
   router.push('/archetypes')
