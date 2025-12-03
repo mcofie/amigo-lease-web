@@ -57,7 +57,7 @@
             class="absolute inset-0 opacity-[0.03] pointer-events-none bg-[radial-gradient(#0f172a_1px,transparent_1px)] [background-size:16px_16px] dark:bg-[radial-gradient(#ffffff_1px,transparent_1px)]"></div>
 
         <!-- Scrollable List (Padding top/bottom ensures content isn't hidden behind absolute header/footer) -->
-        <div class="w-full h-full overflow-y-auto px-6 pt-20 pb-24 scroll-smooth">
+        <div ref="messagesContainer" class="w-full h-full overflow-y-auto px-6 pt-20 pb-24 scroll-smooth">
           <div class="space-y-6">
             <!-- Loading -->
             <div v-if="loading" class="flex justify-center py-10">
@@ -80,39 +80,89 @@
               <p class="text-sm font-bold text-slate-900 dark:text-white">
                 Start the conversation
               </p>
-              <p class="text-xs text-slate-500 max-w-xs mt-1 dark:text-slate-400">
+              <p class="text-xs text-slate-500 max-w-xs mt-1 mb-6 dark:text-slate-400">
                 Say hi, ask about the room, or see if your vibes match.
               </p>
+
+              <!-- Ice Breakers -->
+              <div class="flex flex-wrap justify-center gap-2 max-w-md">
+                <button
+                    v-for="ice in iceBreakers"
+                    :key="ice"
+                    class="px-3 py-1.5 rounded-full bg-white border border-slate-200 text-xs font-medium text-slate-600 hover:bg-slate-50 hover:border-slate-300 transition-colors shadow-sm dark:bg-gray-800 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-gray-750"
+                    @click="sendIceBreaker(ice)"
+                >
+                  {{ ice }}
+                </button>
+              </div>
             </div>
 
             <!-- Messages list -->
             <div
                 v-else
-                class="space-y-2"
+                class="space-y-1"
             >
-              <div
-                  v-for="m in messages"
-                  :key="m.id"
-                  class="flex w-full"
-                  :class="m.sender_profile_id === currentUserId ? 'justify-end' : 'justify-start'"
-              >
-                <div
-                    class="max-w-[80%] sm:max-w-[70%] rounded-2xl px-4 py-3 text-sm shadow-sm relative group"
-                    :class="m.sender_profile_id === currentUserId
-                    ? 'bg-slate-900 text-white rounded-br-sm dark:bg-white dark:text-slate-900'
-                    : 'bg-white text-slate-700 border border-slate-200 rounded-bl-sm dark:bg-slate-800 dark:text-slate-200 dark:border-slate-700'"
-                >
-                  <p class="whitespace-pre-wrap break-words leading-relaxed">
-                    {{ m.content }}
-                  </p>
-                  <p
-                      class="mt-1 text-[10px] font-medium text-right opacity-60"
-                      :class="m.sender_profile_id === currentUserId ? 'text-white' : 'text-slate-400'"
-                  >
-                    {{ formatTime(m.created_at) }}
-                  </p>
+              <template v-for="(item, index) in processedMessages" :key="item.id || index">
+                
+                <!-- Date Divider -->
+                <div v-if="item.type === 'divider'" class="flex justify-center py-4">
+                  <span class="px-3 py-1 rounded-full bg-slate-100 text-[10px] font-bold text-slate-500 uppercase tracking-wide dark:bg-slate-800 dark:text-slate-400">
+                    {{ item.content }}
+                  </span>
                 </div>
-              </div>
+
+                <!-- Message Bubble -->
+                <div
+                    v-else
+                    class="flex w-full group"
+                    :class="[
+                      item.isMe ? 'justify-end' : 'justify-start',
+                      item.isGroupStart ? 'mt-4' : 'mt-1'
+                    ]"
+                >
+                  <!-- Avatar (only for other person, and only at start of group) -->
+                  <div v-if="!item.isMe" class="w-8 flex-shrink-0 mr-2 flex items-end">
+                    <div v-if="item.isGroupEnd" class="h-8 w-8 rounded-xl overflow-hidden bg-slate-100 border border-slate-200 dark:bg-slate-800 dark:border-slate-700">
+                      <img v-if="thread?.other_profile?.avatar_url" :src="thread.other_profile.avatar_url" class="h-full w-full object-cover" />
+                      <div v-else class="h-full w-full flex items-center justify-center text-[10px] font-bold text-slate-500">{{ headerInitials }}</div>
+                    </div>
+                    <div v-else class="w-8"></div>
+                  </div>
+
+                  <div
+                      class="max-w-[80%] sm:max-w-[70%] px-4 py-2 text-sm shadow-sm relative"
+                      :class="[
+                        item.isMe 
+                          ? 'bg-gradient-to-br from-slate-900 to-slate-800 text-white dark:from-white dark:to-slate-200 dark:text-slate-900' 
+                          : 'bg-white text-slate-700 border border-slate-100 dark:bg-slate-800 dark:text-slate-200 dark:border-slate-700',
+                        item.isMe 
+                          ? (item.isGroupStart ? 'rounded-t-2xl rounded-bl-2xl' : 'rounded-l-2xl') + ' ' + (item.isGroupEnd ? 'rounded-br-sm' : 'rounded-r-md')
+                          : (item.isGroupStart ? 'rounded-t-2xl rounded-br-2xl' : 'rounded-r-2xl') + ' ' + (item.isGroupEnd ? 'rounded-bl-sm' : 'rounded-l-md')
+                      ]"
+                  >
+                    <p class="whitespace-pre-wrap break-words leading-relaxed">
+                      {{ item.content }}
+                    </p>
+                    
+                    <div class="flex items-center justify-end gap-1 mt-1 opacity-60">
+                      <span class="text-[10px] font-medium" :class="item.isMe ? 'text-white' : 'text-slate-400'">
+                        {{ formatTimeShort(item.created_at) }}
+                      </span>
+                      <!-- Read Receipt (only for me) -->
+                      <span v-if="item.isMe" class="flex" :title="item.read_at ? 'Read' : 'Sent'">
+                        <svg v-if="item.read_at" class="w-3 h-3 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" class="opacity-50" style="transform: translateX(-4px);" />
+                        </svg>
+                        <svg v-else class="w-3 h-3 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                        </svg>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+              </template>
             </div>
 
             <!-- Error -->
@@ -166,7 +216,7 @@
 </template>
 
 <script setup lang="ts">
-import {ref, onMounted, computed} from 'vue'
+import {ref, onMounted, computed, watch, nextTick} from 'vue'
 import {useRoute, useRouter} from '#imports'
 import {useChat} from '~/composables/useChat'
 
@@ -216,6 +266,26 @@ onMounted(async () => {
   // - set thread.value and other_profile inside it
   const id = await ensureThreadWithProfile(otherProfileId)
   activeThreadId.value = id
+  scrollToBottom()
+})
+
+const messagesContainer = ref<HTMLElement | null>(null)
+
+const scrollToBottom = async () => {
+  await nextTick()
+  if (messagesContainer.value) {
+    messagesContainer.value.scrollTop = messagesContainer.value.scrollHeight
+  }
+}
+
+watch(() => messages.value.length, () => {
+  scrollToBottom()
+})
+
+watch(() => loading.value, (newVal) => {
+  if (!newVal) {
+    scrollToBottom()
+  }
 })
 
 const headerName = computed(() => {
@@ -241,6 +311,114 @@ const headerInitials = computed(() => {
   return combined || 'AL'
 })
 
+// --- PROCESSED MESSAGES (Grouping & Dividers) ---
+
+interface ProcessedItem {
+  type: 'message' | 'divider'
+  id?: string
+  content: string
+  created_at?: string
+  sender_profile_id?: string
+  read_at?: string | null
+  isMe?: boolean
+  isGroupStart?: boolean
+  isGroupEnd?: boolean
+}
+
+const processedMessages = computed<ProcessedItem[]>(() => {
+  const raw = messages.value
+  if (!raw.length) return []
+
+  const result: ProcessedItem[] = []
+  let lastDateStr = ''
+  let lastSenderId = ''
+  let lastTime = 0
+
+  for (let i = 0; i < raw.length; i++) {
+    const m = raw[i]
+    if (!m) continue
+
+    const d = new Date(m.created_at)
+    const dateStr = d.toDateString()
+    const time = d.getTime()
+
+    // 1. Date Divider
+    if (dateStr !== lastDateStr) {
+      result.push({
+        type: 'divider',
+        content: formatDateDivider(d)
+      })
+      lastDateStr = dateStr
+      lastSenderId = '' // reset grouping on new day
+    }
+
+    // 2. Grouping Logic
+    const isMe = m.sender_profile_id === currentUserId.value
+    const isSameSender = m.sender_profile_id === lastSenderId
+    const isWithinTime = (time - lastTime) < 5 * 60 * 1000 // 5 mins
+
+    let isGroupStart = true
+    if (isSameSender && isWithinTime) {
+      isGroupStart = false
+      // Update previous message to NOT be group end
+      const prevMsgIdx = result.length - 1
+      const prevMsg = result[prevMsgIdx]
+      if (prevMsg && prevMsg.type === 'message') {
+        prevMsg.isGroupEnd = false
+      }
+    }
+
+    result.push({
+      type: 'message',
+      id: m.id,
+      content: m.content,
+      created_at: m.created_at,
+      sender_profile_id: m.sender_profile_id,
+      read_at: m.read_at,
+      isMe,
+      isGroupStart,
+      isGroupEnd: true // assume end until next message proves otherwise
+    })
+
+    lastSenderId = m.sender_profile_id
+    lastTime = time
+  }
+
+  return result
+})
+
+const formatDateDivider = (d: Date) => {
+  const now = new Date()
+  const isToday = d.toDateString() === now.toDateString()
+  
+  const yesterday = new Date(now)
+  yesterday.setDate(yesterday.getDate() - 1)
+  const isYesterday = d.toDateString() === yesterday.toDateString()
+
+  if (isToday) return 'Today'
+  if (isYesterday) return 'Yesterday'
+  
+  return d.toLocaleDateString([], { month: 'short', day: 'numeric' })
+}
+
+const formatTimeShort = (iso?: string) => {
+  if (!iso) return ''
+  return new Date(iso).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+}
+
+// --- ICE BREAKERS ---
+const iceBreakers = [
+  "Hi! Is the room still available?",
+  "Hey, I think we'd be great roommates!",
+  "When are you free for a viewing?",
+  "Love the location! Tell me more."
+]
+
+const sendIceBreaker = (text: string) => {
+  draft.value = text
+  handleSend()
+}
+
 const handleSend = async () => {
   const text = draft.value.trim()
   if (!text) return
@@ -260,10 +438,5 @@ const handleEnter = (e: KeyboardEvent) => {
   if (!e.shiftKey) {
     handleSend()
   }
-}
-
-const formatTime = (iso: string) => {
-  const d = new Date(iso)
-  return d.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})
 }
 </script>

@@ -162,8 +162,9 @@
 </template>
 
 <script setup lang="ts">
-import {ref, computed, onMounted} from 'vue'
+import {ref, computed, onMounted, onUnmounted} from 'vue'
 import {useRouter, useNuxtApp} from '#imports'
+import type { RealtimeChannel } from '@supabase/supabase-js'
 
 interface ChatThread {
   id: string
@@ -210,9 +211,56 @@ const profilesById = ref<
 >({})
 const matchesByOtherId = ref<Record<string, { score: number | null }>>({})
 
+let channel: RealtimeChannel | null = null
+
 onMounted(async () => {
   await loadData()
+  subscribeToThreads()
 })
+
+onUnmounted(() => {
+  if (channel) {
+    $supabase.removeChannel(channel)
+  }
+})
+
+const subscribeToThreads = () => {
+  if (channel) return
+
+  channel = $supabase
+    .channel('public:chat_threads')
+    .on(
+      'postgres_changes',
+      {
+        event: 'UPDATE',
+        schema: 'amigo',
+        table: 'chat_threads'
+      },
+      (payload) => {
+        console.log('[ChatList] Thread updated:', payload)
+        const newThread = payload.new as ChatThread
+        
+        // Find and update the thread in our list
+        const index = threads.value.findIndex(t => t.id === newThread.id)
+        if (index !== -1) {
+          // Update existing
+          threads.value[index] = newThread
+        } else {
+          // New thread? (Might need to fetch profile if we don't have it, but for now just add it if it involves us)
+          // Ideally we'd re-fetch everything or fetch just this profile, but for sorting updates, usually it's existing threads.
+          if (currentUserId.value && (newThread.profile_one_id === currentUserId.value || newThread.profile_two_id === currentUserId.value)) {
+             threads.value.push(newThread)
+             // If we don't have the profile, we might want to trigger a reload or fetch it.
+             // For simplicity, if it's a brand new thread we haven't seen, we might just reload data to be safe.
+             if (!profilesById.value[newThread.profile_one_id === currentUserId.value ? newThread.profile_two_id : newThread.profile_one_id]) {
+               loadData() 
+             }
+          }
+        }
+      }
+    )
+    .subscribe()
+}
 
 const loadData = async () => {
   loading.value = true

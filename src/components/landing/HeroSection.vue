@@ -70,10 +70,10 @@
 
             <button
                 type="button"
-                @click="goToOnboarding"
+                @click="scrollToHowItWorks"
                 class="inline-flex h-14 items-center justify-center rounded-2xl border-2 border-slate-200 bg-white px-8 font-bold text-slate-700 shadow-sm transition-all duration-300 hover:bg-slate-50 hover:border-slate-300 hover:text-slate-900 dark:border-white/10 dark:bg-white/5 dark:text-slate-200 dark:hover:bg-white/10"
             >
-              List my place
+              How it works
             </button>
           </div>
 
@@ -97,7 +97,7 @@
         </div>
 
         <!-- RIGHT: VISUAL AREA -->
-        <div class="relative flex justify-center perspective-1000">
+        <div class="hidden lg:flex relative justify-center perspective-1000">
           <!-- Decorative blob -->
           <div class="absolute inset-0 bg-gradient-to-tr from-orange-400 to-rose-500 rounded-full blur-[80px] opacity-30 scale-90 animate-pulse-slow dark:opacity-20"></div>
 
@@ -137,8 +137,7 @@
         </div>
       </div>
     </div>
-  </section>
-</template>
+  </section></template>
 
 <script setup lang="ts">
 import { useRouter } from '#imports'
@@ -147,6 +146,13 @@ const router = useRouter()
 
 const goToOnboarding = () => {
   router.push('/onboarding/role')
+}
+
+const scrollToHowItWorks = () => {
+  const element = document.getElementById('how-it-works')
+  if (element) {
+    element.scrollIntoView({ behavior: 'smooth' })
+  }
 }
 </script>
 
