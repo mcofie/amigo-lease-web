@@ -1,7 +1,7 @@
 <template>
   <section class="py-24 bg-white dark:bg-slate-900 border-y border-slate-100 dark:border-slate-800 relative overflow-hidden">
     <!-- Background Decoration -->
-    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-3xl h-full bg-gradient-to-b from-orange-50/50 to-transparent pointer-events-none dark:from-orange-900/10"></div>
+    <div class="absolute inset-0 w-full h-full bg-gradient-to-b from-orange-50/50 to-transparent pointer-events-none dark:from-orange-900/10"></div>
 
     <div class="max-w-6xl mx-auto px-6 relative z-10">
       <div class="text-center max-w-3xl mx-auto mb-16 space-y-4">
