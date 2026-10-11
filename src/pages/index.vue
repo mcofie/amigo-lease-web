@@ -1,30 +1,26 @@
 <template>
-  <main
-      class="min-h-screen bg-white text-slate-900 selection:bg-orange-100 selection:text-orange-900 dark:bg-gray-950 dark:text-white"
-  >
-    <HeroSection />
-    <div id="how-it-works">
-      <HowItWorksSection />
-    </div>
-    <ArchetypesSection />
-    <MatchesSection />
-    <TestimonialsSection />
-    <CtaSection />
+  <main class="min-h-screen w-full bg-white flex items-center justify-center p-6 select-none">
+    <h1 class="font-asimovian text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-normal text-slate-900 tracking-normal text-center antialiased">
+      Amigo Lease
+    </h1>
   </main>
 </template>
 
 <script setup lang="ts">
-import HeroSection from '~/components/landing/HeroSection.vue'
-import HowItWorksSection from '~/components/landing/HowItWorksSection.vue'
-import ArchetypesSection from '~/components/landing/ArchetypesSection.vue'
-import MatchesSection from '~/components/landing/MatchesSection.vue'
-import TestimonialsSection from '~/components/landing/TestimonialsSection.vue'
-import CtaSection from '~/components/landing/CtaSection.vue'
+definePageMeta({
+  layout: false
+})
 
 useSeoMeta({
-  title: 'Amigo Lease - Find Your Perfect Roommate',
-  description: 'Connect with compatible roommates in Accra. Match by vibe, lifestyle, and budget.',
-  ogTitle: 'Amigo Lease - Find Your Perfect Roommate',
-  ogDescription: 'Connect with compatible roommates in Accra. Match by vibe, lifestyle, and budget.',
+  title: 'Amigo Lease',
+  description: 'Amigo Lease',
+  ogTitle: 'Amigo Lease',
+  ogDescription: 'Amigo Lease',
 })
 </script>
+
+<style scoped>
+.font-asimovian {
+  font-family: 'Asimovian', cursive, sans-serif;
+}
+</style>
