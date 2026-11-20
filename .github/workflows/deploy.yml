@@ -1,0 +1,35 @@
+name: Deploy
+
+# Builds amigolease.com on GitHub (not on Netlify, so no Netlify build credits) and publishes it.
+# Runs only when you start it: Actions → Deploy → Run workflow. Netlify's own builds are off.
+# It builds exactly as Netlify would (netlify.toml, the site's build settings and its
+# environment variables come from Netlify).
+# Needs, in Settings → Secrets and variables → Actions: the NETLIFY_AUTH_TOKEN secret and the
+# NETLIFY_SITE_ID variable.
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm install --no-audit --no-fund
+      - name: Build and publish
+        run: npx --yes netlify-cli@27.16.2 deploy --build --prod --message "${GITHUB_SHA::7} by ${GITHUB_ACTOR}"
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ vars.NETLIFY_SITE_ID }}
