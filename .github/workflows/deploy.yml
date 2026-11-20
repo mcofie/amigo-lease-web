@@ -1,9 +1,10 @@
 name: Deploy
 
-# Builds amigolease.com on GitHub (not on Netlify, so no Netlify build credits) and publishes it.
-# Runs only when you start it: Actions → Deploy → Run workflow. Netlify's own builds are off.
-# It builds exactly as Netlify would (netlify.toml, the site's build settings and its
-# environment variables come from Netlify).
+# Publishes the site when you start it: Actions → Deploy → Run workflow.
+# Asks Netlify to build and publish main through a build hook this workflow keeps (named
+# "github-deploy"), then waits for it, so this run fails if the build fails. Netlify builds
+# with the site's real settings, secrets included.
+# A push alone builds nothing: netlify.toml skips builds not started by a build hook.
 # Needs, in Settings → Secrets and variables → Actions: the NETLIFY_AUTH_TOKEN secret and the
 # NETLIFY_SITE_ID variable.
 
@@ -22,14 +23,36 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-node@v6
-        with:
-          node-version: 22
-          cache: npm
-      - run: npm install --no-audit --no-fund
-      - name: Build and publish
-        run: npx --yes netlify-cli@27.16.2 deploy --build --prod --message "${GITHUB_SHA::7} by ${GITHUB_ACTOR}"
+      - name: Build and publish on Netlify
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ vars.NETLIFY_SITE_ID }}
+          BRANCH: main
+        run: |
+          set -euo pipefail
+          api="https://api.netlify.com/api/v1"
+          auth=(-H "Authorization: Bearer $NETLIFY_AUTH_TOKEN")
+          # The build hook this workflow uses (made the first time).
+          hook=$(curl -fsS "${auth[@]}" "$api/sites/$NETLIFY_SITE_ID/build_hooks" | jq -r '[.[] | select(.title == "github-deploy")][0].url // empty')
+          if [ -z "$hook" ]; then
+            hook=$(curl -fsS "${auth[@]}" -H 'Content-Type: application/json' -X POST "$api/sites/$NETLIFY_SITE_ID/build_hooks" \
+              -d "{\"title\":\"github-deploy\",\"branch\":\"$BRANCH\"}" | jq -r .url)
+          fi
+          echo "::add-mask::$hook"
+          started=$(date -u +%Y-%m-%dT%H:%M:%S)
+          curl -fsS -X POST -d '{}' "$hook?trigger_title=$(jq -rn --arg t "Deploy from GitHub by $GITHUB_ACTOR" '$t|@uri')" >/dev/null
+          echo "Asked Netlify to build $BRANCH. Waiting for it…"
+          # Find the deploy it started, then wait until it's live (or fails).
+          for i in $(seq 1 120); do
+            sleep 15
+            d=$(curl -fsS "${auth[@]}" "$api/sites/$NETLIFY_SITE_ID/deploys?per_page=5" \
+              | jq -c --arg s "$started" '[.[] | select(.created_at >= $s)] | last // empty')
+            [ -z "$d" ] && continue
+            state=$(jq -r .state <<<"$d")
+            echo "  $(jq -r '.commit_ref // "" | .[0:7]' <<<"$d") $state"
+            case "$state" in
+              ready) echo "Live: $(jq -r .ssl_url <<<"$d")"; exit 0 ;;
+              error|rejected|skipped|canceled) echo "::error::Netlify deploy $state: $(jq -r '.error_message // "see the Netlify deploy log"' <<<"$d")"; exit 1 ;;
+            esac
+          done
+          echo "::error::Timed out waiting for Netlify"; exit 1
