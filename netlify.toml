@@ -1,4 +1,8 @@
+# Builds run only when the GitHub "Deploy" workflow asks (through a Netlify build hook).
+# A push alone starts a build that stops here at once: nothing published, no credits used.
+# Netlify's ignore rule: exit 0 = skip, exit 1 = build.
 [build]
+  ignore = 'if [ -n "$INCOMING_HOOK_URL" ]; then exit 1; fi; echo "Not started by the GitHub Deploy workflow: skipped."; exit 0'
   command = "npm run generate"
   publish = "dist"
 
